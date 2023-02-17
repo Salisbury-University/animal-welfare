@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Salisbury-University/animal-welfare">
-    <img src="images/fpp_full.png" alt="Logo" width="250" height="250">
+    <img src="Images/fpp_full.png" alt="Logo" width="250" height="250">
   </a>
 
 <h3 align="center">Flamingo++' Project with the Salisbury Zoo </h3>
