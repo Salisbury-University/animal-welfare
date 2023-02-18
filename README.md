@@ -1,12 +1,7 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-
-
 
 <!-- PROJECT SHIELDS -->
 [![Issues][issues-shield]][issues-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -20,14 +15,9 @@
   <p align="center">
     Our mission is to program a website to record and manage welfare data of each of the animals at the Salisbury Zoo  
     <br />
-    <a href="https://github.com/Salisbury-University/animal-welfare"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo (NWY)</a>
+    <a href="">View Demo (NWY)</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -45,17 +35,23 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project aims to digitize the Salisbury Zoo's Wellfare Assessment form. We will create a login page so each employee can login and fill out the form securely.
+Welcome to the Salisbury Zoo's animal welfare project! This website was created to serve as a centralized database for the Salisbury Zoo's animal care. Our mission is to provide a platform that will assist zookeepers, veterinarians, and animal welfare professionals in managing the health and well-being of the animals in their care. 
 
+The main goal for this project is to create website that manages data from welfare assessments of the animals includes the following aspects. The following systems are required for this project to be successful: 
+- User management system (UM) 
+- Digitized forms for recording pertinent information specific to the class or species of animal
+  - Additional sections to write down notes or concerns
+- Visualization software to allow zookeepers to view stylized data and trends
+- Database to store the information
 
+The Salisbury Zoo animal welfare management project is an important initiative that will help ensure that the zoo's animals receive the best possible care while taking away from the strain of manually inputting data into a spreadsheet. Our website offers a comprehensive and user-friendly platform that is tailored to the specific needs of zookeepers, veterinarians, and other animal welfare professionals. 
 
-<!--
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
--->
+We hope that our website will be useful in the care of the animals at the Salisbury Zoo.
+
+See <a href="#roadmap">Roadmap</a> for an in-depth look at the timeline of our goals for this project
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -63,11 +59,7 @@ This project aims to digitize the Salisbury Zoo's Wellfare Assessment form. We w
 
 ### Built With
 
-<!--
-* [![Next][Next.js]][Next-url]
--->
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+* [![SQLite][Sqlite.js]][Sqlite-url]
 
 
 
@@ -76,31 +68,49 @@ This project aims to digitize the Salisbury Zoo's Wellfare Assessment form. We w
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- ROADMAP -->
+<!-- Add real timeline-->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Database
+    - [x] Creating a non-redundant schema 
+    - [x] Adding templated forms 
+    - [ ] Populating the database
+- [ ] User Management Software
+    - [ ] General account management
+    - [ ] Admin privileges 
+- [ ] Website
+    - [ ] Create the wireframe for each of the pages
+    - [ ] Assembling
+    - [ ] Altering data in the database
+    - [ ] Interactive welfare assessment form
+- [ ] Visualization Software
+    - [ ] Creation or implementation
+
 
 
 
 <!-- CONTACT -->
+<!-- Need to add what everyone generally contributed to at the end!-->
 ## Contact
-
+* []()George Fotiou - Project Leader
+  * []() gfotiou1@gulls.salisbury.edu
+* []()David Wagner
+  * []() dwagner1@gulls.salisbury.edu
+* []()Rachel Prusacki
+  * []() rprusacki1@gulls.salisbury.edu
+* []()Josh Brull
+  * []() jbrull1@gulls.salisbury.edu
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- ACKNOWLEDGMENTS -->
+<!-- ACKNOWLEDGMENTS 
 ## Acknowledgments
 
 * []()
@@ -108,13 +118,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 * []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+-->
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [issues-shield]: https://img.shields.io/github/issues/Salisbury-University/animal-welfare.svg?style=for-the-badge
 [issues-url]: https://github.com/Salisbury-University/animal-welfare/issues
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[logo]: "Images/fpp-full.png
+[Sqlite.js]: https://img.shields.io/badge/sqlite-000000?style=for-the-badge&logo=sqlite&logoColor=white
 [Sqlite-url]: https://sqlite.org/
