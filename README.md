@@ -23,12 +23,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
+    <li><a href="#about-the-project">About The Project</a><li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -37,30 +32,24 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Welcome to the Salisbury Zoo's animal welfare project! This website was created to serve as a centralized database for the Salisbury Zoo's animal care. Our mission is to provide a platform that will assist zookeepers, veterinarians, and animal welfare professionals in managing the health and well-being of the animals in their care. 
+Welcome to the Salisbury Zoo's animal welfare project! This website was created to serve as a centralized database for the Salisbury Zoo's animal care. 
 
-The main goal for this project is to create website that manages data from welfare assessments of the animals includes the following aspects. The following systems are required for this project to be successful: 
+The Salisbury Zoo animal welfare management project is an important initiative that will help ensure that the zoo's animals receive the best possible care while taking away from the strain of manually inputting data into a spreadsheet by creating a website that manages data from welfare assessments of the animals includes the following aspects. 
+
+In this project, these systems are utilized: 
+
 - User management system (UM) 
 - Digitized forms for recording pertinent information specific to the class or species of animal
   - Additional sections to write down notes or concerns
 - Visualization software to allow zookeepers to view stylized data and trends
 - Database to store the information
 
-The Salisbury Zoo animal welfare management project is an important initiative that will help ensure that the zoo's animals receive the best possible care while taking away from the strain of manually inputting data into a spreadsheet. Our website offers a comprehensive and user-friendly platform that is tailored to the specific needs of zookeepers, veterinarians, and other animal welfare professionals. 
 
-We hope that our website will be useful in the care of the animals at the Salisbury Zoo.
 
 See <a href="#roadmap">Roadmap</a> for an in-depth look at the timeline of our goals for this project
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![SQLite][Sqlite.js]][Sqlite-url]
-
 
 
 <!-- USAGE EXAMPLES -->
@@ -75,7 +64,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 <!-- ROADMAP -->
 <!-- Add real timeline-->
 ## Roadmap
-
 - [ ] Database
     - [x] Creating a non-redundant schema 
     - [x] Adding templated forms 
@@ -90,6 +78,8 @@ Use this space to show useful examples of how a project can be used. Additional 
     - [ ] Interactive welfare assessment form
 - [ ] Visualization Software
     - [ ] Creation or implementation
+
+To view the timeline press <a href="https://github.com/orgs/Salisbury-University/projects/12/views/6?layout=roadmap&groupedBy%5BcolumnId%5D=Milestone">here</a>
 
 
 
