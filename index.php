@@ -14,7 +14,7 @@ include 'templates/layout.html.php'; ?>
 
     <!-- Body -->
     <link rel="stylesheet" href="CSS/index.css">
-    <body bgcolor="#006600" onLoad="onLoginPageLoad()">
+    <body background="Images/login-bg.jpg" onLoad="onLoginPageLoad()">
 
         <img class="flamingoImage" src="Images/ChileanFlamingo.jpg" ALIGN="left" />
 

@@ -1,5 +1,21 @@
-.header{
-    background-color: rgb(76, 153, 24);
-    width: 97.5%;
-    padding: 20px;
+* { margin: 0; }
+
+.header_top {
+    position: absolute;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.header_bottom {
+    position: absolute;
+    top: 10%;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.logo {
+    position: absolute;
+    left: 2.5%;
+    top: 2.5%;
+    z-index: 4;
 }
