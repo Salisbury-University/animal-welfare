@@ -1,0 +1,2 @@
+<h2>Search Animals:</h2>
+<p>Put text box here...</p>
