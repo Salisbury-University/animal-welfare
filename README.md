@@ -90,7 +90,7 @@ To view the timeline press <a href="https://github.com/orgs/Salisbury-University
 * []()George Fotiou - Project Leader
   * []() gfotiou1@gulls.salisbury.edu
 * []()David Wagner
-  * []() dwagner1@gulls.salisbury.edu
+  * []() dwagner3@gulls.salisbury.edu
 * []()Rachel Prusacki
   * []() rprusacki1@gulls.salisbury.edu
 * []()Josh Brull
