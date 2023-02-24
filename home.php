@@ -1,5 +1,5 @@
 <?php
 ob_start();
-include 'diet.html';
+include 'home.html';
 $output = ob_get_clean();
 include 'header.php';

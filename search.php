@@ -1,5 +1,5 @@
 <?php
 ob_start();
-include 'search.html.php';
+include 'search.html';
 $output = ob_get_clean();
-include 'layout.html.php';
+include 'header.php';

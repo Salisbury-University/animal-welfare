@@ -1,5 +1,5 @@
 <?php
 ob_start();
-include 'edit.html.php';
+include 'edit.html';
 $output = ob_get_clean();
-include 'layout.html.php';
+include 'header.php';

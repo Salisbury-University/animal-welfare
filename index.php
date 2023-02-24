@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-
-    <!-- Header of our webpage -->
-    <!-- <?php include 'header.html';?> -->
-
     <!-- Body -->
     <link rel="stylesheet" href="CSS/index.css">
     <body background="Images/login-bg.jpg" onLoad="onLoginPageLoad()">
@@ -32,7 +28,4 @@
         </script>
 
     </body>
-
-    <!-- Footer of our webpage -->
-    <!-- <?php include 'footer.html';?> -->
 </html>
