@@ -12,7 +12,7 @@
                 <!-- Replace demo_index.php with whatever PHP file is going to handle
                 the login. (SET THIS UP GEORGE, PLS)
                 -->
-        <form class="loginForm" action="demo_index.php" method="get">
+        <form class="loginForm" action="home.php" method="get">
             <input type="text" placeholder="Username" name="user"/>
             <input type="password" placeholder="Password" name="pwd"/>
             <br> <br>
