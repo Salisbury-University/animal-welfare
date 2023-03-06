@@ -3,7 +3,7 @@
 <html>
     <!-- Body -->
     <link rel="stylesheet" href="CSS/index.css">
-    <body background="Images/login-bg.jpg" onLoad="onLoginPageLoad()">
+    <body background="Images/login-bg.jpg">
 
         <img class="flamingoImage" src="Images/ChileanFlamingo.jpg" ALIGN="left" />
 
@@ -18,14 +18,6 @@
             <br> <br>
             <input type="submit" value="Log in"/>
         </form>
-
-        <script>
-            function onLoginPageLoad() {
-                // Keeping this useless function here since we most likely
-                // will need it later.
-                // window.alert("Loaded!");
-            }
-        </script>
 
     </body>
 </html>
