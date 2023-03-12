@@ -32,6 +32,6 @@ $row = mysqli_fetch_assoc($result);
 if($row['username'] === $loginUsername && $row['password'] === $loginPassword){
     echo "Logged in!";
     $_SESSION['username'] = $row['username'];
-    header("Location: home.php");
+    header("Location: home.php"); 
     exit();
 }

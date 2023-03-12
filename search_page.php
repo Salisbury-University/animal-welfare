@@ -66,7 +66,6 @@
         <?php
           if(isset($_POST['search'])){
             $search = $_POST['search'];
-            }
           }
         ?>
       </div>
@@ -74,4 +73,3 @@
     <footer>&copy; GRDJ 2023</footer>
   </body>
 </html>
-                                           
