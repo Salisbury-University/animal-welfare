@@ -14,7 +14,7 @@
                 <li><a href="home.php">Home</a></li> <!--possible removal-->
                 <li><a href="edit.php">Welfare Forms</a></li>
                 <li><a href="diet.php">Diet Tracker</a></li>
-                <li><a href="searchv2.php">Search</a></li>
+                <li><a href="search_page.php">Search</a></li>
             </ul>
         </nav>
 
