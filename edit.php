@@ -1,9 +1,9 @@
 <?php
 include 'Includes/DatabaseConnection.php';
-include 'Includes/DatabaseFunctions.php';
 
-##initialize forms variable to get data from database
-$forms = get($conn);
+##Initializes forms variable
+$sql = "SELECT * FROM `Forms`;";
+$forms = mysqli_query($connection, $sql);
 
 ##Needed for styling
 ob_start();
