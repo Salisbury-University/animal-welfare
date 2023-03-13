@@ -50,7 +50,7 @@
     </style>
   </head>
   <body>
-    <?php include 'header.php';?>
+    <?php include 'page_frame.php';?>
     <main>
       <div>
         <h3>Enter a keyword to search for an animal</h3>
