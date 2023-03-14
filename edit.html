@@ -1,2 +1,38 @@
-<h2>Select a form to edit:</h2>
-<p>Hello world</p>
+<html>
+    <head>
+        <link rel="stylesheet" href="CSS/edit.css">
+    </head>
+   <style>
+        body {
+        background-color:#C8D7C7;   
+        }
+    </style>
+    
+    <body>
+        <h2>Select a Welfare form to edit: </h2>
+        <p> Collection Forms </p>
+        
+        <div class="rectangle1"></div>
+        <div class="rectangle2"></div>
+        <div class="rectangle3"></div>
+        <div class="rectangle4"></div>
+        <div class="rectangle5"></div>
+        <div class="rectangle6"></div>
+
+        <form method = "POST">
+            <select name="Forms">
+                <option value="">Select a form</option> <!-- Title of drop down -->
+                <!-- Go through each tuple -->
+                <?php while ($form = mysqli_fetch_array($forms,MYSQLI_ASSOC)):; ?> 
+                <!-- The value set is the primary key -->
+                <option value="<?php echo $form["id"]; ?>">
+                    <!-- To show the category name to the user -->
+                    <?php echo $form["name"]; ?>
+                </option>
+                    <?php endwhile;?>
+            </select> 
+            <input type = "submit" name = "search.php" value = "Edit">
+        </form>
+    </body>
+
+</html>
