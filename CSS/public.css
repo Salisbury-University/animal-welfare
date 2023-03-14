@@ -1,50 +1,250 @@
-* {margin: 0; padding: 0; }
-
-body {font-family: Arial, Helvetica, Sans-serif;}
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, Helvetica, Sans-serif;
+}
 
 /*Header and zoo logo*/
-img {display: block; margin-top: 30px; margin-left: 30px; float: left; position: relative; max-width: 90%; }
-header {display: block;  background-image: url('../Images/Header/header-bg.jpg');
-        background-repeat: repeat-x; background-size: cover;  height: 90px; }
+img {
+    display: block;
+    margin-top: 30px;
+    margin-left: 30px;
+    float: left;
+    position: relative;
+    max-width: 90%;
+}
+header {
+    display: block;
+    background-image: url('../Images/Header/header-bg.jpg');
+    background-repeat: repeat-x;
+    background-size: cover;
+    height: 90px;
+}
 
 /*Start of navigation bar */
-nav {background-image: url('../Images/Header/nav-bg.jpg'); background-repeat: repeat-x; height: auto;}
-nav a {color: teal; font-size: medium; font-weight: bold; text-decoration: none; white-space: nowrap;}
-nav a:hover {color: aqua;}
-nav ul {display: table; width: 200px; margin: auto;}
-nav li {display: table-cell; text-align: center; padding: 1em;}
+nav {
+    background-image: url('../Images/Header/nav-bg.jpg');
+    background-repeat: repeat-x;
+    height: auto;
+}
+nav a {
+    color: teal;
+    font-size: medium;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+}
+nav a:hover {
+    color: aqua;
+}
+nav ul {
+    display: table;
+    width: 200px;
+    margin: auto;
+}
+nav li {
+    display: table-cell;
+    text-align: center;
+    padding: 1em;
+}
+
 /*End navigation bar*/
 
 /*Main body of page*/
-main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-top: 30px; }
+main {
+    overflow: auto;
+    min-height: 300px;
+    position: auto;
+    margin: auto;
+    padding-top: 30px;
+}
 
-/*Footer aka copyright */
-footer {padding: 1em; background-color: #FFC0A7 ; font-size: 0.8em;}
+/*Footer nav */
+footer {
+    background-color: darkgreen;
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.f-top {
+    max-width: 1170px;
+    margin: auto;
+}
+.f-top .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.f-top ul {
+    list-style: none;
+}
+.f-top .col {
+    width: 25%;
+    padding: 0 15px;
+}
+.f-top h4 {
+    font-size: 18px;
+    color: #ffffff;
+    text-transform: capitalize;
+    margin-bottom: 35px;
+    font-weight: 500;
+    position: relative;
+}
+.f-top h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: #e91e63;
+    height: 2px;
+    box-sizing: border-box;
+    width: 50px;
+}
+.f-top li:not(:last-child) {
+    margin-bottom: 10px;
+}
+.f-top a {
+    font-size: 16px;
+    text-transform: capitalize;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 300;
+    color: #bbbbbb;
+    display: block;
+    transition: all 0.3s ease;
+}
+.f-top a:hover {
+    color: #ffffff;
+    padding-left: 8px;
+}
 
-p {margin-bottom: 1em;}
+/*responsive*/
+@media(max-width: 767px) {
+    .f-top .col {
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
 
-body {font-size: 1.2em; font-family: arial, helvetica, sans-serif}
-input, label, select, textarea {float: left; width: 15em; margin-bottom: 1em;  padding: 0.5em;}
-label {clear: left; padding: 0; margin: 0;}
-input[type="submit"] {margin-left: 15em; width: auto; padding: 0.5em 1em; clear: both; font-size: 1em;}
-form {overflow: auto; clear: both; display: block;}
+p {
+    margin-bottom: 1em;
+}
 
-blockquote {display: table; margin-bottom: 1em; border-bottom: 1px solid #ccc; padding: 0.5em; }
-blockquote p {display: table-cell; width: 70%; vertical-align: top;}
-blockquote form {  display: table-cell; width: 10%;}
+body {
+    font-size: 1.2em;
+    font-family: arial, helvetica, sans-serif
+}
 
-.errors {padding: 1em; border: 1px solid rgb(255, 0, 0); background-color: lightyellow; color: red; margin-bottom: 1em; overflow: auto;}
-.errors ul {margin-left: 1em;}
+input,
+label,
+select,
+textarea {
+    float: left;
+    width: 15em;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
 
-form p {clear: both;}
-input[type="checkbox"] {float: left; clear: left; width: auto; margin-right: 10px;}
-input[type="checkbox"] + label {clear: right;}
+label {
+    clear: left;
+    padding: 0;
+    margin: 0;
+}
 
-.list {display: table;}
-.categories {display: table-cell; width: 30%; background-color: #333; padding: 1em; list-style-type: none;}
-.categories a {color: white; text-decoration: none;}
-.categories li {margin-bottom: 1em;}
-.list .questions {display: table-cell; padding: 1em;}
+input[type="submit"] {
+    margin-left: 15em;
+    width: auto;
+    padding: 0.5em 1em;
+    clear: both;
+    font-size: 1em;
+}
 
-.currentpage:before { content: "["; }
-.currentpage:after { content: "]"; }
+form {
+    overflow: auto;
+    clear: both;
+    display: block;
+}
+
+blockquote {
+    display: table;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #ccc;
+    padding: 0.5em;
+}
+
+blockquote p {
+    display: table-cell;
+    width: 70%;
+    vertical-align: top;
+}
+
+blockquote form {
+    display: table-cell;
+    width: 10%;
+}
+
+.errors {
+    padding: 1em;
+    border: 1px solid rgb(255, 0, 0);
+    background-color: lightyellow;
+    color: red;
+    margin-bottom: 1em;
+    overflow: auto;
+}
+
+.errors ul {
+    margin-left: 1em;
+}
+
+form p {
+    clear: both;
+}
+
+input[type="checkbox"] {
+    float: left;
+    clear: left;
+    width: auto;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]+label {
+    clear: right;
+}
+
+.list {
+    display: table;
+}
+
+.categories {
+    display: table-cell;
+    width: 30%;
+    background-color: #333;
+    padding: 1em;
+    list-style-type: none;
+}
+
+.categories a {
+    color: white;
+    text-decoration: none;
+}
+
+.categories li {
+    margin-bottom: 1em;
+}
+
+.list .questions {
+    display: table-cell;
+    padding: 1em;
+}
+
+.currentpage:before {
+    content: "[";
+}
+
+.currentpage:after {
+    content: "]";
+}
