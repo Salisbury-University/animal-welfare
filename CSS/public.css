@@ -4,7 +4,8 @@ body {font-family: Arial, Helvetica, Sans-serif;}
 
 /*Header and zoo logo*/
 img {display: block; margin-top: 30px; margin-left: 30px; float: left; position: relative; max-width: 90%; }
-header {display: block;  background-image: url('../Images/Header/header-bg.jpg');
+header {display: block; background-image: url('../Images/Header/leaves.png'),
+        url('../Images/Header/header-bg.jpg');
         background-repeat: repeat-x; background-size: cover;  height: 90px; }
 
 /*Start of navigation bar */
@@ -20,31 +21,3 @@ main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-t
 
 /*Footer aka copyright */
 footer {padding: 1em; background-color: #FFC0A7 ; font-size: 0.8em;}
-
-p {margin-bottom: 1em;}
-
-body {font-size: 1.2em; font-family: arial, helvetica, sans-serif}
-input, label, select, textarea {float: left; width: 15em; margin-bottom: 1em;  padding: 0.5em;}
-label {clear: left; padding: 0; margin: 0;}
-input[type="submit"] {margin-left: 15em; width: auto; padding: 0.5em 1em; clear: both; font-size: 1em;}
-form {overflow: auto; clear: both; display: block;}
-
-blockquote {display: table; margin-bottom: 1em; border-bottom: 1px solid #ccc; padding: 0.5em; }
-blockquote p {display: table-cell; width: 70%; vertical-align: top;}
-blockquote form {  display: table-cell; width: 10%;}
-
-.errors {padding: 1em; border: 1px solid rgb(255, 0, 0); background-color: lightyellow; color: red; margin-bottom: 1em; overflow: auto;}
-.errors ul {margin-left: 1em;}
-
-form p {clear: both;}
-input[type="checkbox"] {float: left; clear: left; width: auto; margin-right: 10px;}
-input[type="checkbox"] + label {clear: right;}
-
-.list {display: table;}
-.categories {display: table-cell; width: 30%; background-color: #333; padding: 1em; list-style-type: none;}
-.categories a {color: white; text-decoration: none;}
-.categories li {margin-bottom: 1em;}
-.list .questions {display: table-cell; padding: 1em;}
-
-.currentpage:before { content: "["; }
-.currentpage:after { content: "]"; }
