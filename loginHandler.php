@@ -21,6 +21,8 @@ $submittedPassword = $_POST['submittedPassword'];
 $loginUsername = validateData($submittedUsername);
 $loginPassword = validateData($submittedPassword);
 
+echo "Incorrect Password<br><br>";
+echo "Details provided for debugging purposes:<br>";
 echo "Login Username: $loginUsername <br>";
 echo "Login Password: $loginPassword <br>";
 
