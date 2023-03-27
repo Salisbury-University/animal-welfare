@@ -14,6 +14,7 @@
                 <li><a href="edit.php">Welfare Forms</a></li>
                 <li><a href="diet.php">Diet Tracker</a></li>
                 <li><a href="search.php">Search</a></li>
+                <li><a href="logoutHandler.php">Logout</a></li>
             </ul>
         </nav>
         <main>
