@@ -1,7 +1,7 @@
 <?php
 $databaseIP = "localhost";
 $dbusername = "restricted_user";
-$dbpassword = "9jlczTmjCMCdK6Tl";
+$dbpassword = "j60oPoObT3PSnEvZ";
 $dbName = "test_useraccounts";
 
 session_start();
