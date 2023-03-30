@@ -1,8 +1,8 @@
 <?php
 $databaseIP = "localhost";
-$dbusername = "restricted_user";
-$dbpassword = "j60oPoObT3PSnEvZ";
-$dbName = "Rachel";
+$dbusername = "rachelp";
+$dbpassword = "XW1b17ltQJN4EQ2d";
+$dbName = "zooDB";
 
 session_start();
 
