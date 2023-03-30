@@ -2,7 +2,7 @@
 $databaseIP = "localhost";
 $dbusername = "restricted_user";
 $dbpassword = "j60oPoObT3PSnEvZ";
-$dbName = "test_useraccounts";
+$dbName = "zooDB";
 
 session_start();
 
@@ -26,12 +26,12 @@ echo "Details provided for debugging purposes:<br>";
 echo "Login Username: $loginUsername <br>";
 echo "Login Password: $loginPassword <br>";
 
-$sql = "select * from users where username='$loginUsername' AND password='$loginPassword';";
+$sql = "select * from useraccounts where username='$loginUsername' AND password_hash='$loginPassword';";
 $result = mysqli_query($connection, $sql);
 
 $row = mysqli_fetch_assoc($result);
 
-if($row['username'] === $loginUsername && $row['password'] === $loginPassword){
+if($row['username'] === $loginUsername && $row['password_hash'] === $loginPassword){
     echo "Logged in!";
     $_SESSION['username'] = $row['username'];
     header("Location: home.php"); 
