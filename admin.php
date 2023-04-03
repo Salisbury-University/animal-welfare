@@ -46,7 +46,13 @@ echo "<form action='admin_createUser.php' method='post'>
         <input type='submit'>
     </form>";
 
+echo "<br> <br>";
 
+echo "Delete user form <br>";
+echo "<form action='admin_deleteUser.php' method='post'>
+        Email: <input type='text' name='email'> <br>
+        <input type='submit'>
+    </form>";
 
 $output = ob_get_clean();
 include 'page_frame.php';
