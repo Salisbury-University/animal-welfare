@@ -2,7 +2,7 @@
 include 'Includes/DatabaseConnection.php';
 
 ##Initializes forms variable
-$sql = "SELECT * FROM `Forms`;";
+$sql = "SELECT * FROM `forms`;";
 $forms = mysqli_query($connection, $sql);
 
 ##Needed for styling
