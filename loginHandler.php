@@ -1,12 +1,9 @@
 <?php
-$databaseIP = "localhost";
-$dbusername = "restricted_user";
-$dbpassword = "j60oPoObT3PSnEvZ";
-$dbName = "zooDB";
+include "Includes/DatabaseConnection.php";
 
 session_start();
 
-$connection = mysqli_connect($databaseIP, $dbusername, $dbpassword, $dbName);
+
 
 function validateData($data){
     $data = trim($data);
