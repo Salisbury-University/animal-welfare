@@ -19,5 +19,8 @@ nav li {display: table-cell; text-align: center; padding: 1em;}
 /*Main body of page*/
 main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-top: 30px; }
 
+/*Main body of page*/
+main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-top: 30px; }
+
 /*Footer aka copyright */
 footer {padding: 1em; background-color: #FFC0A7 ; font-size: 0.8em;}
