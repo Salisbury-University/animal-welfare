@@ -12,25 +12,26 @@ function validateData($data){
     return $data;
 }
 
-$submittedUsername = $_POST['submittedUsername'];
+$submittedEmail = $_POST['submittedEmail'];
 $submittedPassword = $_POST['submittedPassword'];
 
-$loginUsername = validateData($submittedUsername);
+$loginEmail = validateData($submittedEmail);
 $loginPassword = validateData($submittedPassword);
 
 echo "Incorrect Password<br><br>";
 echo "Details provided for debugging purposes:<br>";
-echo "Login Username: $loginUsername <br>";
+echo "Login Email: $loginEmail <br>";
 echo "Login Password: $loginPassword <br>";
 
-$sql = "select * from useraccounts where username='$loginUsername' AND password_hash='$loginPassword';";
+//$sql = "select * from useraccounts where username='$loginUsername' AND password_hash='$loginPassword';";
+$sql = "select * from users where email='$loginEmail' AND pass='$loginPassword';";
 $result = mysqli_query($connection, $sql);
 
 $row = mysqli_fetch_assoc($result);
 
-if($row['username'] === $loginUsername && $row['password_hash'] === $loginPassword){
+if($row['email'] === $loginEmail && $row['pass'] === $loginPassword){
     echo "Logged in!";
-    $_SESSION['username'] = $row['username'];
+    $_SESSION['email'] = $row['email'];
     header("Location: home.php"); 
     exit();
 }
