@@ -1,6 +1,5 @@
 <?php
 include '../Includes/DatabaseConnection.php';
-include 'FormFunctions.php';
 
 ##Initializes sql variable
 $sql = "SELECT * FROM `questions`;";
