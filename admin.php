@@ -1,10 +1,15 @@
 <?php
 ob_start();
+session_start();
 include 'Includes/DatabaseConnection.php';
-echo "admin.php loaded <br><br>";
+include "Includes/loggedInUserHelper.php";
 
 //Add code here later that checks if the current user has the Is_Admin flag.
 //Redirect to the homepage if theyre not an admin.
+$isAdmin = checkIsAdmin();
+if($isAdmin == false){
+    header('Location: home.php');
+}
 
 // Display table of users
 // TODO: Instead of displaying everything at once automatically,

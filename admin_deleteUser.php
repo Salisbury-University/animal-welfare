@@ -1,5 +1,12 @@
 <?php
+session_start();
 include "Includes/DatabaseConnection.php";
+include "Includes/loggedInUserHelper.php";
+$isAdmin = checkIsAdmin();
+if($isAdmin == false){
+    header('Location: home.php');
+}
+
 echo "admin_createUser.php script <br>";
 
 //TODO: Check if currently logged in user has the admin flag (To prevent unprivileged users from using it)

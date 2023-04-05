@@ -3,8 +3,6 @@ include "Includes/DatabaseConnection.php";
 
 session_start();
 
-
-
 function validateData($data){
     $data = trim($data);
     $data = stripslashes($data);
@@ -32,6 +30,7 @@ $row = mysqli_fetch_assoc($result);
 if($row['email'] === $loginEmail && $row['pass'] === $loginPassword){
     echo "Logged in!";
     $_SESSION['email'] = $row['email'];
+    $_SESSION['administrator'] = $row['administrator'];
     header("Location: home.php"); 
     exit();
 }
