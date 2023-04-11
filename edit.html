@@ -1,2 +1,34 @@
-<h2>Select a form to edit:</h2>
-<p>Hello world</p>
+<!--If you want user to select form from dropdown-->
+
+<html>
+    <head>
+        <link rel="stylesheet" href="CSS/edit.css">
+    </head>
+   <style>
+        body {
+        background-color:#C8D7C7;   
+        }
+    </style>
+    
+    <body>
+        <h2>Select a Welfare form to edit: </h2>
+        <p> Collection Forms </p>
+        
+        <form method = "POST">
+            <select name="forms">
+                <option value="">Select a form</option> <!-- Title of drop down -->
+                <!-- Go through each tuple -->
+                <?php while ($form = mysqli_fetch_array($forms,MYSQLI_ASSOC)):; ?> 
+                <!-- The value set is the primary key -->
+                <option value="<?php echo $form["id"]; ?>">
+                    <!-- To show the category name to the user -->
+                    <?php echo $form["title"]; ?>
+                </option>
+                    <?php endwhile;?>
+            </select>
+        </form>
+        <form method="POST" action="Forms/Forms.php">  
+            <input type="submit" value ="Edit"/>  
+        </form>
+    </body>
+</html>

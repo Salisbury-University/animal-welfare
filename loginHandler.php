@@ -1,7 +1,7 @@
 <?php
 $databaseIP = "localhost";
 $dbusername = "restricted_user";
-$dbpassword = "9jlczTmjCMCdK6Tl";
+$dbpassword = "j60oPoObT3PSnEvZ";
 $dbName = "test_useraccounts";
 
 session_start();
@@ -21,6 +21,8 @@ $submittedPassword = $_POST['submittedPassword'];
 $loginUsername = validateData($submittedUsername);
 $loginPassword = validateData($submittedPassword);
 
+echo "Incorrect Password<br><br>";
+echo "Details provided for debugging purposes:<br>";
 echo "Login Username: $loginUsername <br>";
 echo "Login Password: $loginPassword <br>";
 
