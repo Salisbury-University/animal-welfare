@@ -1,13 +1,9 @@
-<style>
-    body {
-    background-color:#C8D7C7;   
-    }
-</style>
-
 <!--Back button-->
-<form method="POST" action="search.php">  
-    <input type="submit" value ="Back"/>  
-</form>
+<div class="back">
+    <form method="POST" action="search.php">  
+        <input type="submit" value ="Back"/>  
+    </form>
+</div>
 
 <table border = '1px'>
     <!--Go through rows-->
@@ -26,4 +22,13 @@
         </tr> 
 </table>
 
-
+<div class="test">
+    <?php
+    for ($row = 0; $row <2; $row++) {
+        echo "<p> Section: ".$posts[$row][0]["title"]."</p>";
+        for ($col = 1; $col < 3; $col++) {
+            echo "<li>".$posts[$row][$col]["question"]."</li>";
+        }
+    }
+    ?>
+</div>

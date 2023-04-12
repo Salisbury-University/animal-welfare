@@ -1,16 +1,10 @@
 <html>
-    <style>
-        body {
-        background-color:#C8D7C7;   
-        }
-    </style>
-
-    <body>
-        <!--Back Button-->
+    <!--Back Button-->
+    <div class="back">
         <form method="POST" action="../edit.php">  
             <input type="submit" value ="Back"/>  
         </form>
-
+    <body>
         <!--Display question in the edit box-->
         <form action = "" method = "post">
             <input type="hidden" name="questionid" value="<?=$question['id'];?>">

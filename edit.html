@@ -1,15 +1,5 @@
 <!--If you want user to select form from dropdown-->
-
 <html>
-    <head>
-        <link rel="stylesheet" href="CSS/edit.css">
-    </head>
-   <style>
-        body {
-        background-color:#C8D7C7;   
-        }
-    </style>
-    
     <body>
         <h2>Select a Welfare form to edit: </h2>
         <p> Collection Forms </p>
@@ -25,8 +15,9 @@
                     <?php echo $form["title"]; ?>
                 </option>
                     <?php endwhile;?>
-            </select>
+             </select>
         </form>
+            
         <form method="POST" action="Forms/Forms.php">  
             <input type="submit" value ="Edit"/>  
         </form>

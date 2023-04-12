@@ -29,7 +29,7 @@ for ($i = 0; $i < $count; $i++) {
     $sql = "SELECT q.question, hsq.id
         from questions q
         join hasSectionQuestions hsq on q.id = hsq.question_id
-        where hsq.section_id = 1 and hsq.form_id = 1;";
+        where hsq.section_id =". ($i+1) ." and hsq.form_id = 1;";
     $questions = mysqli_query($connection, $sql);
     
     #Loads question from section into col1+ of array
@@ -38,16 +38,6 @@ for ($i = 0; $i < $count; $i++) {
         $x++;
     }
 }
-
-
-##Printing
-for ($row = 0; $row <2; $row++) {
-    echo "<p> Section: ".$posts[$row][0]["title"]."</p>";
-    for ($col = 1; $col < 3; $col++) {
-        echo "<li>".$posts[$row][$col]["question"]."</li>";
-    }
-}
-
 
 
 #Include html

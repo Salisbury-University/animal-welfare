@@ -1,26 +1,125 @@
 * {margin: 0; padding: 0; }
 
-body {font-family: Arial, Helvetica, Sans-serif;}
+body {font-family: Arial, Helvetica, Sans-serif; background-color:#C8D7C7;}
 
 /*Header and zoo logo*/
-img {display: block; margin-top: 30px; margin-left: 30px; float: left; position: relative; max-width: 90%; }
-header {display: block; background-image: url('../Images/Header/leaves.png'),
-        url('../Images/Header/header-bg.jpg');
-        background-repeat: repeat-x; background-size: cover;  height: 90px; }
+img {display: block; margin-top: 30px; margin-left: 30px; float: left; size: 80%; position: absolute;}
+header {display: block; 
+        background-image: url('../Images/Header/leaves.png'), url('../Images/Header/header-bg.jpg');
+        background-repeat: no-repeat; background-size: cover;  height: 90px; }
 
 /*Start of navigation bar */
 nav {background-image: url('../Images/Header/nav-bg.jpg'); background-repeat: repeat-x; height: auto;}
 nav a {color: teal; font-size: medium; font-weight: bold; text-decoration: none; white-space: nowrap;}
 nav a:hover {color: aqua;}
-nav ul {display: table; width: 200px; margin: auto;}
+nav ul {display: table; width: 200px; margin: auto; margin-left:400px;}
 nav li {display: table-cell; text-align: center; padding: 1em;}
 /*End navigation bar*/
 
-/*Main body of page*/
-main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-top: 30px; }
 
 /*Main body of page*/
-main {overflow: auto; min-height: 300px; position: auto; margin: auto; padding-top: 30px; }
+main {overflow: auto; min-height: 70vh; position: auto; margin: auto; padding-top: 30px; }
 
-/*Footer aka copyright */
-footer {padding: 1em; background-color: #FFC0A7 ; font-size: 0.8em;}
+/* Content of pages */
+        h2 {
+           text-align:center;
+        }
+        p {
+          text-align:center;  
+        }
+        form {
+          text-align:center;  
+        }
+        table{
+          margin-top:20px;
+          margin-left:400px;
+        }
+/*End content of pages*/
+
+/*Test*/
+.test {
+        display: block;
+        width: 200px;
+        height: 200px;
+        margin:auto;
+        border: 5px outset red;
+}
+
+/*Back button*/
+.back {
+        margin-right:380px;
+}
+
+/*Line seperating main content from footer */
+hr {
+        height:2px;
+        border-width:0;
+        color:#DBA35C;
+        background-color:#DBA35C;
+}
+
+/*Footer aka copyright*/
+footer {
+        background-color: darkgreen;
+        background-image: url('../Images/birds.png');
+        background-position: right;
+        background-repeat: no-repeat;
+        background-size: 17%;
+        position: relative;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    .f-top {
+        max-width: 1170px;
+        margin: auto;
+    }
+    .f-top .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .f-top ul {
+        list-style: none;
+        list-style-position: left;
+    }
+    .f-top .col {
+        width: 22%;
+        padding: 0 15px;
+    }
+    .f-top h4 {
+        font-size: 18px;
+        color: #ffffff;
+        text-transform: capitalize;
+        margin-bottom: 35px;
+        font-weight: 500;
+        position: relative;
+    }
+    .f-top h4::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        background-color: #e91e63;
+        height: 2px;
+        box-sizing: border-box;
+        width: 50px;
+    }
+    .f-top li:not(:last-child) {
+        margin-bottom: 10px;
+    }
+    .f-top a {
+        font-size: 16px;
+        text-transform: capitalize;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 300;
+        color: #bbbbbb;
+        display: block;
+        transition: all 0.3s ease;
+    }
+    .f-top a:hover {
+        color: #ffffff;
+        padding-left: 8px;
+    }
