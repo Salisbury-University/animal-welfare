@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 include 'Includes/DatabaseConnection.php';
 include "Includes/loggedInUserHelper.php";
 

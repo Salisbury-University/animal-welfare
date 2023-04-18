@@ -1,8 +1,6 @@
 <?php
 include "Includes/DatabaseConnection.php";
 
-session_start();
-
 function validateData($data){
     $data = trim($data);
     $data = stripslashes($data);

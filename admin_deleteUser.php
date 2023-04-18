@@ -1,5 +1,4 @@
 <?php
-session_start();
 include "Includes/DatabaseConnection.php";
 include "Includes/loggedInUserHelper.php";
 $isAdmin = checkIsAdmin();
