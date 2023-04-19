@@ -1,12 +1,5 @@
 <?php
-$databaseIP = "localhost";
-$dbusername = "restricted_user";
-$dbpassword = "j60oPoObT3PSnEvZ";
-$dbName = "zooDB";
-
-session_start();
-
-$connection = mysqli_connect($databaseIP, $dbusername, $dbpassword, $dbName);
+include "Includes/DatabaseConnection.php";
 
 function validateData($data){
     $data = trim($data);
@@ -15,25 +8,27 @@ function validateData($data){
     return $data;
 }
 
-$submittedUsername = $_POST['submittedUsername'];
+$submittedEmail = $_POST['submittedEmail'];
 $submittedPassword = $_POST['submittedPassword'];
 
-$loginUsername = validateData($submittedUsername);
+$loginEmail = validateData($submittedEmail);
 $loginPassword = validateData($submittedPassword);
 
 echo "Incorrect Password<br><br>";
 echo "Details provided for debugging purposes:<br>";
-echo "Login Username: $loginUsername <br>";
+echo "Login Email: $loginEmail <br>";
 echo "Login Password: $loginPassword <br>";
 
-$sql = "SELECT * from `users` where username='$loginUsername' AND password='$loginPassword';";
+//$sql = "select * from useraccounts where username='$loginUsername' AND password_hash='$loginPassword';";
+$sql = "select * from users where email='$loginEmail' AND pass='$loginPassword';";
 $result = mysqli_query($connection, $sql);
 
 $row = mysqli_fetch_assoc($result);
 
-if($row['username'] === $loginUsername && $row['password'] === $loginPassword){
+if($row['email'] === $loginEmail && $row['pass'] === $loginPassword){
     echo "Logged in!";
-    $_SESSION['username'] = $row['username'];
+    $_SESSION['email'] = $row['email'];
+    $_SESSION['administrator'] = $row['administrator'];
     header("Location: home.php"); 
     exit();
 }
