@@ -26,4 +26,5 @@ $output = ob_get_clean();
 
 ##Needed for styling
 include 'entry_frame.php';
+include "../Includes/preventUnauthorizedUse.php";
 ?>
