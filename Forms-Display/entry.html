@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../CSS/entry.css">
+    </head>
+
+<!--Back button-->
+<div class="backk">
+    <form method="POST" action="../edit.php">  
+        <input type="submit" value ="Back"/>  
+    </form>
+</div>
+
+<table class = "center">
+    <?php
+    #displays questions and sections, if statement prints sections
+    $count = 1;
+    while ($test = mysqli_fetch_array($all)) {
+        #displays questions:
+        $qs = $test["id"];
+        $getQ->execute();
+
+        foreach ($getQ->get_result() as $row) {
+            if ($count==1) {
+                #displays sections
+                $sec = mysqli_fetch_array($sections);
+    ?>
+                <tr>
+                      <th><?=htmlspecialchars($sec["title"],ENT_QUOTES,'UTF-8')?></th>
+                </tr>
+
+    <?php        }
+
+            #questions
+    ?>
+            <tr>
+                  <td><?=htmlspecialchars($row["question"],ENT_QUOTES,'UTF-8')?></td>
+                  <td><pre>&#9</pre></td>
+            </tr>
+    <?php
+            $count++;
+        }
+        #reset count
+        $count = 1;
+    }
+
+    ?>
+</table>
+
+<div>
+    <p>
+        <td><pre>&#9</pre></td>
+    </p>
+</div>
