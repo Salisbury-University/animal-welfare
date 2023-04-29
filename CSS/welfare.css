@@ -1,25 +1,10 @@
-.my-container {
-    text-align: left;
-    vertical-align: auto;
-    min-height: 250px;
-    min-width: 480px;
-    background-color: #f5e1c9;
-    margin-left:50%;
-    margin-top:5%;
-}
-
-.buttonBox, h4 {
-    margin-left: 10%;
-    
-}
-
 .jumbotron {
-    margin-top: 10vh;
     background: none;
-    align-items: center;
-    margin: 0 !important;
     display: flex;
-    vertical-align: middle; 
+    margin-left:20%;
+}
 
+.hstack {
+    display: flex;
 }
 

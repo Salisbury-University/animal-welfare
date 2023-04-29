@@ -1,10 +1,5 @@
 <?php
-include 'Includes/DatabaseConnection.php';
 include "Includes/preventUnauthorizedUse.php";
-
-##Initializes forms variable
-$sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
 ?>
 
 <!doctype html>
@@ -21,11 +16,11 @@ $forms = mysqli_query($connection, $sql);
 
     <!-- Custom styles for this template -->
     <link href="CSS/main.css" rel="stylesheet">
-    <link href="CSS/welfare.css" rel="stylesheet">
+    <link href="CSS/admin.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-    <script src="welfare.js"></script>
+
   </head>
 
   <body>
@@ -86,26 +81,38 @@ $forms = mysqli_query($connection, $sql);
 
     <!--Only edit main-->
     <main>
-    <img class="float-right" src=Images/Leaves/foilage-right.png alt="leaves">
-
-    <section class="jumbotron">
-      <div class = "vstack">
-        <h2>Select a Welfare form to edit: </h2>
-        <p>&nbsp</p>
-          
-        <div class = "hstack gap-3">
-        <!--Buttons to select which form to display on Forms.php-->
-         <?php while ($form = mysqli_fetch_array($forms,MYSQLI_ASSOC)):; ?> 
-          <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
-              <div class="btn-group" role="group">
-                  <button type="submit" class="btn btn-secondary"><?php echo $form["title"]; ?></button>
-              </div>
-          </form>
-         <?php endwhile;?>
+      <?php
+      //Redirect to the homepage if theyre not an admin.
+        $isAdmin = checkIsAdmin();
+        if($isAdmin == false){
+          header('Location: home.php');
+        }
+      ?>
+      
+        <!--Start HTML-->
+    <div class = "my-container" style="border:5px solid #000000;"">
+        <h1>Create User Form: </h1>
+  
+        <form action='Admin/addUser.php' method='post'>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type='text' class="form-control" name='email' placeholder="Enter Email Address">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" name='password' placeholder="Enter Password">
+            </div>
+            <div class="form-group">
+                <label for="admin">Admin</label>
+                <input type="text" class="form-control" name='admin' placeholder="Enter 1 For Admin, 0 For User">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
         </div>
-      </div>
-      </section>
-      <img src=Images/Leaves/foilage-left-sidebar.png alt="leaves">
+        <!--End HTML-->
+      
+        
+
     </main>
 
     <hr>

@@ -66,9 +66,8 @@ include "../Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="../admin.php">Manage admin</a>
+              <a class="dropdown-item" href="../admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>
@@ -106,7 +105,7 @@ include "../Includes/preventUnauthorizedUse.php";
               #displays questions and sections, if statement prints sections
               $count = 1;
               for ($secNum=1; $secNum < mysqli_num_rows($sections); $secNum++) {
-                $sql = "SELECT q.question, hsq.id
+                $sql = "SELECT q.question, q.id, hsq.id
                 from questions q
                 join hasSectionQuestions hsq on q.id = hsq.question_id
                 where hsq.section_id = ". $secNum ." and hsq.form_id = ". $formID;

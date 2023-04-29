@@ -66,9 +66,8 @@ include "Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="Admin/admin.php">Manage Admin</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>

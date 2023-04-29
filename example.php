@@ -42,12 +42,12 @@ include "Includes/preventUnauthorizedUse.php";
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Home</a>
+            <a class="nav-link my-text-info" href="home.php">Home</a>
           </li>
 
           <!--Welfare Forms-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Welfare Forms</a>
+            <a class="nav-link my-text-info" href="welfare.php">Welfare Forms</a>
           </li>
 
           <!--Diet Tracker-->
@@ -57,7 +57,7 @@ include "Includes/preventUnauthorizedUse.php";
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Search</a>
+            <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
 
           <!--Dropdown menu-->
@@ -66,9 +66,8 @@ include "Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>
