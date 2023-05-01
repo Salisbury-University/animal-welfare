@@ -1,5 +1,4 @@
 <?php
-
 //in isset() insert the question into the questions
 $insertIgnore = "INSERT IGNORE INTO questions ('id', 'text') VALUES (, $_POST['text']);";
 				
