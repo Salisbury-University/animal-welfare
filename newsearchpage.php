@@ -109,7 +109,7 @@ include "Includes/preventUnauthorizedUse.php";
           if(isset($_POST['search'])){
             $search = $_POST['search'];
             
-            if($conn = mysqli_connect("localhost:3306","georgef","3DxJjqHlC1XJkHQT", "zooDB")){
+            if($conn = mysqli_connect("localhost:3306","georgef"," ", "zooDB")){
               echo "<p1>  <p1>";
             }
             
