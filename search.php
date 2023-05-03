@@ -1,5 +1,5 @@
 <?php
-include "../Includes/preventUnauthorizedUse.php";
+include "Includes/preventUnauthorizedUse.php";
 ?>
 
 <!doctype html>
@@ -15,8 +15,9 @@ include "../Includes/preventUnauthorizedUse.php";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="../CSS/main.css" rel="stylesheet">
-    <link href="../CSS/forms.css" rel="stylesheet">
+    <link href="CSS/main.css" rel="stylesheet">
+    <link href="CSS/home.css" rel="stylesheet">
+    <link href="CSS/search.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
@@ -33,8 +34,8 @@ include "../Includes/preventUnauthorizedUse.php";
     
     <!--Logo-->
     <div class = "logo-overlay">
-      <a href="../home.php">
-        <img src=../Images/Header/logo.png alt="Logo">
+      <a href="home.php">
+        <img src=Images/Header/logo.png alt="Logo">
       </a>
     </div>
 
@@ -42,12 +43,12 @@ include "../Includes/preventUnauthorizedUse.php";
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../home.php">Home</a>
+            <a class="nav-link my-text-info" href="#">Home</a>
           </li>
 
           <!--Welfare Forms-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../welfare.php">Welfare Forms</a>
+            <a class="nav-link my-text-info" href="#">Welfare Forms</a>
           </li>
 
           <!--Diet Tracker-->
@@ -57,7 +58,7 @@ include "../Includes/preventUnauthorizedUse.php";
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../search.php">Search</a>
+            <a class="nav-link my-text-info" href="#">Search</a>
           </li>
 
           <!--Dropdown menu-->
@@ -66,87 +67,88 @@ include "../Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="../admin.php">Manage admin</a>
-              <a class="dropdown-item" href="../admin_createUser.php">Create User</a>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
             </div>
           </li>
         </ul>
-        <a class="btn btn-success my-2 my-sm-0 float-left" href="../logoutHandler.php" role="button">Logout</a>
+        <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
       
       </div>
     </nav>
     <hr>
     <!--End Navigation Bar-->
 
-
     <!--Only edit main-->
-    <main><!-- Main jumbotron for a primary marketing message or call to action -->
-        <?php
-            include '../Includes/DatabaseConnection.php';
-
-            $formID= $_GET['id']; //gets id from POST
-
-            $sql = "SELECT title FROM `sections`"; //gets sections
-            $sections = mysqli_query($connection, $sql);
-
-        ?>
-
-        <!--Back button-->
-        <div class="back">
-            <form method="POST" action="../welfare.php">  
-                <input type="submit" value ="Back"/>  
-            </form>
+    <main>
+    <div class = "container">
+      <div class = "row">
+    
+         <!--Sidebar with Animal Actions-->
+        <div class="col-4">
+          <p class="text-white"> Quick Animal Actions </p>
+            <div class="btn-group-vertical" role="group">
+              <a class="btn btn-success" href="welfare.php" role="button">Add &raquo;</a>
+              <a class="btn btn-success" href="welfare.php" role="button">Update &raquo;</a>
+              <a class="btn btn-success" href="welfare.php" role="button">Delete &raquo;</a>
+            </div>
         </div>
+        <!--End Sidebar-->
 
-        <div class = "container">
-          <table class="table table-bordered">
-            <tbody>
-              <?php
-              #displays questions and sections, if statement prints sections
-              $count = 1;
-              for ($secNum=1; $secNum < mysqli_num_rows($sections); $secNum++) {
-                $sql = "SELECT q.question, q.id, hsq.id
-                from questions q
-                join hasSectionQuestions hsq on q.id = hsq.question_id
-                where hsq.section_id = ". $secNum ." and hsq.form_id = ". $formID;
-                $questions = mysqli_query($connection, $sql);
-                while ($quest = mysqli_fetch_array($questions)) {
-                    if ($count==1) {
-                        #displays sections
-                            $sec = mysqli_fetch_array($sections); ?>
+        <div class="col-8">
+           <!--Main Search Box-->
+           <div class="content">
+            <div>
+              <form method="POST">
+                <div class="search-container">
+                  <input type="text" placeholder="Enter a keyword..." name="search" />
+                  <input type="submit" value="Search" />
+                </div>
+              </form>
+            </div>
+          </div>
 
-                        <tr>
-                          <th class="text-center" colspan="3">
-                          <?=htmlspecialchars($sec["title"],ENT_QUOTES,'UTF-8')?>
-                          </th>
-                        </tr>
-
-                <?php
-                    }
-                ?>
-                    <tr>
-                        <th><?=htmlspecialchars($count,ENT_QUOTES,'UTF-8')?></th>
-                        <td><?=htmlspecialchars($quest["question"],ENT_QUOTES,'UTF-8')?></td>
-                        <td><pre>&#9</pre></td>
-                    </tr>
-                  
-                <?php    
-                    $count++;
+          <!--Result Box-->
+            <div class="box">
+            <!-- This is where the search results will be displayed -->
+            <?php 
+              if(isset($_POST['search'])){
+                $search = $_POST['search'];
+                
+                if($conn = mysqli_connect("localhost:3306","rachelp","XW1b17ltQJN4EQ2d", "zooDB")){
+                  echo "<p1>  <p1>";
                 }
-                $count = 1;
-            }
-            
-              ?>
-            </tobdy>
-          </table>
-        </div>
+                
+                $query = "SELECT * FROM searchpage WHERE name LIKE '%$search%' OR species LIKE '%$search%' OR animal_type LIKE '%$search%' OR zims LIKE '%$search%'"; 
+                                                      
+                $r = mysqli_query($conn, $query);
 
-        <!--Submit-->
-        
-          <button type="submit" class="btn1 btn-success">Submit</button>
-        
-        <!--Export to CSV-->
+                  if($search == '' || $search == ' '){
+                    $search = "all";
+                  }
+                  $count = 0;
+                  while($row = mysqli_fetch_array($r)){
+                    echo "<div class='search-result-box'>";
+                    echo "<h2><a href='animalprofile.php?id=" . $row['zims'] . "'>" . $row['name'] . "</a></h2>";
+                    echo "<p><strong>Species:</strong> " . $row['species'] . "</p>";
+                    echo "<p><strong>Animal Type:</strong> " . $row['animal_type'] . "</p>";
+                    echo "<p><strong>ZIMS:</strong> " . $row['zims'] . "</p>";
+                    echo "</div>";
+                    ++$count;
+                  }
+                  echo "</div>";
+                  
+                  
+                  mysqli_close($conn);
+                  
+              }
+            ?>
+          </div>
+       
 
+    </div>
+    </div>
     </main>
 
     <hr>

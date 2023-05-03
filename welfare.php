@@ -1,5 +1,10 @@
 <?php
-include "../Includes/preventUnauthorizedUse.php";
+include 'Includes/DatabaseConnection.php';
+include "Includes/preventUnauthorizedUse.php";
+
+##Initializes forms variable
+$sql = "SELECT * FROM `forms`;";
+$forms = mysqli_query($connection, $sql);
 ?>
 
 <!doctype html>
@@ -15,12 +20,12 @@ include "../Includes/preventUnauthorizedUse.php";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="../CSS/main.css" rel="stylesheet">
-    <link href="../CSS/forms.css" rel="stylesheet">
+    <link href="CSS/main.css" rel="stylesheet">
+    <link href="CSS/welfare.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-
+    <script src="welfare.js"></script>
   </head>
 
   <body>
@@ -33,8 +38,8 @@ include "../Includes/preventUnauthorizedUse.php";
     
     <!--Logo-->
     <div class = "logo-overlay">
-      <a href="../home.php">
-        <img src=../Images/Header/logo.png alt="Logo">
+      <a href="home.php">
+        <img src=Images/Header/logo.png alt="Logo">
       </a>
     </div>
 
@@ -42,12 +47,12 @@ include "../Includes/preventUnauthorizedUse.php";
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../home.php">Home</a>
+            <a class="nav-link my-text-info" href="home.php">Home</a>
           </li>
 
           <!--Welfare Forms-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../welfare.php">Welfare Forms</a>
+            <a class="nav-link my-text-info" href="welfare.php">Welfare Forms</a>
           </li>
 
           <!--Diet Tracker-->
@@ -57,7 +62,7 @@ include "../Includes/preventUnauthorizedUse.php";
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../search.php">Search</a>
+            <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
 
           <!--Dropdown menu-->
@@ -66,12 +71,12 @@ include "../Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="../admin.php">Manage admin</a>
-              <a class="dropdown-item" href="../admin_createUser.php">Create User</a>
+            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>
-        <a class="btn btn-success my-2 my-sm-0 float-left" href="../logoutHandler.php" role="button">Logout</a>
+        <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
       
       </div>
     </nav>
@@ -80,73 +85,27 @@ include "../Includes/preventUnauthorizedUse.php";
 
 
     <!--Only edit main-->
-    <main><!-- Main jumbotron for a primary marketing message or call to action -->
-        <?php
-            include '../Includes/DatabaseConnection.php';
+    <main>
+    <img class="float-right" src=Images/Leaves/foilage-right.png alt="leaves">
 
-            $formID= $_GET['id']; //gets id from POST
-
-            $sql = "SELECT title FROM `sections`"; //gets sections
-            $sections = mysqli_query($connection, $sql);
-
-        ?>
-
-        <!--Back button-->
-        <div class="back">
-            <form method="POST" action="../welfare.php">  
-                <input type="submit" value ="Back"/>  
-            </form>
+    <section class="jumbotron">
+      <div class = "vstack">
+        <h2>Select a Welfare form to edit: </h2>
+        <p>&nbsp</p>
+          
+        <div class = "hstack gap-3">
+        <!--Buttons to select which form to display on Forms.php-->
+         <?php while ($form = mysqli_fetch_array($forms,MYSQLI_ASSOC)):; ?> 
+          <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
+              <div class="btn-group" role="group">
+                  <button type="submit" action = "Submit.php" class="btn btn-secondary"><?php echo $form["title"]; ?></button>
+              </div>
+          </form>
+         <?php endwhile;?>
         </div>
-
-        <div class = "container">
-          <table class="table table-bordered">
-            <tbody>
-              <?php
-              #displays questions and sections, if statement prints sections
-              $count = 1;
-              for ($secNum=1; $secNum < mysqli_num_rows($sections); $secNum++) {
-                $sql = "SELECT q.question, q.id, hsq.id
-                from questions q
-                join hasSectionQuestions hsq on q.id = hsq.question_id
-                where hsq.section_id = ". $secNum ." and hsq.form_id = ". $formID;
-                $questions = mysqli_query($connection, $sql);
-                while ($quest = mysqli_fetch_array($questions)) {
-                    if ($count==1) {
-                        #displays sections
-                            $sec = mysqli_fetch_array($sections); ?>
-
-                        <tr>
-                          <th class="text-center" colspan="3">
-                          <?=htmlspecialchars($sec["title"],ENT_QUOTES,'UTF-8')?>
-                          </th>
-                        </tr>
-
-                <?php
-                    }
-                ?>
-                    <tr>
-                        <th><?=htmlspecialchars($count,ENT_QUOTES,'UTF-8')?></th>
-                        <td><?=htmlspecialchars($quest["question"],ENT_QUOTES,'UTF-8')?></td>
-                        <td><pre>&#9</pre></td>
-                    </tr>
-                  
-                <?php    
-                    $count++;
-                }
-                $count = 1;
-            }
-            
-              ?>
-            </tobdy>
-          </table>
-        </div>
-
-        <!--Submit-->
-        
-          <button type="submit" class="btn1 btn-success">Submit</button>
-        
-        <!--Export to CSV-->
-
+      </div>
+      </section>
+      <img src=Images/Leaves/foilage-left-sidebar.png alt="leaves">
     </main>
 
     <hr>
