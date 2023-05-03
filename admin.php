@@ -42,7 +42,7 @@ echo "<br> <br>";
 
 // TODO: Make this more user friendly. 
 // They may not know that 1=yes and 0=no. Perhaps this could be a check box?
-echo "Create user form <br>";
+echo "<body style='text-align:center;'> Create user form </body>  <br>";
 echo "<form action='admin_createUser.php' method='post'>
         Email: <input type='text' name='email'> <br>
         Password: <input type='password' name='password'> <br>
@@ -52,7 +52,7 @@ echo "<form action='admin_createUser.php' method='post'>
 
 echo "<br> <br>";
 
-echo "Delete user form <br>";
+echo "<body style='text-align:center;'> Delete user form </body> <br>";
 echo "<form action='admin_deleteUser.php' method='post'>
         Email: <input type='text' name='email'> <br>
         <input type='submit'>

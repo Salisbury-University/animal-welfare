@@ -1,31 +1,28 @@
 <?php
 include "Includes/DatabaseConnection.php";
 
+    // Function used to sanitize inputs
 function validateData($data){
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
-
+    // Get the form data
 $submittedEmail = $_POST['submittedEmail'];
 $submittedPassword = $_POST['submittedPassword'];
 
+    // Sanitize the input data
 $loginEmail = validateData($submittedEmail);
 $loginPassword = validateData($submittedPassword);
 
-echo "Incorrect Password<br><br>";
-echo "Details provided for debugging purposes:<br>";
-echo "Login Email: $loginEmail <br>";
-echo "Login Password: $loginPassword <br>";
-
-//$sql = "select * from useraccounts where username='$loginUsername' AND password_hash='$loginPassword';";
-$sql = "select * from users where email='$loginEmail' AND pass='$loginPassword';";
+    // Query the database, get results and format them so we can easily access it.
+$sql = "select * from users where email='$loginEmail';";
 $result = mysqli_query($connection, $sql);
-
 $row = mysqli_fetch_assoc($result);
 
-if($row['email'] === $loginEmail && $row['pass'] === $loginPassword){
+    // Verify the password
+if(password_verify($loginPassword, $row['pass']) == true){
     echo "Logged in!";
     $_SESSION['email'] = $row['email'];
     $_SESSION['administrator'] = $row['administrator'];
