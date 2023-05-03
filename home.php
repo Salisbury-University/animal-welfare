@@ -57,7 +57,7 @@ include "Includes/preventUnauthorizedUse.php";
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Search</a>
+            <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
 
           <!--Dropdown menu-->

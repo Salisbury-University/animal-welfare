@@ -98,7 +98,7 @@ $forms = mysqli_query($connection, $sql);
          <?php while ($form = mysqli_fetch_array($forms,MYSQLI_ASSOC)):; ?> 
           <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
               <div class="btn-group" role="group">
-                  <button type="submit" class="btn btn-secondary"><?php echo $form["title"]; ?></button>
+                  <button type="submit" action = "Submit.php" class="btn btn-secondary"><?php echo $form["title"]; ?></button>
               </div>
           </form>
          <?php endwhile;?>
