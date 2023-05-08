@@ -6,6 +6,7 @@
 
 .col-md-4 {
     background-image: url("../Images/ChileanFlamingo.jpg");
+    background-size: cover;
     height:100vh;
     border-right:solid 10px black;
     max-width:30%;
