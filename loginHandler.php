@@ -29,3 +29,7 @@ if(password_verify($loginPassword, $row['pass']) == true){
     header("Location: home.php"); 
     exit();
 }
+
+$_SESSION['loginError'] = "Incorrect Password";
+header("Location: index.php");
+
