@@ -1,21 +1,32 @@
-.flamingoImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0; margin: 0;
-    height: 100%;
-    border: none;
+.col-md-8 {
+    background-image: url("../Images/login-bg.jpg");
+    height:100vh;
+    min-width:70%;
+}
+
+.col-md-4 {
+    background-image: url("../Images/ChileanFlamingo.jpg");
+    background-size: cover;
+    height:100vh;
     border-right:solid 10px black;
-    z-index: 10;
+    max-width:30%;
+    min-width:0%;
+   
+}
+
+.container {
+    min-height: 100%;
 }
 
 .salisburyZooLogoImage {
     position: absolute;
-    left: 50%;
+    left: 27%;
+    top:2%;
 }
 
 .loginForm {
     position: absolute;
-    left: 50%;
-    top: 40%;
+    left: 25%;
+    top:40%;
+
 }

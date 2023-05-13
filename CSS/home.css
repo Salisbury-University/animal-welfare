@@ -1,0 +1,11 @@
+/*First Page Jumbotron*/
+.jumbotron
+{
+    background: url('../Images/entrance.jpg') no-repeat center center; 
+    background-size: cover;
+    min-height: 500px;
+    margin: 0 !important;
+    padding: 100px;
+
+}
+

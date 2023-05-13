@@ -17,7 +17,6 @@ include "Includes/preventUnauthorizedUse.php";
     <!-- Custom styles for this template -->
     <link href="CSS/main.css" rel="stylesheet">
     <link href="CSS/home.css" rel="stylesheet">
-    <link href="CSS/search.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
@@ -43,12 +42,12 @@ include "Includes/preventUnauthorizedUse.php";
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Home</a>
+            <a class="nav-link my-text-info" href="home.php">Home</a>
           </li>
 
           <!--Welfare Forms-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Welfare Forms</a>
+            <a class="nav-link my-text-info" href="welfare.php">Welfare Forms</a>
           </li>
 
           <!--Diet Tracker-->
@@ -58,7 +57,7 @@ include "Includes/preventUnauthorizedUse.php";
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Search</a>
+            <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
 
           <!--Dropdown menu-->
@@ -67,9 +66,8 @@ include "Includes/preventUnauthorizedUse.php";
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>
@@ -80,65 +78,10 @@ include "Includes/preventUnauthorizedUse.php";
     <hr>
     <!--End Navigation Bar-->
 
+
     <!--Only edit main-->
     <main><!-- Main jumbotron for a primary marketing message or call to action -->
-  <sidebar>
-    <div class="actions">
-      <p> Quick Animal Actions </p>
-      <form>
-        <input type="submit" formaction="addanimal.php" value="Add" style="margin-bottom: 20px; width: 100px; height: 40px;">
-        <input type="submit" formaction="" value="Update" style="margin-bottom: 20px; width: 100px; height: 40px;">
-        <input type="submit" formaction="" value="Delete" style="width: 100px; height: 40px;">
-        
-      </form>  
-    </div>
-</sidebar>
-  <article>
-    <div class="content">
-    <div>
-      <form method="POST">
-        <div class="search-container">
-          <input type="text" placeholder="Enter a keyword..." name="search" />
-          <input type="submit" value="Search" />
-        </div>
-      </form>
-    </div>
-    <div class="box">
-        <!-- This is where the search results will be displayed -->
-        <?php 
-          if(isset($_POST['search'])){
-            $search = $_POST['search'];
-            
-            if($conn = mysqli_connect("localhost:3306","georgef"," ", "zooDB")){
-              echo "<p1>  <p1>";
-            }
-            
-            $query = "SELECT * FROM searchpage WHERE name LIKE '%$search%' OR species LIKE '%$search%' OR animal_type LIKE '%$search%' OR zims LIKE '%$search%'"; 
-                                                  
-            $r = mysqli_query($conn, $query);
 
-              if($search == '' || $search == ' '){
-                $search = "all";
-              }
-              $count = 0;
-              while($row = mysqli_fetch_array($r)){
-                echo "<div class='search-result-box'>";
-                echo "<h2><a href='animalprofile.php?id=" . $row['zims'] . "'>" . $row['name'] . "</a></h2>";
-                echo "<p><strong>Species:</strong> " . $row['species'] . "</p>";
-                echo "<p><strong>Animal Type:</strong> " . $row['animal_type'] . "</p>";
-                echo "<p><strong>ZIMS:</strong> " . $row['zims'] . "</p>";
-                echo "</div>";
-                ++$count;
-              }
-              echo "</div>";
-              
-              
-              mysqli_close($conn);
-              
-          }
-        ?>
-      </div>
-        </article>
     </main>
 
     <hr>
