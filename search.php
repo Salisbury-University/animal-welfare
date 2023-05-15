@@ -58,7 +58,7 @@ $forms = mysqli_query($connection, $sql);
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="Forms.php?id=<?php echo $form['id']; ?>">
+                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
                     <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
                   </form>
                 <?php endwhile; ?>

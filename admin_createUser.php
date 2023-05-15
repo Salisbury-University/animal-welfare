@@ -12,6 +12,10 @@ $hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
 $sql="INSERT INTO users(email, pass, administrator) VALUES ('$submittedEmail', '$hashedPassword', $submittedAdminFlag);";
 $result = mysqli_query($connection, $sql);
 
+##Initializes forms variable
+$sql = "SELECT * FROM `forms`;";
+$forms = mysqli_query($connection, $sql);
+
 ?>
 
 <!doctype html>
@@ -58,9 +62,19 @@ $result = mysqli_query($connection, $sql);
           </li>
 
           <!--Welfare Forms-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="welfare.php">Welfare Forms</a>
-          </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Welfare
+              </a>
+      
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
+                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
+                    <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
+                  </form>
+                <?php endwhile; ?>
+              </div>
+            </li>
 
           <!--Diet Tracker-->
           <li class="nav-item">
