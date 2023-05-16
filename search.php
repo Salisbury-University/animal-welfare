@@ -20,7 +20,6 @@ $forms = mysqli_query($connection, $sql);
 
     <!-- Custom styles for this template -->
     <link href="CSS/main.css" rel="stylesheet">
-    <link href="CSS/home.css" rel="stylesheet">
     <link href="CSS/search.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
@@ -47,7 +46,17 @@ $forms = mysqli_query($connection, $sql);
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Home</a>
+            <a class="nav-link my-text-info" href="home.php">Home</a>
+          </li>
+
+          <!--Diet Tracker-->
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Diet Tracker</a>
+          </li>
+
+          <!--Search Page-->
+          <li class="nav-item">
+            <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
 
           <!--Welfare Forms-->
@@ -65,25 +74,14 @@ $forms = mysqli_query($connection, $sql);
               </div>
             </li>
 
-          <!--Diet Tracker-->
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Diet Tracker</a>
-          </li>
-
-          <!--Search Page-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="#">Search</a>
-          </li>
-
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
         </ul>
@@ -96,60 +94,71 @@ $forms = mysqli_query($connection, $sql);
 
     <!--Only edit main-->
     <main>
-    <div class = "container">
+      <div class = "container">
       <div class = "row">
-    
-         <!--Sidebar with Animal Actions-->
-        <div class="col-4">
-          <p class="text-white"> Quick Animal Actions </p>
-            <div class="btn-group-vertical" role="group">
-              <a class="btn btn-success" href="welfare.php" role="button">Add &raquo;</a>
-              <a class="btn btn-success" href="welfare.php" role="button">Update &raquo;</a>
-              <a class="btn btn-success" href="welfare.php" role="button">Delete &raquo;</a>
-            </div>
-        </div>
-        <!--End Sidebar-->
 
-        <div class="col-8">
-           <!--Main Search Box-->
-           <div class="content">
-            <div>
-              <form method="POST">
-                <div class="search-container">
-                  <input type="text" placeholder="Enter a keyword..." name="search" />
-                  <input type="submit" value="Search" />
-                </div>
+
+      <!--Main Search Box--> 
+          <div class = "col">
+
+            <p class="text-white"> Search: </p>
+              <form class="form-inline mr-auto" method = "POST">
+                <input class="form-control" type="text" placeholder="Enter a keyword..." name="search">
+                <button class="btn btn-success btn-sm my-0 ml-sm-2" type="submit">Search</button>
               </form>
-            </div>
+            
+           </div>
+       <!--End Search--> 
+
+       <p>&nbsp</p> <!--Space between col-->
+          
+         <!--Animal Actions-->
+          <div class="col">
+            <p class="text-white"> Quick Animal Actions </p>
+                <a class="btn btn-success" href="welfare.php" role="button">Add &raquo;</a>
+                <a class="btn btn-success" href="welfare.php" role="button">Update &raquo;</a>
+                <a class="btn btn-success" href="welfare.php" role="button">Delete &raquo;</a>
           </div>
+        
+
+
+          </div> <!--Close Row-->
+        </div> <!--Close Container-->
 
           <!--Result Box-->
+          <div class = "my-container">
             <div class="box">
             <!-- This is where the search results will be displayed -->
             <?php 
               if(isset($_POST['search'])){
                 $search = $_POST['search'];
+                    
+                $query = "SELECT * FROM `animals` WHERE name LIKE '%$search%' OR `species_id` LIKE '%$search%' OR `section` LIKE '%$search%' OR `id` LIKE '%$search%'"; 
+                            
+                $r = mysqli_query($connection, $query);
                 
-                if($conn = mysqli_connect("localhost:3306","rachelp","XW1b17ltQJN4EQ2d", "zooDB")){
-                  echo "<p1>  <p1>";
+                if ($check = mysqli_fetch_array($r) == NULL) { //If no results
+                  echo '<p>&nbsp</p>';
+                  echo '<h1 class="text-white">No results for "' . $search . '"</h1>';
+                  echo '<p>&nbsp</p>';
+                  
                 }
-                
-                $query = "SELECT * FROM searchpage WHERE name LIKE '%$search%' OR species LIKE '%$search%' OR animal_type LIKE '%$search%' OR zims LIKE '%$search%'"; 
-                                                      
-                $r = mysqli_query($conn, $query);
+                $r = mysqli_query($connection, $query);
+
 
                   if($search == '' || $search == ' '){
                     $search = "all";
                   }
-                  $count = 0;
+                 
+
                   while($row = mysqli_fetch_array($r)){
                     echo "<div class='search-result-box'>";
-                    echo "<h2><a href='animalprofile.php?id=" . $row['zims'] . "'>" . $row['name'] . "</a></h2>";
-                    echo "<p><strong>Species:</strong> " . $row['species'] . "</p>";
-                    echo "<p><strong>Animal Type:</strong> " . $row['animal_type'] . "</p>";
-                    echo "<p><strong>ZIMS:</strong> " . $row['zims'] . "</p>";
+                    echo "<h2><a href='animalprofile.php?id=" . $row['id'] . "'>" . $row['id'] . "</a></h2>";
+                    echo "<p><strong>House Name:</strong> " . $row['name'] . "</p>";
+                    echo "<p><strong>Species:</strong> " . $row['species_id'] . "</p>";
+                    echo "<p><strong>Location:</strong> " . $row['section'] . "</p>";
                     echo "</div>";
-                    ++$count;
+                  
                   }
                   echo "</div>";
                   
@@ -157,12 +166,20 @@ $forms = mysqli_query($connection, $sql);
                   mysqli_close($conn);
                   
               }
+
+              else {
+                echo '<p>&nbsp</p>';
+                echo '<p>&nbsp</p>';
+                echo '<p>&nbsp</p>';
+              }
             ?>
           </div>
+          </div> <!--Close Box-->
+          
        
 
-    </div>
-    </div>
+      </div> <!--Close Jumbotron-->
+    
     </main>
 
     <hr>

@@ -1,7 +1,7 @@
 <?php
 
 function checkIsAdmin(){
-    if($_SESSION['administrator'] == 1){
+    if($_SESSION[administrator] == 1){
         return true;
     }
     return false;
