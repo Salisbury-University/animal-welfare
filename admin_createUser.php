@@ -2,7 +2,7 @@
 include "Includes/preventUnauthorizedUse.php";
 
 
-//TODO: Check if currently logged in user has the admin flag (To prevent unprivileged users from using it)
+/*//TODO: Check if currently logged in user has the admin flag (To prevent unprivileged users from using it)
 $submittedEmail = $_POST['email'];
 $submittedPassword = $_POST['password'];
 $submittedAdminFlag = $_POST['admin'];
@@ -10,7 +10,7 @@ $submittedAdminFlag = $_POST['admin'];
 $hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
 
 $sql="INSERT INTO users(email, pass, administrator) VALUES ('$submittedEmail', '$hashedPassword', $submittedAdminFlag);";
-$result = mysqli_query($connection, $sql);
+$result = mysqli_query($connection, $sql);*/
 
 ?>
 

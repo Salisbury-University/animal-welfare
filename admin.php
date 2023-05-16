@@ -1,5 +1,11 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
+    //Redirect to the homepage if theyre not an admin.
+$isAdmin = checkIsAdmin();
+if($isAdmin == false){
+  header('Location: home.php');
+}
+
 ?>
 
 <!doctype html>
@@ -83,11 +89,6 @@ include "Includes/preventUnauthorizedUse.php";
     <main><!-- Main jumbotron for a primary marketing message or call to action -->
     <?php
 
-    //Redirect to the homepage if theyre not an admin.
-      $isAdmin = checkIsAdmin();
-      if($isAdmin == false){
-        header('Location: home.php');
-      }
 
       // Display table of users
       $sql = "SELECT email, pass, administrator FROM `users`";
@@ -113,7 +114,11 @@ include "Includes/preventUnauthorizedUse.php";
                 <td><?=htmlspecialchars($row['email'],ENT_QUOTES,'UTF-8')?></td>
                 <td><?=htmlspecialchars($row['pass'],ENT_QUOTES,'UTF-8')?></td>
                 <td><?=htmlspecialchars($row['administrator'],ENT_QUOTES,'UTF-8')?></td>
-                <td><button type="button" class="btn btn-dark">Modify</button></td>
+                <td>
+                  <form action = "admin_modifyUser.php" method = "post">
+                    <input type = "hidden" name = "email" value = "<?=$row['email']?>">
+                    <button type="submit" class="btn btn-dark">Modify</button></td>
+                  </form>
                 <td>
                   <form action = "Admin/deleteUser.php" method = "post">
                     <input type = "hidden" name = "email" value = "<?=$row['email']?>">
