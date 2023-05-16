@@ -33,7 +33,8 @@
         <form class="loginForm" action="loginHandler.php" method="post">
                 <input type="text" placeholder="Email" name="submittedEmail"/>
                 <input type="password" placeholder="Password" name="submittedPassword"/>
-                <input type="submit" value="Log in"/>
+                <input type="submit" value="Log in"/> <br>
+                <?php include "loginError.php"; ?>
         </form>
         </div>
     </div>
