@@ -49,16 +49,6 @@ $forms = mysqli_query($connection, $sql);
             <a class="nav-link my-text-info" href="../home.php">Home</a>
           </li>
 
-          <!--Diet Tracker-->
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Diet Tracker</a>
-          </li>
-
-          <!--Search Page-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="../search.php">Search</a>
-          </li>
-
           <!--Welfare Forms-->
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,6 +63,16 @@ $forms = mysqli_query($connection, $sql);
                 <?php endwhile; ?>
               </div>
             </li>
+
+          <!--Diet Tracker-->
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Diet Tracker</a>
+          </li>
+
+          <!--Search Page-->
+          <li class="nav-item">
+            <a class="nav-link my-text-info" href="../search.php">Search</a>
+          </li>
 
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
@@ -110,18 +110,7 @@ $forms = mysqli_query($connection, $sql);
             <form method="POST" action="../welfare.php">
                 <input type="submit" value="Back" />
             </form>
-
-          <!--Display Active Form Name-->
-          <?php
-            $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
-            $title = mysqli_query($connection, $sql);
-            $title = mysqli_fetch_array($title);
-            echo "<h2>" . $title['title'] . "</h2>";
-          ?>
-          <!--End Display-->
         </div>
-        <!--End Back Button Div-->
-
 
         <div class="container">
             <table class="table table-bordered" id="myTable">
@@ -153,7 +142,7 @@ $forms = mysqli_query($connection, $sql);
                                 <td contenteditable="true" class='input'><?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td >
                                     <input data-id='<?php echo $quest[1] ?>' type='button' class="update" value="Update">
-                                    <input data-id='<?php echo $quest[1] ?>' type='button' class="delete" value="Delete">
+                                    
                                 </td>
                             </tr>
 
