@@ -1,6 +1,6 @@
 <!--Start PHP-->
 <?php
-       include "preventUnauthorizedUse.php";
+       include "../Includes/preventUnauthorizedUse.php";
         
         $submittedEmail = $_POST['email'];
         $submittedPassword = $_POST['password'];
