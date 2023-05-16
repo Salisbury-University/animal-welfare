@@ -21,13 +21,15 @@ $sql = "select * from users where email='$loginEmail';";
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 
-    // Verify the password
-if(password_verify($loginPassword, $row['pass']) == true){
-    echo "Logged in!";
-    $_SESSION['email'] = $row['email'];
-    $_SESSION['administrator'] = $row['administrator'];
-    header("Location: home.php"); 
-    exit();
+if($row != NULL){
+        // Verify the password
+    if(password_verify($loginPassword, $row['pass']) == true){
+        echo "Logged in!";
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['administrator'] = $row['administrator'];
+        header("Location: home.php"); 
+        exit();
+    }
 }
 
 $_SESSION['loginError'] = "Incorrect Password";
