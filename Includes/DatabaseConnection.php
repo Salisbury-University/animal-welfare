@@ -4,7 +4,8 @@ $dbusername = "restricted_user";
 $dbpassword = "j60oPoObT3PSnEvZ";
 $dbName = "zooDB";
 
-session_start();
+if(session_status() != 2) // If session has not started yet, Start it.
+  session_start();
 
 // Create connection
 $connection = mysqli_connect($databaseIP, $dbusername, $dbpassword, $dbName);
