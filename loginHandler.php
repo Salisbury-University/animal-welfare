@@ -34,4 +34,3 @@ if($row != NULL){
 
 $_SESSION['loginError'] = "Incorrect Password";
 header("Location: index.php");
-
