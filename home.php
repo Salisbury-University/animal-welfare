@@ -58,11 +58,16 @@ $forms = mysqli_query($connection, $sql);
           <li class="nav-item">
             <a class="nav-link my-text-info" href="search.php">Search</a>
           </li>
-
-          <!--Welfare Forms-->
-          <li class="nav-item dropdown">
+          
+          <!--Start Admin Only-->
+          <?php
+            $isAdmin = checkIsAdmin();
+            if($isAdmin == true){ ?>
+          
+                    <!--Welfare Forms-->
+                    <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Welfare
+                Edit Forms
               </a>
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -74,6 +79,7 @@ $forms = mysqli_query($connection, $sql);
               </div>
             </li>
           
+
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,6 +90,8 @@ $forms = mysqli_query($connection, $sql);
               <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
+
+          <?php } ?> <!--End admin only-->
         </ul>
         <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
       
@@ -98,8 +106,8 @@ $forms = mysqli_query($connection, $sql);
       <div class="jumbotron">
         <div class="container">
           <h1 class="display-3 font-weight-bold text-white"><strong>Welcome!</h1>
-          <p class = "font-weight-bold text-white">Submit a Welfare-Form Here:</p>
-          <p><a class="btn btn-success btn-lg" href="welfare.php" role="button">Welfare-Form &raquo;</a></p>
+          <p class = "font-weight-bold text-white">Submit a Welfare-Form by Animal Here:</p>
+          <p><a class="btn btn-success btn-lg" href="search.php" role="button">Welfare-Form &raquo;</a></p>
         </div>
       </div>
     </main>
@@ -138,7 +146,7 @@ $forms = mysqli_query($connection, $sql);
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="#">coming soon</a></li>
+                        <li><a href="help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>
