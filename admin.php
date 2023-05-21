@@ -69,7 +69,7 @@ $forms = mysqli_query($connection, $sql);
           <!--Welfare Forms-->
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Welfare
+                Edit Forms
               </a>
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -184,7 +184,7 @@ $forms = mysqli_query($connection, $sql);
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="#">coming soon</a></li>
+                        <li><a href="help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>

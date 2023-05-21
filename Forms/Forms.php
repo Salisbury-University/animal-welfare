@@ -59,20 +59,26 @@ $forms = mysqli_query($connection, $sql);
             <a class="nav-link my-text-info" href="../search.php">Search</a>
           </li>
 
-          <!--Welfare Forms-->
-          <li class="nav-item dropdown">
+          <!--Start Admin Only-->
+          <?php
+            $isAdmin = checkIsAdmin();
+            if($isAdmin == true){ ?>
+          
+            <!--Welfare Forms-->
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Welfare
+                Edit Forms
               </a>
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="Forms.php?id=<?php echo $form['id']; ?>">
+                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
                     <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
                   </form>
                 <?php endwhile; ?>
               </div>
             </li>
+          
 
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
@@ -84,6 +90,8 @@ $forms = mysqli_query($connection, $sql);
               <a class="dropdown-item" href="../admin_createUser.php">Create User</a>
             </div>
           </li>
+
+          <?php } ?> <!--End admin only-->
         </ul>
         <a class="btn btn-success my-2 my-sm-0 float-left" href="../logoutHandler.php" role="button">Logout</a>
       
@@ -107,7 +115,7 @@ $forms = mysqli_query($connection, $sql);
 
         <!--Back button-->
         <div class="back">
-            <form method="POST" action="../welfare.php">
+            <form method="POST" action="../home.php">
                 <input type="submit" value="Back" />
             </form>
 
@@ -116,7 +124,7 @@ $forms = mysqli_query($connection, $sql);
             $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
             $title = mysqli_query($connection, $sql);
             $title = mysqli_fetch_array($title);
-            echo "<h2>" . $title['title'] . "</h2>";
+            echo "<h2 class = 'text-center'> Editing: " . $title['title'] . "</h2>";
           ?>
           <!--End Display-->
         </div>
@@ -166,13 +174,6 @@ $forms = mysqli_query($connection, $sql);
                     </tbody>
             </table>
         </div>
-
-        <!--Submit-->
-        <!-- This button will not set any data and return the user to the previous page -->
-        <button type="submit" class="btn1 btn-success">Submit</button>
-
-        <!--Export to CSV-->
-
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script>
@@ -230,7 +231,7 @@ $forms = mysqli_query($connection, $sql);
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="#">coming soon</a></li>
+                        <li><a href="../help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>
