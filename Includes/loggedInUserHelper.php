@@ -8,10 +8,10 @@ function checkIsAdmin(){
 }
 
 function checkIsLoggedIn(){
-    if(isset($_SESSION['email']) == false){
-        return false;
+    if(isset($_SESSION['email']) == true){
+        return true;
     }
-    return true;
+    return false;
 }
 
 ?>
