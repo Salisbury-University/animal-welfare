@@ -57,12 +57,17 @@ $forms = mysqli_query($connection, $sql);
           <!--Search Page-->
           <li class="nav-item">
             <a class="nav-link my-text-info" href="search.php">Search</a>
-          </li>
+    </li>
 
-          <!--Welfare Forms-->
-          <li class="nav-item dropdown">
+          <!--Start Admin Only-->
+          <?php
+            $isAdmin = checkIsAdmin();
+            if($isAdmin == true){ ?>
+          
+                    <!--Welfare Forms-->
+                    <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Welfare
+                Edit Forms
               </a>
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -73,6 +78,7 @@ $forms = mysqli_query($connection, $sql);
                 <?php endwhile; ?>
               </div>
             </li>
+          
 
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
@@ -84,6 +90,8 @@ $forms = mysqli_query($connection, $sql);
               <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
+
+          <?php } ?> <!--End admin only-->
         </ul>
         <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
       
@@ -138,10 +146,7 @@ $forms = mysqli_query($connection, $sql);
                 $r = mysqli_query($connection, $query);
                 
                 if ($check = mysqli_fetch_array($r) == NULL) { //If no results
-                  echo '<p>&nbsp</p>';
                   echo '<h1 class="text-white">No results for "' . $search . '"</h1>';
-                  echo '<p>&nbsp</p>';
-                  
                 }
                 $r = mysqli_query($connection, $query);
 
@@ -216,7 +221,7 @@ $forms = mysqli_query($connection, $sql);
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="#">coming soon</a></li>
+                        <li><a href="help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>

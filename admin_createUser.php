@@ -1,16 +1,10 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
 
-
-/*//TODO: Check if currently logged in user has the admin flag (To prevent unprivileged users from using it)
-$submittedEmail = $_POST['email'];
-$submittedPassword = $_POST['password'];
-$submittedAdminFlag = $_POST['admin'];
-
-$hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
-
-$sql="INSERT INTO users(email, pass, administrator) VALUES ('$submittedEmail', '$hashedPassword', $submittedAdminFlag);";
-$result = mysqli_query($connection, $sql);*/
+$isAdmin = checkIsAdmin();
+if($isAdmin == false){
+    header('Location: home.php');
+}
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
@@ -61,10 +55,20 @@ $forms = mysqli_query($connection, $sql);
             <a class="nav-link my-text-info" href="home.php">Home</a>
           </li>
 
+          <!--Diet Tracker-->
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Diet Tracker</a>
+          </li>
+
+          <!--Search Page-->
+          <li class="nav-item">
+            <a class="nav-link my-text-info" href="search.php">Search</a>
+          </li>
+
           <!--Welfare Forms-->
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Welfare
+                Edit Forms
               </a>
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -76,23 +80,13 @@ $forms = mysqli_query($connection, $sql);
               </div>
             </li>
 
-          <!--Diet Tracker-->
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Diet Tracker</a>
-          </li>
-
-          <!--Search Page-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="search.php">Search</a>
-          </li>
-
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin.php">Manage admin</a>
               <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
@@ -175,7 +169,7 @@ $forms = mysqli_query($connection, $sql);
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="#">coming soon</a></li>
+                        <li><a href="help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>
