@@ -1,11 +1,3 @@
-<?php
-include "Includes/preventUnauthorizedUse.php";
-
-##Initializes forms variable
-$sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
-?>
-
 <!doctype html>
 
 <html lang="en">
@@ -20,7 +12,7 @@ $forms = mysqli_query($connection, $sql);
 
     <!-- Custom styles for this template -->
     <link href="CSS/main.css" rel="stylesheet">
-    <link href="CSS/search.css" rel="stylesheet">
+    <link href="CSS/admin.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
@@ -57,15 +49,10 @@ $forms = mysqli_query($connection, $sql);
           <!--Search Page-->
           <li class="nav-item">
             <a class="nav-link my-text-info" href="search.php">Search</a>
-    </li>
+          </li>
 
-          <!--Start Admin Only-->
-          <?php
-            $isAdmin = checkIsAdmin();
-            if($isAdmin == true){ ?>
-          
-                    <!--Welfare Forms-->
-                    <li class="nav-item dropdown">
+          <!--Welfare Forms-->
+          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Edit Forms
               </a>
@@ -78,7 +65,6 @@ $forms = mysqli_query($connection, $sql);
                 <?php endwhile; ?>
               </div>
             </li>
-          
 
           <!--Dropdown menu-->
           <li class="nav-item dropdown">
@@ -86,12 +72,10 @@ $forms = mysqli_query($connection, $sql);
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="admin.php">Manage admin</a>
+              <a class="dropdown-item" href="admin.php">Manage admin</a>
               <a class="dropdown-item" href="admin_createUser.php">Create User</a>
             </div>
           </li>
-
-          <?php } ?> <!--End admin only-->
         </ul>
         <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
       
@@ -100,100 +84,44 @@ $forms = mysqli_query($connection, $sql);
     <hr>
     <!--End Navigation Bar-->
 
+
     <!--Only edit main-->
     <main>
-      <div class = "container">
-      <div class = "row">
-
-
-      <!--Main Search Box--> 
-          <div class = "col">
-
-            <p class="text-white"> Search: </p>
-              <form class="form-inline mr-auto" method = "POST">
-                <input class="form-control" type="text" placeholder="Enter a keyword..." name="search">
-                <button class="btn btn-success btn-sm my-0 ml-sm-2" type="submit">Search</button>
-              </form>
-            
-           </div>
-       <!--End Search--> 
-
-       <p>&nbsp</p> <!--Space between col-->
-          
-         <!--Animal Actions-->
-          <div class="col">
-            <p class="text-white"> Quick Animal Actions </p>
-                <a class="btn btn-success" href="createAnimal.php" role="button">Add &raquo;</a>
-
-          </div>
+      <?php
+        include "Includes/DatabaseConnection.php"; // Start session
+        include "Includes/preventUnauthorizedUse.php";
+      //Redirect to the homepage if theyre not an admin
+        $isAdmin = checkIsAdmin();
+        if($isAdmin == false){
+          header('Location: home.php');
+        }
+      ?>
+      
+        <!--Start HTML-->
+    <div class = "my-container" style="border:5px solid #000000;"">
+        <h1>Modify User </h1>
+  
+        <form action='Admin/modifyUser.php' method='post'>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type='text' class="form-control" name='email' placeholder=<?php echo $_POST['email']; ?> readonly>
+                <input type='hidden' value='<?php echo $_POST['email']; ?>' name='email'>
+              </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" name='password' placeholder="Enter Password">
+            </div>
+            <div class="form-group">
+                <label for="admin">Admin</label>
+                <input type="text" class="form-control" name='admin' placeholder="Enter 1 For Admin, 0 For User">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+        <!--End HTML-->
+      
         
 
-
-          </div> <!--Close Row-->
-        </div> <!--Close Container-->
-
-          <!--Result Box-->
-          <div class = "my-container">
-            <div class="box">
-            <!-- This is where the search results will be displayed -->
-            <?php 
-              if(isset($_POST['search'])){
-                $search = $_POST['search'];
-                    
-                $query = "SELECT * FROM `animals` WHERE name LIKE '%$search%' OR `species_id` LIKE '%$search%' OR `section` LIKE '%$search%' OR `id` LIKE '%$search%'"; 
-                            
-                $r = mysqli_query($connection, $query);
-                
-                if ($check = mysqli_fetch_array($r) == NULL) { //If no results
-                  echo '<h1 class="text-white">No results for "' . $search . '"</h1>';
-                }
-                $r = mysqli_query($connection, $query);
-
-
-                  if($search == '' || $search == ' '){
-                    $search = "all";
-                  }
-                 
-
-                  while($row = mysqli_fetch_array($r)){ //Individual animals
-                    echo "<div class='search-result-box'>";
-                    echo "<h2><a href='animalprofile.php?id=" . $row['id'] . "'>" . $row['id'] . "</a></h2>";
-                    echo "<p><strong>House Name:</strong> " . $row['name'] . "</p>";
-                    echo "<p><strong>Species:</strong> " . $row['species_id'] . "</p>";
-                    echo "<p><strong>Location:</strong> " . $row['section'] . "</p>";
-                    
-                    ?>
-
-                    <div class = 'col'>
-                    <a class='btn btn-success' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
-                    <a class='btn btn-success' href='welfare.php' role='button'>Update &raquo;</a>
-                    <a class='btn btn-success' href='welfare.php' role='button'>Delete &raquo;</a>
-                    </div>
-                    
-                    <?php
-                    echo "</div>";
-                  
-                  }
-                  echo "</div>";
-                  
-                  
-                  mysqli_close($conn);
-                  
-              }
-
-              else {
-                echo '<p>&nbsp</p>';
-                echo '<p>&nbsp</p>';
-                echo '<p>&nbsp</p>';
-              }
-            ?>
-          </div>
-          </div> <!--Close Box-->
-          
-       
-
-      </div> <!--Close Jumbotron-->
-    
     </main>
 
     <hr>
