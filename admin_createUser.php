@@ -108,7 +108,7 @@ $forms = mysqli_query($connection, $sql);
           header('Location: home.php');
         }
       ?>
-      
+
         <!--Start HTML-->
     <div class = "my-container" style="border:5px solid #000000;"">
         <h1>Create User Form: </h1>

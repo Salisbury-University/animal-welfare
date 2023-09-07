@@ -165,9 +165,11 @@ $forms = mysqli_query($connection, $sql);
                     ?>
 
                     <div class = 'col'>
-                    <a class='btn btn-success' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
+                    <a class='btn btn-primary' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
                     <a class='btn btn-success' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                     <a class='btn btn-danger' href ="AnimalAction/delete.php?id=<?php echo $row['id'];?>" role='button'>Delete &raquo;</a>
+  
+ 
                     </div>
                     
                     <?php

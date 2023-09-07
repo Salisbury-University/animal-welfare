@@ -1,7 +1,7 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
 
-##Initializes forms variable
+##Initializes forms variable for header
 $sql = "SELECT * FROM `forms`;";
 $forms = mysqli_query($connection, $sql);
 

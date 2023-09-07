@@ -1,15 +1,7 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
-
-$isAdmin = checkIsAdmin();
-if($isAdmin == false){
-    header('Location: home.php');
-}
-
-##Initializes forms variable
+##Initializes forms variable for header
 $sql = "SELECT * FROM `forms`;";
 $forms = mysqli_query($connection, $sql);
-
 ?>
 
 <!doctype html>
@@ -30,6 +22,7 @@ $forms = mysqli_query($connection, $sql);
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
 
   </head>
 
@@ -100,40 +93,124 @@ $forms = mysqli_query($connection, $sql);
 
 
     <!--Only edit main-->
-    <main>      
-    <!--Start HTML-->
-    <div class = "my-container" style="border:5px solid #000000;"">
-        <h1>Create Animal Form: </h1>
+    <main>
+      <?php
+        include "Includes/DatabaseConnection.php"; // Start session
+        include "Includes/preventUnauthorizedUse.php";
+
+        //Get ID:
+        $zims= $_GET['id'];
+        $sql = 'SELECT * FROM `animals` WHERE `id` = ' . $zims;
+        $q = mysqli_query($connection, $sql);
+        $animal = mysqli_fetch_array($q);
+
+        $sql = 'SELECT DISTINCT `section` FROM `animals` ORDER BY `section` ASC';
+        $q = mysqli_query($connection, $sql);
+
   
+      ?>
+      
+        <!--Start HTML-->
+    <div class = "my-container" style="border:5px solid #000000;"">
+        <h1>Create Animal Form:</h1>
+        <!--Start form-->       
         <form action='AnimalAction/add.php' method='post'>
+            <!--Enter ID--> 
             <div class="form-group">
                 <label for="id">ID:</label>
-                <input type='text' class="form-control" name='id' placeholder="Enter ZIM ID????">
+                <input type='text' class="form-control" name='id' placeholder='Enter ID'>
             </div>
+            <!----> 
+
+            <!--Select Location--> 
             <div class="form-group">
                 <label for="location">Location:</label>
-                <input type="text" class="form-control" name='location' placeholder="Enter Location">
+                <br>
+                
+                <?php 
+                  while($sections = mysqli_fetch_array($q)) { 
+                ?>
+      
+                   
+                <div class="row">
+                  <div class="col">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="location" id="location">
+                    <label class="form-check-label" for="location"> <?php echo $sections['section']; ?></label>
+                  </div>
+
+                  <?php if($sections = mysqli_fetch_array($q)) { ?>
+                  </div>
+                  <div class="col">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="location" id="location">
+                      <label class="form-check-label" for="location"> <?php echo $sections['section']; ?></label>
+                    </div>
+                  </div>
+
+                  <?php  } if($sections = mysqli_fetch_array($q)) { ?>
+        
+                  <div class="col">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="location" id="location">
+                      <label class="form-check-label" for="location"> <?php echo $sections['section']; ?></label>
+                    </div>
+                  </div>
+                  <?php } 
+                  else {
+                  ?>  
+                  <div class="col">
+                    
+                  </div>
+                  <?php  }?>
+
+                </div>
+              
+
+
+                <?php } ?>
             </div>
+            <!----> 
+
+            <!--Sex Dropdown--> 
             <div class="form-group">
-                <label for="sex">Select Sex</label>
-                <input type="text" class="form-control" name='sex' placeholder="Dropdown">
+              <label for="sex">Select Sex:</label>
+              <select class="form-control">
+              <option value ="">Select..</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>      
             </div>
+            <!----> 
+
+            <!--Select Birthdate--> 
             <div class="form-group">
-                <label for="bd">Birthdate</label>
+                <label for="bd">Birthdate:</label>
                 <input type="text" class="form-control" name='bd' placeholder="Year-Month-Day">
             </div>
+            <!----> 
+
+            <!--Select Species--> 
             <div class="form-group">
-                <label for="species">Species</label>
-                <input type="text" class="form-control" name='species' placeholder="Dropdown">
+                <label for="ad">Species:</label>
+                <input type="text" class="form-control" name='ad' placeholder="Enter Species">
             </div>
+            <!----> 
+
+            <!--Select Acquisition Date--> 
             <div class="form-group">
-                <label for="ad">Acquisition Date</label>
-                <input type="text" class="form-control" name='ad' placeholder="Year-Month-Day">
+              <label for="bd">Acquisition Date:</label>
+              <input type="text" class="form-control" name='ad' placeholder="Year-Month-Day">
             </div>
+            <!----> 
+
+            <!--Enter Name--> 
             <div class="form-group">
-                <label for="name">House Name</label>
+                <label for="name">House Name:</label>
                 <input type="text" class="form-control" name='name' placeholder="Enter Name">
             </div>
+            <!----> 
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         </div>
