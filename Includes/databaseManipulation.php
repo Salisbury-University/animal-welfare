@@ -14,6 +14,12 @@ class databaseManipulation{
         $dbusername = "restricted_user";
         $dbpassword = "j60oPoObT3PSnEvZ";
         $dbName = "zooDB";
+
+        /*$databaseIP = "localhost";
+        $dbusername = "restricted_user";
+        $dbpassword = "j60oPoObT3PSnEvZ";
+        $dbName = "testdb";*/
+
         $debug = 1;
         
         if($debug == 1){
@@ -55,6 +61,9 @@ class databaseManipulation{
 
                 // Execute them
             $statement->execute();
+
+                // Return result
+            return $statement->get_result();
 
         } catch(Exception $e){
             echo 'runParameterizedQuery - Caught exception : ', $e->getMessage(), "\n";
