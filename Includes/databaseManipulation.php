@@ -71,7 +71,7 @@ class databaseManipulation{
     }
 
     /*
-    DO NOT USE IF THE QUERY YOU RUN INVOLVES USER INPUT.
+    DO NOT USE IF THE QUERY YOU RUN INVOLVES USER INPUT TEXT.
     Returns the result of the mysqli_query function call.
     */
     public function runQuery_UNSAFE($query){
