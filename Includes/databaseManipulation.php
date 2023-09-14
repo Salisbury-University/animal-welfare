@@ -8,17 +8,16 @@ class databaseManipulation{
     // https://www.php.net/manual/en/pdo.prepared-statements.php
 
     private $internaldbConnection;
+    private $databaseIP;
+    private $dbUsername;
+    private $dbPassword;
+    private $dbName;
 
     public function __construct(){
-        $databaseIP = "localhost";
-        $dbusername = "restricted_user";
-        $dbpassword = "j60oPoObT3PSnEvZ";
-        $dbName = "zooDB";
-
-        /*$databaseIP = "localhost";
-        $dbusername = "restricted_user";
-        $dbpassword = "j60oPoObT3PSnEvZ";
-        $dbName = "testdb";*/
+        $this->databaseIP = "localhost";
+        $this->dbUsername = "restricted_user";
+        $this->dbPassword = "j60oPoObT3PSnEvZ";
+        $this->dbName = "zooDB";
 
         $debug = 1;
         
@@ -32,7 +31,7 @@ class databaseManipulation{
             session_start();
 
         // Create connection
-        $this->internaldbConnection = mysqli_connect($databaseIP, $dbusername, $dbpassword, $dbName);
+        $this->internaldbConnection = mysqli_connect($this->databaseIP, $this->dbUsername, $this->dbPassword, $this->dbName);
 
         // Check connection
         if ($this->internaldbConnection->connect_error) {
@@ -83,6 +82,14 @@ class databaseManipulation{
     */
     public function getDatabaseConnection(){
         return $this->internaldbConnection;
+    }
+
+    /*
+    Returns an array containing all the database connection info if needed.
+    The array is formatted; (DatabaseIP, Username, Password, Database name)
+    */
+    public function getConnectionDetails(){
+        return array($this->databaseIP, $this->dbUsername, $this->dbPassword, $this->dbName);
     }
 }
 ?>
