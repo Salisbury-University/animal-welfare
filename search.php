@@ -136,7 +136,7 @@ $forms = mysqli_query($connection, $sql);
         <div class="col-md-9 col-md-pull-3">
 
             <!--Search Box-->
-            <div class = "col">
+            <div class = "search">
                 <h4><span class="fw-semi-bold">Search:</span></h4>
                 <form class="form-inline mr-auto" method = "POST">
                     <input class="form-control" type="text" placeholder="Enter a keyword..." name="search">
