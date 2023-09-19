@@ -1,6 +1,10 @@
 <?php
 include_once("Includes/DatabaseConnection.php");
 include_once("Includes/preventUnauthorizedUse.php");
+
+##Initializes forms variable
+$sql = "SELECT * FROM `forms`;";
+$forms = mysqli_query($connection, $sql);
 ?>
 
 <!doctype html>
