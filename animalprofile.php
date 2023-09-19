@@ -1,8 +1,7 @@
 <?php
-include_once("Includes/DatabaseConnection.php");
-include_once("Includes/preventUnauthorizedUse.php");
+include "Includes/preventUnauthorizedUse.php";
 
-##Initializes forms variable for header
+##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
 $forms = mysqli_query($connection, $sql);
 
@@ -12,7 +11,7 @@ $forms = mysqli_query($connection, $sql);
 //Get ID:
 $zims= $_GET['id'];
 
-  //Change the table 
+  
 $query = 'SELECT * FROM animals WHERE id= ' . $zims; 
 $r = mysqli_query($connection, $query);
 $row = mysqli_fetch_array($r);
@@ -29,6 +28,8 @@ $query = 'SELECT form_id FROM species WHERE id= \'' . $species . '\'';
 $formID = mysqli_query($connection, $query);
 $formID = mysqli_fetch_assoc($formID);
 $formID = $formID['form_id'];
+
+
 
 ?>
 
@@ -50,34 +51,78 @@ $formID = $formID['form_id'];
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
-	<!--For search page-->
+    <style>
+      .scores{
+        height:40%;
+        overflow-y:auto;
+        
+      }
+      .notebox{
+        height: 45%;
+        overflow-y:auto;
+        border:2px solid black;
+      }
+    </style>
+
+	<!--For search page // this function is not in use-->
 	<script> 
-		function searchEntry() {
-		var datestart = prompt("Enter the start date to search from", "Enter date as mm/dd/yyyy");
-		var dateend = prompt("Enter the end date to search from", "Enter date as mm/dd/yyyy")
-		var textInput = document.createElement("searchinput"); //html id
-		textInput.type = "text";
-		document.body.appendChild(textInput);
-		}
 
-		function newEntry(){
-		var popupUrl = "popup.php?id= <?php echo $zims ?>";
-		var popupWidth = 450;
-		var popupHeight = 600;
+    var reload_ = false
 
-		// Open the popup window using JavaScript's window.open() method
-		window.open(popupUrl, "Complete Animal Welfare Form", "width=" + popupWidth + ",height=" + popupHeight);
-		}
+    function getReason(){
+        if(!reload_){
 
-		function deleteEntry(){
-			var entryID = prompt("Enter the 'Entry ID' to delete");
-			confirm("Are you sure?");
-			var textInput = document.createElement("deleteinput");
-			textInput.type = "text";
-			document.body.appendChild(textInput);
-		}
+          var reason = prompt("Please enter the reason for the welfare submission");
+          var confirmed = confirm("Is this correct? '" + reason + "'");
+          
+          
+          if(!confirmed){
+              getReason();
+          }
+          else{
+              document.getElementById('REASON').value = reason;
+              reload_=true;
+          }
+      }
+  }
 
-		</script>
+    function deleteEntry() {
+    var wid = prompt("Enter the 'Entry ID' to delete");
+    
+    if (wid !== null && wid !== "") {
+        var confirmed = confirm("Are you sure you want to delete entry with ID " + wid + "?");
+
+        if (confirmed) {
+            
+            var url = "delete_w_entry.php";
+            var formData = new FormData();
+            //something with getting the zims and wid is not working 
+            //because hard coding these in works successfully
+            formData.append("wid", wid);
+            formData.append("zims", <?php echo $zims; ?>);
+            
+
+            // Send an AJAX request to delete the entry
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        
+                        alert("Entry with ID " + wid + " deleted successfully.");
+                    } else {
+                        
+                        alert("Error deleting entry with ID " + wid);
+                    }
+                }
+            };
+            xhr.send(formData);
+        }
+    }
+}
+
+
+	</script>
   </head>
 
   <body>
@@ -162,14 +207,22 @@ $formID = $formID['form_id'];
 		<div class = "col-4 col1">
 			<form action="search.php">
 				<div class="back">
-					<input type="submit" value="Back">
+					<input type="submit" value="Back" class = "btn btn-info">
 				</div>
 			</form>
 			<br>
+
+      <?php 
+        $sql = "SELECT MAX(dates) AS lastcheckup FROM welfaresubmission";
+        $result = mysqli_query($connection, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $lastcheckup = $row['lastcheckup'];
+      ?>
+
 			<div class="display">
 				<ul class="list-group">
 					<li class="list-group-item"><strong>Name:</strong> <?php echo $name; ?></li>
-					<li class="list-group-item"><strong>ISIS:</strong> <?php echo $zims; ?></li>
+					<li class="list-group-item"><strong>ZIM:</strong> <?php echo $zims; ?></li>
 					<li class="list-group-item"><strong>Section:</strong> <?php echo "$location"; ?></li>
 					<li class="list-group-item"><strong>Species:</strong> <?php echo $species; ?></li>
 					<li class="list-group-item"><strong>Sex: </strong> <?php echo "$sex"; ?></li>
@@ -182,24 +235,52 @@ $formID = $formID['form_id'];
 			<div>&nbsp</div>
 
 			<div class="scores">
-				<div class="box"> <?php /*add an include php file that will calculate the averages and display them*/?>
-					Avg. Overall:<?php echo $avg; ?>Section1 Avg.<?php echo $avg;?> Section2 Avg. <?php echo $avg;?>
-				</div>
-			
-				<div class="notebox"> <?php /* change this to the same way you created the search results */ ?>
-					<a href url= " " >Entry ID - mm/dd/yyyy @ HH:MM:SS</a><br>
-					Reason for checkup - Score - @username <br><br>
+
+				<div class="notebox"> 
+          <?php 
+          
+          $stmt = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental 
+                    FROM welfaresubmission 
+                    WHERE zim = $zims"; 
+          
+
+
+
+          $result = mysqli_query($connection, $stmt);
+          
+          
+          while($row = mysqli_fetch_array($result)){
+            
+            $average = 0;
+            $precision = 2; //number of digits after decimal
+            $avg_health = $row['avg_health'];
+            $avg_nutrition = $row['avg_nutrition'];
+            $avg_pse = $row['avg_pse'];
+            $avg_behavior = $row['avg_behavior'];
+            $avg_mental = $row['avg_mental'];
+            
+            $average = ($avg_health + $avg_behavior + $avg_nutrition + $avg_pse + $avg)/5;
+            round($average, $precision);
+
+            echo '<a href="displayentry2.php?id=' . $row['wid'] . '">Entry #' . $row['wid'] . '</a> | ' . $row['dates'] . ' | ' . $row['reason'] . ' | Entry Average: ' . number_format($average, 2) . '<br>';
+
+          }
+          mysqli_close($connection);
+        ?>
+					
 				</div>
 			</div>
 			
 			<div class="btn-group">
-				<form method="POST" action="popup.php">
+				<form method="POST" action="popup.php?id=<?php echo $zims; ?>" onClick="getReason()">
 					<input type="hidden" name="form" value="<?php echo $formID; ?>">
 					<input type="hidden" name="zims" value="<?php echo $zims; ?>">
-					<input type="submit" value="New Entry">
+          <input type="hidden" name="reason" id = "REASON">
+					<input type="submit" value="New Entry" class = "btn btn-success">
 				</form>
-				<input type="submit" action="" value="Search Entry" onClick = "searchEntry()">
-				<input type="submit" action="" value="Delete Entry" onClick = "deleteEntry()">
+        
+				<input type="submit" class = "btn btn-danger" action="" value="Delete Entry" onClick = "deleteEntry()">
+
 			</div>
 		
 		</div> <!--Closes first col-->
