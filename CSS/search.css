@@ -7,7 +7,8 @@ main {
     margin-bottom:2%;
 }
 
-.col {
+.search {
+    padding-left:1%;
     padding-top:1%;
     padding-bottom:5%;
     background-color:white;
