@@ -40,6 +40,10 @@ class databaseManipulation{
         }
     }
 
+    public function __destruct(){
+        mysqli_close($this->internaldbConnection);
+    }
+
     /*
     paramStr needs to follow the same rules as the bind function requires.
     https://www.php.net/manual/en/mysqli-stmt.bind-param.php Scroll down to the "types" section.
