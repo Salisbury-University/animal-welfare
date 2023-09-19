@@ -1,10 +1,12 @@
 <?php
-include_once("Includes/DatabaseConnection.php");
+include_once("Includes/databaseManipulation.php");
 include_once("Includes/preventUnauthorizedUse.php");
+
+$database = new databaseManipulation;
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+$forms = $database->runQuery_UNSAFE($sql);
 ?>
 
 <!doctype html>
@@ -150,13 +152,15 @@ $forms = mysqli_query($connection, $sql);
             <?php
             if(isset($_POST['search'])){
                     $search = $_POST['search'];
-                    $query = "SELECT * FROM `animals` WHERE name LIKE '%$search%' OR `species_id` LIKE '%$search%' OR `section` LIKE '%$search%' OR `id` LIKE '%$search%'";          
-                            $r = mysqli_query($connection, $query);
+                    $query = "SELECT * FROM `animals` WHERE name LIKE ? OR `species_id` LIKE ? OR `section` LIKE ? OR `id` LIKE ?";
+                            $values = array($search, $search, $search, $search);
+                            $r = $database->runParameterizedQuery($query, "ssss", $values);
+
                             if ($check = mysqli_fetch_array($r) == NULL) { //If no results
                               echo '<section class="search-result-item"><h1>No results for "' . $search . '"</h1></section>';
                             }
                             
-                            $r = mysqli_query($connection, $query);
+                            //$r = mysqli_query($connection, $query);
             
                             if($search == '' || $search == ' '){
                                 $search = "all";
@@ -191,8 +195,7 @@ $forms = mysqli_query($connection, $sql);
      
             <?php
                   }
-                  mysqli_close($conn);
-                  
+                  unset($database);
               }
 
               else {
