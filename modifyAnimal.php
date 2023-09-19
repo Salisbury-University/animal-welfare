@@ -95,8 +95,8 @@ $forms = mysqli_query($connection, $sql);
     <!--Only edit main-->
     <main>
       <?php
-        include "Includes/DatabaseConnection.php"; // Start session
-        include "Includes/preventUnauthorizedUse.php";
+        include_once("Includes/DatabaseConnection.php");
+        include_once("Includes/preventUnauthorizedUse.php");
 
         //Get ID:
         $zims= $_GET['id'];

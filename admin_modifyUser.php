@@ -1,3 +1,8 @@
+<?php
+include_once("Includes/DatabaseConnection.php");
+include_once("Includes/preventUnauthorizedUse.php");
+?>
+
 <!doctype html>
 
 <html lang="en">

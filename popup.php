@@ -1,5 +1,6 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/DatabaseConnection.php");
+include_once("Includes/preventUnauthorizedUse.php");
 
     //gets id
     $formID = $_POST['form'];

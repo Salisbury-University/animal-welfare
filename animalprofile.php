@@ -1,5 +1,6 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/DatabaseConnection.php");
+include_once("Includes/preventUnauthorizedUse.php");
 
 ##Initializes forms variable for header
 $sql = "SELECT * FROM `forms`;";
