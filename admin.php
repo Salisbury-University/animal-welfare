@@ -1,5 +1,8 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/preventUnauthorizedUse.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
 
     //Redirect to the homepage if theyre not an admin.
 $isAdmin = checkIsAdmin();
@@ -9,7 +12,7 @@ if($isAdmin == false){
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+$forms = $database->runQuery_UNSAFE($sql);
 
 ?>
 
@@ -107,7 +110,7 @@ $forms = mysqli_query($connection, $sql);
 
       // Display table of users
       $sql = "SELECT email, pass, administrator FROM `users`";
-      $result = mysqli_query($connection, $sql);
+      $result = $database->runQuery_UNSAFE($sql);
       if(mysqli_num_rows($result) > 0){
     ?>  
   <h1 class = "text-center"><u>All Users:</u></h1>

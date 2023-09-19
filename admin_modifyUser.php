@@ -88,8 +88,8 @@
     <!--Only edit main-->
     <main>
       <?php
-        include "Includes/DatabaseConnection.php"; // Start session
-        include "Includes/preventUnauthorizedUse.php";
+        include_once("Includes/preventUnauthorizedUse.php");
+        
       //Redirect to the homepage if theyre not an admin
         $isAdmin = checkIsAdmin();
         if($isAdmin == false){

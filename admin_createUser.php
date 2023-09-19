@@ -1,5 +1,8 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/preventUnauthorizedUse.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
 
 $isAdmin = checkIsAdmin();
 if($isAdmin == false){
@@ -8,7 +11,7 @@ if($isAdmin == false){
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+$forms = $database->runQuery_UNSAFE($sql);
 
 ?>
 
@@ -102,11 +105,7 @@ $forms = mysqli_query($connection, $sql);
     <!--Only edit main-->
     <main>
       <?php
-      //Redirect to the homepage if theyre not an admin.
-        $isAdmin = checkIsAdmin();
-        if($isAdmin == false){
-          header('Location: home.php');
-        }
+      
       ?>
       
         <!--Start HTML-->

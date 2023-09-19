@@ -8,6 +8,7 @@ class databaseManipulation{
     // https://www.php.net/manual/en/pdo.prepared-statements.php
 
     private $internaldbConnection;
+    
     private $databaseIP;
     private $dbUsername;
     private $dbPassword;

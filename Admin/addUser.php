@@ -1,20 +1,22 @@
 <!--Start PHP-->
 <?php
-       include "../Includes/preventUnauthorizedUse.php";
-        
+include_once("../Includes/preventUnauthorizedUse.php");
+include_once("../Includes/databaseManipulation.php");
 
-       $submittedEmail = $_POST['email'];
-       $submittedPassword = $_POST['password'];
-       $submittedAdminFlag = $_POST['admin'];
+$database = new databaseManipulation;
 
-       $hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
+$submittedEmail = $_POST['email'];
+$submittedPassword = $_POST['password'];
+$submittedAdminFlag = $_POST['admin'];
 
-       $sql="INSERT INTO users(email, pass, administrator) VALUES ('$submittedEmail', '$hashedPassword', $submittedAdminFlag);";
-       $result = mysqli_query($connection, $sql);
-       
-           
+$hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
+
+$valueArr = array($submittedEmail, $hashedPassword, $submittedAdminFlag);
+$statement = "INSERT INTO users(email, pass, administrator) VALUES (?, ?, ?);";
+$database->runParameterizedQuery($statement, "ssb", $valueArr);
+
        // Redirect to home directory
-       header("Location: ../admin.php");
+header("Location: ../admin.php");
 
         
 ?>
