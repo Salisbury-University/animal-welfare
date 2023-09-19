@@ -160,7 +160,7 @@ $forms = $database->runQuery_UNSAFE($sql);
                               echo '<section class="search-result-item"><h1>No results for "' . $search . '"</h1></section>';
                             }
                             
-                            //$r = mysqli_query($connection, $query);
+                            $r = $database->runParameterizedQuery($query, "ssss", $values);
             
                             if($search == '' || $search == ' '){
                                 $search = "all";
