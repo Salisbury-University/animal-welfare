@@ -54,7 +54,3 @@ header("Location: ../search.php");
 
         
 ?>
-
-<!--Sex can be blank, name, dates-->
-
-<!--add dropdwon-->
