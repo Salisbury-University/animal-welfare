@@ -1,10 +1,12 @@
 <?php
-include_once("Includes/DatabaseConnection.php");
+include_once("Includes/databaseManipulation.php");
 include_once("Includes/preventUnauthorizedUse.php");
+
+$database = new databaseManipulation;
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+$forms = $database->runQuery_UNSAFE($sql);
 ?>
 
 <!doctype html>

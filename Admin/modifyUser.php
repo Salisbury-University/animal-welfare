@@ -31,8 +31,6 @@ if($submittedPassword != NULL && $submittedAdminFlag != NULL){
         die("An unknown error occurred");
 }
 
-//$result = mysqli_query($connection, $sql);
-
         // Redirect to home directory
 header("Location: ../admin.php");
 
