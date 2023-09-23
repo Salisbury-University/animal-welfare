@@ -1,6 +1,9 @@
 <?php
 include_once("Templates/header.php");
 ?>
+
+<link href="CSS/home.css" rel="stylesheet">
+
 <!--Only edit main-->
 <main><!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
