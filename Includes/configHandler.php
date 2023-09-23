@@ -18,6 +18,13 @@ databaseName = "database name"
 
     public function __construct(){}
 
+    /*
+        A lot of the PHP functions in this library do 
+        not use relative file paths and instead only use absolute paths.
+        
+        This function will calculate the absolute directory of the config files from
+        where this script is located.
+    */
     private function calcAbsoluteDir(){
         $this->absoluteConfigDirectory = $this->movePathUpOneDir(__FILE__);
         $this->absoluteConfigDirectory = $this->movePathUpOneDir($this->absoluteConfigDirectory);
@@ -26,6 +33,16 @@ databaseName = "database name"
         $this->absoluteConfigLocation = $this->absoluteConfigDirectory . 'masterConfig.ini';
     }
 
+    /*
+        Recreates the config if its missing or deleted.
+        Also creates a backup of the previous config incase something happened in error.
+
+        Not a perfect solution since the backup will be overwritten if it exists, so this will need
+        to be fleshed out more in the future.
+
+        TODO: Make a better system for backing up the files.
+        TODO: Remove the code that sets the permissions to 0777 when development is done, this is bad practice.
+    */
     private function recreateConfig(){
         $tmp = copy($this->absoluteConfigDirectory . 'masterConfig.ini', $this->absoluteConfigDirectory . 'masterConfig.ini.backup');
         
@@ -45,6 +62,10 @@ databaseName = "database name"
         //chown($this->absoluteConfigLocation, $fileOwner);
     }
 
+    /*
+        Removes all the characters before /
+        Simulates "moving up" a directory when given a file path.
+    */
     private function movePathUpOneDir($path){
         $tmp = 'a';
         while($tmp !== '/'){
@@ -56,6 +77,9 @@ databaseName = "database name"
         return $path;
     }
 
+    /*
+    Reads the config file masterConfig.ini
+    */
     public function readConfigFile(){
         $this->calcAbsoluteDir();
 
@@ -63,8 +87,10 @@ databaseName = "database name"
 
         if($ini == false){
             $this->recreateConfig();
-            die('configHandler.php - Error - Malformed masterConfig.ini. Resetting to default.');
+            die('configHandler.php - Error - Malformed masterConfig.ini. Resetting to default. Please configure Config/masterConfig.ini and reload the webpage.');
         }
+
+        return $ini;
     }
 
 }
