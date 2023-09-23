@@ -14,7 +14,11 @@ class databaseManipulation{
     private $dbPassword;
     private $dbName;
 
+
+
     public function __construct(){
+        $connectionDetails = $this->getConnectionDetailsFromConfig();
+
         $this->databaseIP = "localhost";
         $this->dbUsername = "restricted_user";
         $this->dbPassword = "j60oPoObT3PSnEvZ";
@@ -40,8 +44,11 @@ class databaseManipulation{
         }
     }
 
+
+
     public function __destruct(){
-        mysqli_close($this->internaldbConnection);
+        if($this->internaldbConnection != NULL)
+            mysqli_close($this->internaldbConnection);
     }
 
     /*
@@ -87,6 +94,12 @@ class databaseManipulation{
     */
     public function getDatabaseConnection(){
         return $this->internaldbConnection;
+    }
+
+    private function getConnectionDetailsFromConfig(){
+        include_once('configHandler.php');
+        $config = new configHandler;
+        return $config->readConfigFile();
     }
 
     /*
