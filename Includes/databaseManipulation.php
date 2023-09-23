@@ -15,8 +15,6 @@ class databaseManipulation{
     private $dbPassword;
     private $dbName;
 
-
-
     public function __construct(){
         $connectionDetails = $this->getConnectionDetailsFromConfigFile();
 

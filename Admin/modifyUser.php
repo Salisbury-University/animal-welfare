@@ -13,11 +13,11 @@ $hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
 
 if($submittedPassword != NULL && $submittedAdminFlag != NULL){
         $sql="UPDATE `users` SET `pass`=?, `administrator`=? WHERE `users`.`email`=?;";
-        $database->runParameterizedQuery($sql, "sbs", array($hashedPassword, $submittedAdminFlag, $submittedEmail));
+        $database->runParameterizedQuery($sql, "sis", array($hashedPassword, $submittedAdminFlag, $submittedEmail));
 
 }elseif($submittedPassword == NULL && $submittedAdminFlag != NULL){ // Only want to modify the admin flag
         $sql="UPDATE `users` SET `administrator`=? WHERE `users`.`email`=?;";
-        $database->runParameterizedQuery($sql, "bs", array($submittedAdminFlag, $submittedEmail));
+        $database->runParameterizedQuery($sql, "is", array($submittedAdminFlag, $submittedEmail));
 
 }elseif($submittedPassword != NULL && $submittedAdminFlag == NULL){ // Only want to update the password
         $sql="UPDATE `users` SET `pass`=? WHERE `users`.`email`=?;";
