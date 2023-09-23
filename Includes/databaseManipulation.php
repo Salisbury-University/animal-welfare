@@ -1,7 +1,8 @@
 <?php
+include_once('configHandler.php');
+
 // Designed to be a replacement for the "DatabaseConnection.php" file.
 // In order to use it, see databaseManipTutorial.txt that will be located in the same directory as this file.
-
 
 class databaseManipulation{
     // Makes heavy use of this
@@ -17,12 +18,12 @@ class databaseManipulation{
 
 
     public function __construct(){
-        $connectionDetails = $this->getConnectionDetailsFromConfig();
+        $connectionDetails = $this->getConnectionDetailsFromConfigFile();
 
-        $this->databaseIP = "localhost";
-        $this->dbUsername = "restricted_user";
-        $this->dbPassword = "j60oPoObT3PSnEvZ";
-        $this->dbName = "zooDB";
+        $this->databaseIP = $connectionDetails['databaseIP'];
+        $this->dbUsername = $connectionDetails['databaseUsername'];
+        $this->dbPassword = $connectionDetails['databasePassword'];
+        $this->dbName = $connectionDetails['databaseName'];
 
         $debug = 1;
         
@@ -43,8 +44,6 @@ class databaseManipulation{
             die("Connection failed: " . $this->internaldbConnection->connect_error);
         }
     }
-
-
 
     public function __destruct(){
         if($this->internaldbConnection != NULL)
@@ -96,8 +95,7 @@ class databaseManipulation{
         return $this->internaldbConnection;
     }
 
-    private function getConnectionDetailsFromConfig(){
-        include_once('configHandler.php');
+    private function getConnectionDetailsFromConfigFile(){
         $config = new configHandler;
         return $config->readConfigFile();
     }
