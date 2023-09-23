@@ -106,5 +106,5 @@ $forms = $database->runQuery_UNSAFE($sql);
 
 <?php
     // Call destructor for database variable.
-unset($database);
+//unset($database);
 ?>

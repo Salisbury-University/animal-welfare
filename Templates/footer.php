@@ -40,3 +40,10 @@
         </div>
     </footer>
 </body>
+
+<?php
+    // If we have the database open still after the header and main functions are done running.
+if(isset($database) == true){
+    unset($database);
+}
+?>
