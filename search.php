@@ -178,7 +178,7 @@ $forms = mysqli_query($connection, $sql);
                                 </div>
                                 <div class="col-sm-3 text-align-center">                            
                                     <div class="buttons">
-                                        <a class='btn btn-primary btn-sm' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View '   ' &raquo;</a>
+                                        <a class='btn btn-primary btn-sm' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
                                         <p></p>
                                         <a class='btn btn-success btn-sm' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                                         <p></p>
