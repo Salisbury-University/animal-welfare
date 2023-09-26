@@ -8,40 +8,6 @@ $database = new databaseManipulation;
 $sql = "SELECT * FROM `forms`;";
 $forms = $database->runQuery_UNSAFE($sql);
 
-
-/*$websiteRoot = __DIR__;
-$tmp = 'a';
-while($tmp !== '/'){
-    $len = strlen($websiteRoot);
-    $tmp = $websiteRoot[$len - 1];
-    $websiteRoot = substr_replace($websiteRoot, "", -1);
-}
-$websiteRoot = $websiteRoot . "/";
-
-$tmp = "/davidw/security/CSS/main.css"*/
-
-/*$websiteRoot = __DIR__;
-$websiteRoot = substr($websiteRoot, 5);
-$websiteRoot = substr($websiteRoot, 0, -9);*/
-
-
-//echo '<style>';
-//include_once(realpath(dirname(__FILE__)) . "/../CSS/main.css");
-//echo '</style>';
-
-//$includepath = realpath(dirname(__FILE__)) . "/../CSS/maincss.php";
-//include_once($includepath);
-//die($includepath);
-
-$root = realpath(dirname(__FILE__) . "/../");
-
-// REMOVE LATER
-// This solution is specific to our setup
-// I dont think it will break if you use it on a more 
-// normal setup but still better to remove later anyway.
-//$root = ltrim($root, "/home/");
-//$root = ltrim($root, "website/")
-
 ?>
 
 <!doctype html>
