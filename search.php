@@ -80,12 +80,17 @@ include_once("Templates/header.php");
                                     <p><strong>Location:</strong> <?php echo $row["section"]; ?></p>
                                 </div>
                                 <div class="col-sm-3 text-align-center">                            
-                                    <div class="btn-group-vertical">
+                                    <div class="buttons">
                                         <a class='btn btn-primary btn-sm' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
                                         <p></p>
                                         <a class='btn btn-success btn-sm' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                                         <p></p>
-                                        <a class='btn btn-danger btn-sm' href ="AnimalAction/delete.php?id=<?php echo $row['id'];?>" role='button'>Delete &raquo;</a>
+                                        <td>
+                                          <form action = "AnimalAction/delete.php" method = "post">
+                                            <input type = "hidden" name = "id" value = "<?=$row['id']?>">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete &raquo;</button>
+                                          </form>
+                                        </td>
                                     </div> 
                                 </div>
                             </div>
