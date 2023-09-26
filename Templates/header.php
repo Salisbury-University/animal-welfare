@@ -1,12 +1,47 @@
 <?php
-include_once("Includes/databaseManipulation.php");
-include_once("Includes/preventUnauthorizedUse.php");
+include_once(__DIR__ . "/../Includes/databaseManipulation.php");
+include_once(__DIR__ . "/../Includes/preventUnauthorizedUse.php");
 
 $database = new databaseManipulation;
 
 ##Initializes forms variable
 $sql = "SELECT * FROM `forms`;";
 $forms = $database->runQuery_UNSAFE($sql);
+
+
+/*$websiteRoot = __DIR__;
+$tmp = 'a';
+while($tmp !== '/'){
+    $len = strlen($websiteRoot);
+    $tmp = $websiteRoot[$len - 1];
+    $websiteRoot = substr_replace($websiteRoot, "", -1);
+}
+$websiteRoot = $websiteRoot . "/";
+
+$tmp = "/davidw/security/CSS/main.css"*/
+
+/*$websiteRoot = __DIR__;
+$websiteRoot = substr($websiteRoot, 5);
+$websiteRoot = substr($websiteRoot, 0, -9);*/
+
+
+//echo '<style>';
+//include_once(realpath(dirname(__FILE__)) . "/../CSS/main.css");
+//echo '</style>';
+
+//$includepath = realpath(dirname(__FILE__)) . "/../CSS/maincss.php";
+//include_once($includepath);
+//die($includepath);
+
+$root = realpath(dirname(__FILE__) . "/../");
+
+// REMOVE LATER
+// This solution is specific to our setup
+// I dont think it will break if you use it on a more 
+// normal setup but still better to remove later anyway.
+//$root = ltrim($root, "/home/");
+//$root = ltrim($root, "website/")
+
 ?>
 
 <!doctype html>
@@ -23,7 +58,6 @@ $forms = $database->runQuery_UNSAFE($sql);
 
     <!-- Main styles -->
     <link href="CSS/main.css" rel="stylesheet">
-   
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
@@ -75,7 +109,7 @@ $forms = $database->runQuery_UNSAFE($sql);
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
+                  <form method="POST" action="forms.php?id=<?php echo $form['id']; ?>">
                     <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
                   </form>
                 <?php endwhile; ?>
