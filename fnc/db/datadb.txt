@@ -1,0 +1,16 @@
+So the zoo will probably at some point update, add, or delete a form. As forms are the most important 
+part of our data set and the only non-independent data set in terms of that importance we need to
+make sure that the form data is properly archived. 
+Options:
+1. Leave the data to MariaDB as it auto "archives" the changes of everything within
+2. We have archiveable forms tables; whenever a form is updated or deleted - the previous version 
+	will head to the archived table. 
+3. We add an archived element in the Form table of the db. This allows us to just check whether a
+	form was archived. Deleting or modifying a table when there are already checkups that 
+	contain that form id, the element will be toggled, and a new form will be made.
+
+	This solution also provides the users to make archived tables active and reverse changes.
+	For now we will say that the form cannot be deleted. If we need to, just have option for 
+	archived forms to be deleted forever.
+
+Option 3 seems to be the best option, but I will keep this here just incase.

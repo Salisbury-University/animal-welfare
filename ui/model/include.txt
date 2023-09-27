@@ -1,0 +1,6 @@
+To include resources quickly use the following includes:
+
+Header: <?php include '../header.php'; ?>
+Footer: <?php include '../footer.php'; ?>
+Database: <?php include '../../fnc/db/authConnection/protectedUse.php'; ?> 
+

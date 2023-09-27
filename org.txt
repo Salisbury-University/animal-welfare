@@ -1,0 +1,16 @@
+This is a newly proposed organization system.
+
+/fnc: files to be included for functionality
+->  /db: php files that manage connections and queries to the database
+->  ->  /auth: functions and classes for authorizing a connection point
+->  ->  /form: functions and classes for managing form queries 
+->  ->  /mod: functions and classes for managing wellness data queries
+->  ->  /usr: functions and classes for managing queries to usr data
+->  /js: scripts that manage graphs, functionality, and others
+/media: files to be included for imagery 
+->  /exampleFolder: respective categories like dashboard, base, and others where many images are used in one category
+/lib: external files to be included for library usage (ie fonts & other external includes) 
+->  /exampleFolder: respective categories for usage
+/ui: displayed pages and styles
+->  /model: all models for pages
+->  /index.css: all styling for pages
