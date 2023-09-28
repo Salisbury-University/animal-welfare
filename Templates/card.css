@@ -1,0 +1,271 @@
+/* TODO: center header and footer */
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    flex-shrink: 0;
+    display: grid;
+    justify-items: center;
+    height: 120px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: relative;
+}
+
+#logo {
+    height: 12vh;
+    position: absolute;
+    top: 2vh;
+    left: 18vw;
+    z-index: 1;
+}
+
+#h-dec {
+    background-image: url("C:/Users/Joshua/AnimalWelfare/images/Header/header-bg.jpg");
+    height: 70px;
+    width: 100%;
+}
+
+#foil-l {
+    width: 28vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#foil-m {
+    width: 28vw;
+    position: absolute;
+    top: 0;
+    left: 42vw;
+}
+
+#foil-r {
+    width: 28vw;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#h-nav {
+    display: block;
+    background-image: url("C:/Users/Joshua/AnimalWelfare/images/Header/nav-bg.jpg");
+    height: 50px;
+    width: 100%;
+    position: relative;
+}
+
+#h-nav ul {
+    justify-content: flex-end;
+    padding-right: 2em;
+}
+
+#h-nav li {
+    list-style: none;
+}
+
+#h-nav a {
+    font-size: 1.3em;
+    font-weight: bolder;
+    text-transform: capitalize;
+    color: #494b3b;
+    text-decoration: none;
+    padding: 0 3vh;
+    margin-top: -.2vh;
+}
+
+main {
+    display: flex;
+    background-image: url("C:/Users/Joshua/AnimalWelfare/images/content-bg.jpg");
+    background-repeat: repeat;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    min-height: 70vh;
+    position: auto;
+    margin: 0;
+}
+
+.card {
+    background-color: #E0C087;
+    min-width: 300px;
+    max-width: 100%;
+    min-height: 35vh;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #ecca8e;
+    box-shadow: 0 8px 16px 0 rgba (0, 0, 0, 0.2);
+    transition: 0.3s;
+    margin: 1em;
+}
+
+.card:hover {
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.card .list-group {
+    font-size: large;
+    font-weight: 900;
+    color: #395117;
+}
+
+.card .list-group .list-group-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+footer {
+    display: grid;
+    justify-items: center;
+    background-image: url("C:/Users/Joshua/AnimalWelfare/images/Header/header-bg.jpg");
+    height: 30vh;
+    width: 100%;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+#ft-nav {
+    width: 70vw;
+    z-index: 1;
+    margin-left: 8vw;
+}
+
+#ft-nav .row {
+    flex-wrap: wrap;
+    z-index: 1;
+}
+
+#ft-nav ul {
+    list-style: none;
+    list-style-position: left;
+    z-index: 1;
+}
+
+#ft-nav .col {
+    width: 22%;
+    padding: 0 15px;
+    z-index: 1;
+}
+
+#ft-nav h4 {
+    font-size: 18px;
+    color: #ffffff;
+    text-transform: capitalize;
+    margin-bottom: 35px;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+#ft-nav h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: rgb(187, 27, 235);
+    height: 2px;
+    box-sizing: border-box;
+    width: 50px;
+    z-index: 1;
+}
+
+#ft-nav li:not(:last-child) {
+    margin-bottom: 10px;
+    z-index: 1;
+}
+
+#ft-nav a {
+    font-size: 16px;
+    text-transform: capitalize;
+    text-decoration: none;
+    font-weight: 300;
+    text-shadow: rgb(0, 49, 0);
+    color: #bbbbbb;
+    display: block;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+#ft-nav a:hover {
+    color: #ffffff;
+    padding-left: 8px;
+}
+
+#turtle {
+    height: 34%;
+    position: absolute;
+    left: 20vw;
+    bottom: 13vh;
+    z-index: 0;
+}
+
+#parrot {
+    height: 45%;
+    position: absolute;
+    left: 32vw;
+    bottom: 1vh;
+}
+
+#birds {
+    height: 80%;
+    position: absolute;
+    left: 60vw;
+    bottom: 8vh;
+}
+@media (min-width: 1660px) {
+    #h-nav ul {
+        display: flex;
+    }
+    #log {
+        display: block;
+    }
+}
+@media (max-width: 1659px){
+    #h-nav ul {
+        display: none;
+    }
+    #log {
+        display: none;
+    }
+}
+
+@media (min-width: 1451px){
+    .row {
+        display: flex;
+    }
+}
+@media (max-width: 1450px){
+    .row {
+        display: none;
+    }
+}
+
+
+@media (min-width: 1020px) {
+    
+    /* Card */
+    main {
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 1019px) {
+    /* hamburger header */
+    main {
+        flex-direction: column;
+    }
+}
