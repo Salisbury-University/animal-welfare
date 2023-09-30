@@ -15,6 +15,9 @@ databaseIP = "localhost"
 databaseUsername = "user"
 databasePassword = "password"
 databaseName = "database name"
+
+[DEBUG]
+debugMode = 1
 ';
 
 ?>

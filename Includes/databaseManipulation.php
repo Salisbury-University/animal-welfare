@@ -16,14 +16,14 @@ class databaseManipulation{
     private $dbName;
 
     public function __construct(){
-        $connectionDetails = $this->getConnectionDetailsFromConfigFile();
+        $conf = $this->getInfoFromConfigFile();
 
-        $this->databaseIP = $connectionDetails['databaseIP'];
-        $this->dbUsername = $connectionDetails['databaseUsername'];
-        $this->dbPassword = $connectionDetails['databasePassword'];
-        $this->dbName = $connectionDetails['databaseName'];
+        $this->databaseIP = $conf['databaseIP'];
+        $this->dbUsername = $conf['databaseUsername'];
+        $this->dbPassword = $conf['databasePassword'];
+        $this->dbName = $conf['databaseName'];
 
-        $debug = 1;
+        $debug = $conf['debugMode'];
         
         if($debug == 1){
             ini_set('display_errors', 1);
@@ -93,7 +93,7 @@ class databaseManipulation{
         return $this->internaldbConnection;
     }
 
-    private function getConnectionDetailsFromConfigFile(){
+    private function getInfoFromConfigFile(){
         $config = new configHandler;
         return $config->readConfigFile();
     }
