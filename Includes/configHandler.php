@@ -1,13 +1,6 @@
 <?php
 class configHandler{
 
-    private $defaultConfigFile = '[Database]
-databaseIP = "localhost"
-databaseUsername = "user"
-databasePassword = "password"
-databaseName = "database name"
-';
-
     // These are used for calculating the absolute path to a given file
     private $configLocation = "/Config/masterConfig.ini";
     private $configDirectory = "/Config/";
@@ -16,7 +9,14 @@ databaseName = "database name"
     private $absoluteConfigLocation = "";
     private $absoluteConfigDirectory = "";
 
-    public function __construct(){}
+        // The contents of defaultConfig.php are dumped into this variable in the constructor
+    private $defaultConfigFile = "";
+
+    public function __construct(){
+            // Pull in the defaultConfig file in from another php file
+        include_once("defaultConfig.php");
+        $this->defaultConfigFile = $defaultConfigFile;
+    }
 
     /*
         A lot of the PHP functions in this library do 
