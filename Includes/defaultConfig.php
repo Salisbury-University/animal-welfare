@@ -10,14 +10,23 @@
         DO NOT MODIFY THIS FILE
 */
 
-    $defaultConfigFile = '[Database]
+    $defaultConfigFile = ';MYSQL database credentials
+[Database]
 databaseIP = "localhost"
 databaseUsername = "user"
 databasePassword = "password"
 databaseName = "database name"
 
+; If you get locked out of the website, enable this account, log in and add a new user or manage an existing one
+; Keep in mind this account IS NOT FOR REGULAR USE and will be disabled automatically after one login.
+[Recovery]
+recoveryAccountEnabled = 0
+recoveryAccountUsername = "root"
+recoveryAccountPassword = "defPass1"
+
+; Only touch this section if you want errors to be printed on the website to the user
 [DEBUG]
-debugMode = 1
+debugMode = 0
 ';
 
 ?>
