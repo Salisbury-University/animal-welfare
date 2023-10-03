@@ -19,6 +19,8 @@ $recoveryAccountPassword = $configFile['recoveryAccountPassword'];
 if($recoveryAccountEnabled == 1){
     if($submittedEmail == $recoveryAccountUsername){
         if($submittedPassword == $recoveryAccountPassword){
+            $config->disableDefaultAccountFlag(); // Disable the account so it cant be used anymore
+            
                 // Set the session variables and log the recovery user in.
             $_SESSION['email'] = "RECOVERYACCOUNT_" . $recoveryAccountUsername;
             $_SESSION['administrator'] = 1;

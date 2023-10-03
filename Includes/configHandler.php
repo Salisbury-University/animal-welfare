@@ -14,7 +14,7 @@ class configHandler{
 
     public function __construct(){
             // Pull in the defaultConfig file in from another php file
-        include_once("defaultConfig.php");
+        include "defaultConfig.php";
         $this->defaultConfigFile = $defaultConfigFile;
     }
 
@@ -91,6 +91,12 @@ class configHandler{
         }
 
         return $ini;
+    }
+
+    public function disableDefaultAccountFlag(){
+        $configContents = file_get_contents($this->absoluteConfigLocation);
+        $tmp = str_replace("recoveryAccountEnabled = 1", "recoveryAccountEnabled = 0", $configContents);
+        file_put_contents($this->absoluteConfigLocation, $tmp);
     }
 
 }
