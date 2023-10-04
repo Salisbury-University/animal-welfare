@@ -93,6 +93,13 @@ class configHandler{
         return $ini;
     }
 
+    /*
+        Disables the recovery account. Called in loginHandler.php after the user was authenticated
+        with the credentials for this user account.
+
+        TODO: Make a function that handles all writing to the config file so theres a universal 
+        solution that everyone can use.
+    */
     public function disableDefaultAccountFlag(){
         $configContents = file_get_contents($this->absoluteConfigLocation);
         $tmp = str_replace("recoveryAccountEnabled = 1", "recoveryAccountEnabled = 0", $configContents);
