@@ -26,10 +26,13 @@ class configHandler{
         where this script is located.
     */
     private function calcAbsoluteDir(){
-        $this->absoluteConfigDirectory = $this->movePathUpOneDir(__FILE__);
-        $this->absoluteConfigDirectory = $this->movePathUpOneDir($this->absoluteConfigDirectory);
-        $this->absoluteConfigDirectory = $this->absoluteConfigDirectory . $this->configDirectory;
+            // Get where this file is currently located and move up to the parent directory
+            // If this file is moved to a deeper folder or if masterConfig.ini is moved
+            // you will need to modify this code.
+        $this->absoluteConfigDirectory = dirname(__FILE__, 2);
 
+            // Get the location of the config file
+        $this->absoluteConfigDirectory = $this->absoluteConfigDirectory . $this->configDirectory;
         $this->absoluteConfigLocation = $this->absoluteConfigDirectory . 'masterConfig.ini';
     }
 
@@ -40,18 +43,25 @@ class configHandler{
         Not a perfect solution since the backup will be overwritten if it exists, so this will need
         to be fleshed out more in the future.
 
-        TODO: Make a better system for backing up the files.
         TODO: Remove the code that sets the permissions to 0777 when development is done, this is bad practice.
     */
     private function recreateConfig(){
         $tmp = copy($this->absoluteConfigDirectory . 'masterConfig.ini', $this->absoluteConfigDirectory . 'masterConfig.ini.backup');
-        
+
         if($tmp == true){
             unlink($this->absoluteConfigDirectory . 'masterConfig.ini');
+        }else{ // returned false
+            die("<br> configHandler.php - Unable to backup config - Does the web server have permission for masterConfig.ini? <br>");
         }
 
         $file = fopen($this->absoluteConfigLocation, 'w');
+
+        if($file == false){
+            die("<br> configHandler.php - Failed to create file - Does the web server have permission for masterConfig.ini?");
+        }
+
         fwrite($file, $this->defaultConfigFile);
+
         fclose($file);
         
             // Set the permissions to 777 and the owner to whoever owns the folder.
@@ -60,21 +70,6 @@ class configHandler{
         chmod($this->absoluteConfigLocation, 0777);
         //$fileOwner = fileOwner($this->absoluteConfigDirectory);
         //chown($this->absoluteConfigLocation, $fileOwner);
-    }
-
-    /*
-        Removes all the characters before /
-        Simulates "moving up" a directory when given a file path.
-    */
-    private function movePathUpOneDir($path){
-        $tmp = 'a';
-        while($tmp !== '/'){
-            $len = strlen($path);
-            $tmp = $path[$len - 1];
-            $path = substr_replace($path, "", -1);
-        }
-
-        return $path;
     }
 
     /*
@@ -94,15 +89,11 @@ class configHandler{
     }
 
     /*
-        Disables the recovery account. Called in loginHandler.php after the user was authenticated
-        with the credentials for this user account.
-
-        TODO: Make a function that handles all writing to the config file so theres a universal 
-        solution that everyone can use.
+        Modifies an attribute of the config file when given a new value and the current value.
     */
-    public function disableDefaultAccountFlag(){
+    public function writeToConfigFile($attribute, $newValue, $currentValue){
         $configContents = file_get_contents($this->absoluteConfigLocation);
-        $tmp = str_replace("recoveryAccountEnabled = 1", "recoveryAccountEnabled = 0", $configContents);
+        $tmp = str_replace($attribute . " = " . $currentValue, $attribute . " = " . $newValue, $configContents);
         file_put_contents($this->absoluteConfigLocation, $tmp);
     }
 
