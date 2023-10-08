@@ -22,8 +22,9 @@ if($recoveryAccountEnabled == 1){
             $config->disableDefaultAccountFlag(); // Disable the account so it cant be used anymore
             
                 // Set the session variables and log the recovery user in.
-            $_SESSION['email'] = "RECOVERYACCOUNT_" . $recoveryAccountUsername;
+            $_SESSION['email'] = $recoveryAccountUsername;
             $_SESSION['administrator'] = 1;
+            $_SESSION['isRecoveryAccount'] = 1;
             header("Location: home.php");
             exit();
         }

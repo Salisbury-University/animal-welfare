@@ -8,16 +8,6 @@ $database = new databaseManipulation;
 $sql = "SELECT * FROM `forms`;";
 $forms = $database->runQuery_UNSAFE($sql);
 
-// Check if the user is logged into the recovery account
-// strpos returns false if the string is not found.
-// We keep track of this to hide the change password button if the user is logged in
-// to a recovery account, since we cannot modify the details of that account.
-$check = strpos($_SESSION['email'], "RECOVERYACCOUNT");
-$isRecoveryAccount = 0;
-if($check !== false){ // User is logged into the recovery account
-    $isRecoveryAccount = 1;
-}
-
 
 ?>
 
@@ -110,7 +100,7 @@ if($check !== false){ // User is logged into the recovery account
 
         <?php 
           // Check if recovery account
-        if($isRecoveryAccount == 0){
+        if(isset($_SESSION['isRecoveryAccount']) == 0){
           echo "<a class='btn btn-success my-2 my-sm-0 float-left' href='user_changePassword.php' role='button'>Change Password</a>";
         }
         ?>
