@@ -1,5 +1,5 @@
 <?php
-//function names are too long - wont be able to remember: change them later
+include "/home/joshb/website/final/under_construction/species.php";
 class Animal
 {
     public $id = NULL;
@@ -11,23 +11,42 @@ class Animal
     public $name = NULL;
     private $connection = NULL;
 
-    function __construct($id,$connection)
+
+    function __construct($id, $connection)
     {
-        $getBasic = $connection->prepare("SELECT `section`, `species_id`, `sex`, `birth_date`, `acquisition_date`, `name` FROM `animals` WHERE id=?");
+        $this->connection = $connection;
+
+        // Error handling is important
+        try {
+            $this->initializeAnimalData($id);
+        } catch (Exception $e) {
+            // Handle the exception appropriately
+            // Close database connections and perform cleanup
+            // Rethrow the exception or log it as needed
+        }
+    }
+
+    private function initializeAnimalData($id)
+    {
+        $getBasic = $this->connection->prepare("SELECT `section`, `species_id`, `sex`, `birth_date`, `acquisition_date`, `name` FROM `animals` WHERE id=?");
         $getBasic->bind_param("i", $id);
         $getBasic->execute();
-        $getBasic->bind_result($sec, $spec, $sx, $birthDy, $acqDy, $nm);
+        $getBasic->bind_result($section, $species, $sex, $birthDay, $acqDay, $name);
+        $species = "";
         
         while ($getBasic->fetch()) {
             $this->id = $id;
-            $this->section = $sec;
-            $this->species = $spec;
-            $this->sex = $sx;
-            $this->birthDate = $birthDy;
-            $this->acqDate = $acqDy;
-            $this->name = $nm;
-            $this->connection = $connection;
+            $this->section = $section;
+            $species_id = $species;
+            $this->sex = $sex;
+            $this->birthDate = $birthDay;
+            $this->acqDate = $acqDay;
+            $this->name = $name;
         }
+        $getBasic->close();
+        $this->species = new Species($species_id, $this->connection);
+
+        // Remember to properly handle exceptions and close resources
     }
 
     public function getID()
@@ -59,7 +78,7 @@ class Animal
         return $this->name;
     }
 
-    public function getTotalAvg() // Average of all averages
+    public function getOverallAverage() // Average of all averages
     {
         $getAverages = $this->connection->prepare("SELECT `wid`, `avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=?");
         $getAverages->bind_param("i", $this->id);
@@ -72,11 +91,11 @@ class Animal
             $count++;
         }
         if ($count == 0)
-            return "N/A";
+            return "No Data Available";
         $getAverages->close();
         return $average / $count;
     }
-    public function getAllAvg() // Nested/key array for all averages
+    public function getAllAverages() // Nested/key array for all averages
     {
         $getAverages = $this->connection->prepare("SELECT `wid`, `dates`,`avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=?");
         $getAverages->bind_param("i", $this->id);
@@ -92,7 +111,7 @@ class Animal
 
         return $averages;
     }
-    public function getAllCheckupAvg() // Nested/key array for all total averages
+    public function getAllCheckupAverages() // Nested/key array for all total averages
     {
         $getAverages = $this->connection->prepare("SELECT `wid`, `dates`,`avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=?");
         $getAverages->bind_param("i", $this->id);
@@ -108,7 +127,7 @@ class Animal
 
         return $averages;
     }
-    public function getRecentCheckupDate() // Date of most recent checkup
+    public function getLatestCheckupDate() // Date of most recent checkup
     {
         $getDate = $this->connection->prepare("SELECT `dates` FROM welfaresubmission WHERE zim=?");
         $getDate->bind_param("i", $this->id);
@@ -129,7 +148,7 @@ class Animal
         $getDate->close();
         return $date;
     }
-    public function getCheckupAvg($date) // Average on a specific date
+    public function getCheckupOverallAverage($date) // Average on a specific date
     {
         $getAverage = $this->connection->prepare("SELECT `wid`, `avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=? AND dates=?");
         $getAverage->bind_param("is", $this->id, $date);
@@ -143,7 +162,7 @@ class Animal
         $getAverage->close();
         return $average;
     }
-    public function getCheckupSectionsAvg($date) // Array of averages on a specific date
+    public function getSectionAveragesOnDate($date) // Array of averages on a specific date
     {
         $getAverages = $this->connection->prepare("SELECT `dates`, `wid`, `avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=? AND dates=?");
         $getAverages->bind_param("is", $this->id, $date);
@@ -157,7 +176,7 @@ class Animal
         $getAverages->close();
         return $averages;
     }
-    public function getTotalSectionAvg($section) // Average of all in specific section
+    public function getOverallSectionAverage($section) // Average of all in specific section
     {
         $getAverages = $this->connection->prepare("SELECT `wid`, ? FROM `welfaresubmission` WHERE zim=?");
         $getAverages->bind_param("si", $section, $this->id);
@@ -174,7 +193,7 @@ class Animal
         $getAverages->close();
         return $average / $count;
     }
-    public function getCheckupAvgAll($section) // Nested/key array for all averages in a specific section
+    public function getCheckupAverages($section) // Nested/key array for all averages in a specific section
     {
         $getAverages = $this->connection->prepare("SELECT `wid`, `dates`, ? FROM `welfaresubmission` WHERE zim=?");
         $getAverages->bind_param("si", $section, $this->id);
@@ -189,21 +208,21 @@ class Animal
 
         return $averages;
     }
-    public function getCheckupSectionAvg($section,$date) // Average of a specific section on a specific date
+    public function getSectionAverageOnDate($section, $date) // Average of a specific section on a specific date
     {
-        $getAverage = $connection->prepare("SELECT `wid`, ? FROM `welfaresubmission` WHERE zim=? AND dates=?");
+        $getAverage = $this->connection->prepare("SELECT `wid`, ? FROM `welfaresubmission` WHERE zim=? AND dates=?");
         $getAverage->bind_param("sis", $this->section, $this->id, $date);
         $getAverage->execute();
         $getAverage->bind_result($checkupID, $avgSection);
 
         $average = 0;
         while ($getAverage->fetch()) {
-            $average += $averageSection;
+            $average += $avgSection;
         }
         $getAverage->close();
         return $average;
     }
-    public function getResponses($date) // Responses on a specific checkup no.
+    public function getCheckupResponses($date) // Responses on a specific checkup no.
     {
         $getAverage = $this->connection->prepare("SELECT `wid`, `responses` FROM `welfaresubmission` WHERE zim=? AND dates=?");
         $getAverage->bind_param("is", $this->id, $date);
@@ -211,40 +230,46 @@ class Animal
         $getAverage->bind_result($checkupID, $responseList);
 
         while ($getAverage->fetch()) {
-            $responses = ['checkupID' => $checkupID, 'formID' => null, 'sections' => []];
-            $res = unpack("C*", $responseList);
-            $rowCount = $colCount = 0;
-            $next = $header = true;
-            foreach ($res as $data) {
-                if (chr($data) == ',') { // Split the data by comma
-                    if ($next) {
-                        $colCount++;
-                        $next = false;
-                    } else {
-                        $next = true;
-                    }
-                } else if ($data == 10) { // Split data by row
-                    $colCount = 0;
-                    if ($header)
-                        $header = false;
-                    $rowCount++;
-                } else if ($data != 13 && chr($data) != ',' && $data != 00) {
-                    if ($header) {
-                        if ($colCount == 0) {
-                            $responses['formID'] = chr($data);
-                        } else {
-                            $responses["sections"][$colCount]['colID'] = chr($data);
-                        }
-                    } else {
-                        $responses["sections"][$colCount][$rowCount] = chr($data);
-
-                    }
-                    $colCount++;
-                    $next = false;
-                }
-            }
+            $responses[] = $this->parseResponses($checkupID, $responseList);
         }
         $getAverage->close();
+        return $responses;
+    }
+
+    private function parseResponses($checkupID, $responseList)
+    {
+        $responses = ['checkupID' => $checkupID, 'formID' => null, 'sections' => []];
+        $res = unpack("C*", $responseList);
+        $rowCount = $colCount = 0;
+        $next = $header = true;
+        foreach ($res as $data) {
+            if (chr($data) == ',') { // Split the data by comma
+                if ($next) {
+                    $colCount++;
+                    $next = false;
+                } else {
+                    $next = true;
+                }
+            } else if ($data == 10) { // Split data by row
+                $colCount = 0;
+                if ($header)
+                    $header = false;
+                $rowCount++;
+            } else if ($data != 13 && chr($data) != ',' && $data != 00) {
+                if ($header) {
+                    if ($colCount == 0) {
+                        $responses['formID'] = chr($data);
+                    } else {
+                        $responses["sections"][$colCount]['colID'] = chr($data);
+                    }
+                } else {
+                    $responses["sections"][$colCount][$rowCount] = chr($data);
+
+                }
+                $colCount++;
+                $next = false;
+            }
+        }
         return $responses;
     }
 }
