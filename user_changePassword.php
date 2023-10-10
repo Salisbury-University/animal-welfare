@@ -2,7 +2,9 @@
 include_once("Templates/header.php");
 
     // Keep recovery accounts off this page.
-if($isRecoveryAccount == 1){ // User is logged into the recovery account
+    // Had trouble with redirecting the user to a different page
+    // This solution is acceptable aswell since the button to get to this page is hidden.
+if(isset($_SESSION['isRecoveryAccount']) == 1){
     exit();
 }
 
