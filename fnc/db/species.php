@@ -55,4 +55,42 @@ class Species
     {
         return $this->animals;
     }
+
+    public function compareAnimals($mode = 0,$date = NULL){
+        $result = [];
+        switch($mode){
+            case 0:
+                foreach($this->animals as $id){
+                    $animal = new Animal($id,$this->connection);
+                    $result[$id] = $animal->getOverallAverage();
+                }
+                return $result;
+            case 1:
+                foreach($this->animals as $id){
+                    $animal = new Animal($id,$this->connection);
+                    $result[$id] = $animal->getAllAverages();
+                }
+                return $result;
+            case 2:
+                foreach($this->animals as $id){
+                    $animal = new Animal($id,$this->connection);
+                    $result[$id] = $animal->getAllCheckupAverages();
+                }
+                return $result;
+            case 3:
+                foreach($this->animals as $id){
+                    $animal = new Animal($id,$this->connection);
+                    if($date != NULL)
+                        $result[$id] = $animal->getCheckupOverallAverage($date);
+                }
+                return $result;
+            case 4:
+                foreach($this->animals as $id){
+                    $animal = new Animal($id,$this->connection);
+                    if($date != NULL)
+                        $result[$id] = $animal->getCheckupResponses($date);
+                }
+                return $result;
+        }
+    }
 }

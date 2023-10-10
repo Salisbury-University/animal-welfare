@@ -236,7 +236,7 @@ class Animal
         return $responses;
     }
 
-    private function parseResponses($checkupID, $responseList)
+    private function parseResponses($checkupID, $responseList) // soon deprecated
     {
         $responses = ['checkupID' => $checkupID, 'formID' => null, 'sections' => []];
         $res = unpack("C*", $responseList);
@@ -271,5 +271,42 @@ class Animal
             }
         }
         return $responses;
+    }
+    public function compareAnimals($id, $mode = 0, $date = NULL){ // change to pass an Animal obj 
+        $result = [];
+        switch($mode){
+            case 0:
+                $animal = new Animal($id,$this->connection);
+                $result[$this->id] = $this->getOverallAverage();
+                $result[$id] = $animal->getOverallAverage();
+                
+                return $result;
+            case 1:
+                $animal = new Animal($id,$this->connection);
+                $result[$this->id] = $this->getAllAverages();
+                $result[$id] = $animal->getAllAverages();
+                
+                return $result;
+            case 2:
+                $animal = new Animal($id,$this->connection);
+                $result[$this->id] = $this->getAllCheckupAverages();
+                $result[$id] = $animal->getAllCheckupAverages();
+                
+                return $result;
+            case 3:
+                $animal = new Animal($id,$this->connection);
+                if($date != NULL){
+                    $result[$this->id] = $this->getCheckupOverallAverage($date);
+                    $result[$id] = $animal->getCheckupOverallAverage($date);
+                }
+                return $result;
+            case 4:
+                $animal = new Animal($id,$this->connection);
+                if($date != NULL){
+                    $result[$this->id] = $this->getCheckupResponses($date);
+                    $result[$id] = $animal->getCheckupResponses($date);
+                }
+                return $result;
+        }
     }
 }
