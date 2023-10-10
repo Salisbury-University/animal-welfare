@@ -1,19 +1,18 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
+include "Includes/databaseManipulation.php";
 
-##Initializes forms variable
-$sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+include "Templates/header.php";
 
-
+$database = new databaseManipulation;
 
 //Custom for animal profile page
 //Get ID:
 $zims= $_GET['id'];
 
   
-$query = 'SELECT * FROM animals WHERE id= ' . $zims; 
-$r = mysqli_query($connection, $query);
+$query = 'SELECT * FROM animals WHERE id= ?'; // zims query
+$r = $database->runParameterizedQuery($query, "i", array($zims));
 $row = mysqli_fetch_array($r);
 $name = $row['name'];
 $species = $row['species_id'];
@@ -25,18 +24,18 @@ $avg = "N/A";
 $lastcheckup = "N/A";
 $lastfed = "N/A";
 
-$query = 'SELECT form_id FROM species WHERE id= \'' . $species . '\'';
-$formID = mysqli_query($connection, $query);
+$query = 'SELECT form_id FROM species WHERE id= ?'; // species query
+$formID = $database->runParameterizedQuery($query, "s", array($species));
 $formID = mysqli_fetch_assoc($formID);
 $formID = $formID['form_id'];
 
 $sql = "SELECT MAX(dates) AS lastcheckup FROM welfaresubmission";
-        $result = mysqli_query($connection, $sql);
+        $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
         $lastcheckup = $row['lastcheckup'];
 
 $sql = "SELECT MAX(dates) as lastfed FROM diet";
-        $result = mysqli_query($connection, $sql);
+        $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
         $lastfed = $row['lastfed'];
 ?>
@@ -45,14 +44,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Meta tags and CSS links -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-    <link href="CSS/main.css" rel="stylesheet">
     <link href="CSS/display.css" rel="stylesheet">
-
     <script> 
 
             var reload_ = false
@@ -120,73 +112,6 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
 </style>
 </head>
 <body>
-    <!-- Header -->
-    <header></header>
-
-    <!-- Navigation Bar -->
-    <hr>
-    <nav class="navbar navbar-expand-md my-light">
-    
-    <!--Logo-->
-    <div class = "logo-overlay">
-      <a href="home.php">
-        <img src=Images/Header/logo.png alt="Logo">
-      </a>
-    </div>
-
-      <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav mr-auto">
-          <!--Home-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="home.php">Home</a>
-          </li>
-
-          <!--Search Page-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="search.php">Search</a>
-          </li>
-          
-          <!--Start Admin Only-->
-          <?php
-            $isAdmin = checkIsAdmin();
-            if($isAdmin == true){ ?>
-          
-                    <!--Welfare Forms-->
-                    <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Edit Forms
-              </a>
-      
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
-                    <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
-                  </form>
-                <?php endwhile; ?>
-              </div>
-            </li>
-          
-
-          <!--Dropdown menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Admin
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="admin.php">Manage admin</a>
-              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
-            </div>
-          </li>
-
-          <?php } ?> <!--End admin only-->
-        </ul>
-        <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
-      
-      </div>
-    </nav>
-    <hr>
-    <!-- End Navigation Bar -->
-
     <!-- Main Content -->
     <main class="container-fluid">
         <div class="row">
@@ -240,10 +165,10 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                         <?php 
                             $stmt = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental 
                             FROM welfaresubmission 
-                            WHERE zim = $zims
+                            WHERE zim = ?
                             ORDER BY wid DESC"; 
 
-                            $result = mysqli_query($connection, $stmt);
+                            $result = $database->runParameterizedQuery($stmt, "i", array($zims));
                             
                             //$r = 226;//201+25=226
                             //$g = 240;//215+25=240
@@ -288,7 +213,12 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 $count++;
                                 $total += $average;
                             }
-                            $total = $total/$count;
+                                // Fix division by zero error.
+                            if($count != 0)
+                                $total = $total/$count;
+                            else
+                                $total = 0;
+
                             $total = round($total, $precision);
 
                         ?>
@@ -321,7 +251,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 <?php
                                     $stmt = "SELECT * FROM diet ORDER BY dates DESC";
 
-                                    $result = mysqli_query($connection, $stmt);
+                                    $result = $database->runQuery_UNSAFE($stmt);
 
                                     $r = 201;
                                     $g = 215;
@@ -364,13 +294,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
     </main>
     
     <hr>
-    <!-- Footer -->
-    <footer class="container-fluid">
-        <div class="f-top">
-            <!-- Footer content -->
-            <!-- ... (your footer content) ... -->
-        </div>
-    </footer>
+
 </body>
 </html>
-<?php mysqli_close($connection); ?>
+<?php include_once("Templates/footer.php"); ?>
