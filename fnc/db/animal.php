@@ -1,5 +1,6 @@
 <?php
-include "/home/joshb/website/final/under_construction/species.php";
+include "species.php";
+include "section.php";
 class Animal
 {
     public $id = NULL;
@@ -33,10 +34,11 @@ class Animal
         $getBasic->execute();
         $getBasic->bind_result($section, $species, $sex, $birthDay, $acqDay, $name);
         $species = "";
+        $section = "";
         
         while ($getBasic->fetch()) {
             $this->id = $id;
-            $this->section = $section;
+            $section_id = $section;
             $species_id = $species;
             $this->sex = $sex;
             $this->birthDate = $birthDay;
@@ -45,7 +47,7 @@ class Animal
         }
         $getBasic->close();
         $this->species = new Species($species_id, $this->connection);
-
+        $this->section = new Section($section_id, $this->connection);
         // Remember to properly handle exceptions and close resources
     }
 
