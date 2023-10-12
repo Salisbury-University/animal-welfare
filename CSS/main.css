@@ -17,7 +17,7 @@ body {
 }
 
 header {display: block; 
-        background-image: url('../Images/Header/leaves.png'), url('../Images/Header/header-bg.jpg');
+        background-image: url('../Images/Header/header-bg.jpg');
         background-repeat: no-repeat; background-size: cover;  height: 100px; margin-top:0px}
 
 /*Nav Bar */

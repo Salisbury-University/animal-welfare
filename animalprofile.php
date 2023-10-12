@@ -1,6 +1,7 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
-include "Includes/databaseManipulation.php";
+include_once("Includes/databaseManipulation.php");
+include "getData.php";
 
 include "Templates/header.php";
 
@@ -44,7 +45,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
 <!doctype html>
 <html lang="en">
 <head>
-    <link href="CSS/display.css" rel="stylesheet">
+<link href="CSS/display.css" rel="stylesheet">
     <script> 
 
             var reload_ = false
@@ -279,15 +280,148 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
             </div>
         <!-- Graph Card -->
         <div class="row">
-            <div class="col-12 mb-4">
+            <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Graph</h5>
+                        <h5 class="card-title">Welfare Submissions</h5>
                     </div>
                     <div class="card-body">
                         <!-- Content for the graph card -->
-                        <!-- You can implement graph display here -->
+                        <canvas id="wellnessChart" style="width:100%;max-width:700px"></canvas>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+                        <script>
+
+                            const xValues = [];
+                            const yValues = [];
+
+                            <?php
+                            $averages = getData($zims, null, null, null, "avg-yat");
+                            foreach ($averages as $checkupDate => $value) {
+                                ?>
+                                xValues.push("<?php echo $checkupDate; ?>");
+                                yValues.push("<?php echo $value; ?>");
+                                <?php
+                            }
+                            ?>
+
+                            const wellnessChart = new Chart("wellnessChart", {
+                                type: "line",
+                                data: {
+                                    labels: xValues,
+                                    datasets: [{
+                                        fill: false,
+                                        lineTension: 0,
+                                        backgroundColor: "rgba(0,0,255,1.0)",
+                                        borderColor: "rgba(0,0,255,0.1)",
+                                        data: yValues
+                                    }]
+                                },
+                                options: {
+                                    legend: { display: false },
+                                    scales: {
+                                        y: [{
+                                            ticks: {
+                                                min: 0,
+                                                max: 5,
+                                                stepSize: .5,
+                                                beginAtZero: true
+
+                                            }
+                                        }],
+                                        x: [{
+                                            type: 'time',
+                                            time: {
+                                                parsing: 'YYYY-MM-DD',
+                                                unit: 'month',
+                                                displayFormats: {
+                                                    'day': 'MM/DD/YYYY'
+                                                }
+                                            }
+                                        }],
+                                    }
+                                }
+                            });
+
+
+
+                        </script>
+                
+                        <!-- End of graph card-->
                     </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Average By Section</h5>
+                    </div>
+                    <!--Start of Polar Chart-->
+                    <div class="card-body" style="width:90%;max-width:600px">
+                      <!--Initializing Variables-->
+                      <?php
+                      $sql = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) 
+                      FROM `welfaresubmission` WHERE `zim` = $zims";
+                      $averages = mysqli_query($connection, $sql);
+                      $averages = mysqli_fetch_array($averages);
+
+                      $health = $averages['AVG(`avg_health`)'];
+                      $health = round($health, 2);
+
+                      $nut = $averages['AVG(`avg_nutrition`)'];
+                      $nut = round($nut, 2);
+                      
+                      $pse = $averages['AVG(`avg_pse`)'];
+                      $pse = round($pse, 2);
+
+                      $behavior = $averages['AVG(`avg_behavior`)'];
+                      $behavior = round($behavior, 2);
+
+                      $mental = $averages['AVG(`avg_mental`)'];
+                      $mental = round($mental, 2);
+
+    
+                      ?>
+                      <!--End of values-->
+                      
+                      <!--Start Display-->
+                      <canvas id="health" style="width:70%;max-width:600px"></canvas>
+                      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+                      <script>
+
+
+                      const polar = [];
+                      polar.push("<?php echo $health; ?>");
+                      polar.push("<?php echo $nut; ?>");
+                      polar.push("<?php echo $pse; ?>");
+                      polar.push("<?php echo $behavior; ?>");
+                      polar.push("<?php echo $mental; ?>");
+
+                      var chrt = document.getElementById("health").getContext("2d");
+                      var chartId = new Chart(chrt, {
+                          type: 'polarArea',
+                          data: {
+                              labels: ["Health", "Nutrition", "Mental", "Behavior", "PSE"],
+                              datasets: [{
+                                
+                                  data: polar,
+                                  backgroundColor: ['yellow', 'pink', 'lightgreen', 'gold', 'lightblue'],
+                              }],
+                          },
+                          options: {
+                              responsive: false,
+                                plugins: {
+                                        legend: {
+                                        position: "right",
+                                        align: "middle"
+                                        }
+                                    }
+                              },
+                      });
+
+                      </script>
+                    </div>
+                    <!--End of Polar chart-->
                 </div>
             </div>
         </div>
