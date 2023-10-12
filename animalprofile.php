@@ -270,7 +270,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                             <div class = "card-footer text-center">
                             <div class = "btn-group">
                                 <form method = "POST"  action="ate.php?id=<?php echo $zims; ?>"> 
-                                <input type = "submit" value = "Aniaml Ate Today" class = "btn btn-success">
+                                <input type = "submit" value = "Animal Ate Today" class = "btn btn-success">
                                 </form>
                             </div>
                         </div>                        
