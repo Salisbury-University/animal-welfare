@@ -6,7 +6,7 @@
     
 function getData($zim, $date, $section, $wid, $type)
 {
-    include "Includes/DatabaseConnection.php";
+    include_once("Includes/DatabaseConnection.php") ;
     switch ($type) {
         case "avg-a": // Average of all averages
             $getAverages = $connection->prepare("SELECT `wid`, `avg_health`, `avg_nutrition`, `avg_pse`, `avg_behavior`, `avg_mental` FROM `welfaresubmission` WHERE zim=?");

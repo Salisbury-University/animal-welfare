@@ -1,22 +1,19 @@
 <?php
-include_once("Templates/header.php");
-include_once("Includes/preventUnauthorizedUse.php");
-include_once("Includes/DatabaseConnection.php");
+include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/databaseManipulation.php");
 include "getData.php";
 
-##Initializes forms variable
-$sql = "SELECT * FROM `forms`;";
-$forms = mysqli_query($connection, $sql);
+include "Templates/header.php";
 
-
+$database = new databaseManipulation;
 
 //Custom for animal profile page
 //Get ID:
 $zims= $_GET['id'];
 
   
-$query = 'SELECT * FROM animals WHERE id= ' . $zims; 
-$r = mysqli_query($connection, $query);
+$query = 'SELECT * FROM animals WHERE id= ?'; // zims query
+$r = $database->runParameterizedQuery($query, "i", array($zims));
 $row = mysqli_fetch_array($r);
 $name = $row['name'];
 $species = $row['species_id'];
@@ -28,96 +25,84 @@ $avg = "N/A";
 $lastcheckup = "N/A";
 $lastfed = "N/A";
 
-$query = 'SELECT form_id FROM species WHERE id= \'' . $species . '\'';
-$formID = mysqli_query($connection, $query);
+$query = 'SELECT form_id FROM species WHERE id= ?'; // species query
+$formID = $database->runParameterizedQuery($query, "s", array($species));
 $formID = mysqli_fetch_assoc($formID);
 $formID = $formID['form_id'];
 
 $sql = "SELECT MAX(dates) AS lastcheckup FROM welfaresubmission";
-        $result = mysqli_query($connection, $sql);
+        $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
         $lastcheckup = $row['lastcheckup'];
 
 $sql = "SELECT MAX(dates) as lastfed FROM diet";
-        $result = mysqli_query($connection, $sql);
+        $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
         $lastfed = $row['lastfed'];
 ?>
 
+
+<!doctype html>
+<html lang="en">
+<head>
 <link href="CSS/display.css" rel="stylesheet">
-<style>
-  .scores{
-    height:40%;
-    overflow-y:auto;
-    
-  }
-  .notebox{
-    height: 45%;
-    overflow-y:auto;
-    border:2px solid black;
-  }
-</style>
+    <script> 
 
-	<!--For search page // this function is not in use-->
-	<script> 
+            var reload_ = false
 
-    var reload_ = false
+            function getReason(){
+                if(!reload_){
 
-    function getReason(){
-        if(!reload_){
-
-          var reason = prompt("Please enter the reason for the welfare submission");
-          var confirmed = confirm("Is this correct? '" + reason + "'");
-          
-          
-          if(!confirmed){
-              getReason();
-          }
-          else{
-              document.getElementById('REASON').value = reason;
-              reload_=true;
-          }
-        }
-    }
-
-    function deleteEntry() {
-    var wid = prompt("Enter the 'Entry ID' to delete");
-    
-    if (wid !== null && wid !== "") {
-        var confirmed = confirm("Are you sure you want to delete entry with ID " + wid + "?");
-
-        if (confirmed) {
-            
-            var url = "delete_w_entry.php";
-            var formData = new FormData();
-            //something with getting the zims and wid is not working 
-            //because hard coding these in works successfully
-            formData.append("wid", wid);
-            formData.append("zims", <?php echo $zims; ?>);
-            
-
-            // Send an AJAX request to delete the entry
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        
-                        alert("Entry with ID " + wid + " deleted successfully.");
-                    } else {
-                        
-                        alert("Error deleting entry with ID " + wid);
+                var reason = prompt("Please enter the reason for the welfare submission");
+                var confirmed = confirm("Is this correct? '" + reason + "'");
+                
+                
+                if(!confirmed){
+                    getReason();
+                }
+                else{
+                    document.getElementById('REASON').value = reason;
+                    reload_=true;
                     }
                 }
-            };
-            xhr.send(formData);
-        }
-      }
-    }
-  </script>
-</head>
+            }
 
+            function deleteEntry() {
+            var wid = prompt("Enter the 'Entry ID' to delete");
 
+            if (wid !== null && wid !== "") {
+                var confirmed = confirm("Are you sure you want to delete entry with ID " + wid + "?");
+
+                if (confirmed) {
+                    
+                    var url = "delete_w_entry.php";
+                    var formData = new FormData();
+                    formData.append("wid", wid);
+                    formData.append("zims", <?php echo $zims; ?>);
+                    
+
+                    // Send an AJAX request to delete the entry
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url, true);    
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                            alert("Entry with ID " + wid + " deleted successfully.");
+                            location.reload();
+                                
+                            } else {
+                                
+                                alert("Error deleting entry with ID " + wid);
+                            }
+                        }
+                    };
+                    xhr.send(formData); 
+                
+                }
+            }
+            location.reload();
+            }
+</script>
 <style>
     .scroll {
     max-height: 150px;
@@ -126,9 +111,10 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
 }
 
 </style>
-
-<!-- Main Content -->
-<main class="container-fluid">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="container-fluid">
         <div class="row">
             <!-- Back Button -->
             <div class="col-12">
@@ -180,10 +166,10 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                         <?php 
                             $stmt = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental 
                             FROM welfaresubmission 
-                            WHERE zim = $zims
+                            WHERE zim = ?
                             ORDER BY wid DESC"; 
 
-                            $result = mysqli_query($connection, $stmt);
+                            $result = $database->runParameterizedQuery($stmt, "i", array($zims));
                             
                             //$r = 226;//201+25=226
                             //$g = 240;//215+25=240
@@ -228,7 +214,12 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 $count++;
                                 $total += $average;
                             }
-                            $total = $total/$count;
+                                // Fix division by zero error.
+                            if($count != 0)
+                                $total = $total/$count;
+                            else
+                                $total = 0;
+
                             $total = round($total, $precision);
 
                         ?>
@@ -261,7 +252,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 <?php
                                     $stmt = "SELECT * FROM diet ORDER BY dates DESC";
 
-                                    $result = mysqli_query($connection, $stmt);
+                                    $result = $database->runQuery_UNSAFE($stmt);
 
                                     $r = 201;
                                     $g = 215;
@@ -280,7 +271,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                             <div class = "card-footer text-center">
                             <div class = "btn-group">
                                 <form method = "POST"  action="ate.php?id=<?php echo $zims; ?>"> 
-                                <input type = "submit" value = "Aniaml Ate Today" class = "btn btn-success">
+                                <input type = "submit" value = "Animal Ate Today" class = "btn btn-success">
                                 </form>
                             </div>
                         </div>                        
@@ -370,8 +361,8 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                       <!--Initializing Variables-->
                       <?php
                       $sql = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) 
-                      FROM `welfaresubmission` WHERE `zim` = $zims";
-                      $averages = mysqli_query($connection, $sql);
+                      FROM `welfaresubmission` WHERE `zim` = ?";
+                      $averages = $database->runParameterizedQuery($sql, "i", array($zims));
                       $averages = mysqli_fetch_array($averages);
 
                       $health = $averages['AVG(`avg_health`)'];
@@ -436,6 +427,8 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
         </div>
     </main>
     
-<?php
-include_once("Templates/footer.php");
-?>vscode-remote://ssh-remote%2B15.204.175.56/home/rachelp/website/need/getData.php
+    <hr>
+
+</body>
+</html>
+<?php include_once("Templates/footer.php"); ?>
