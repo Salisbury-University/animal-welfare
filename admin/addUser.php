@@ -1,9 +1,9 @@
 <!--Start PHP-->
 <?php
-include_once("../auth/preventUnauthorizedUse.php");
-include_once("../auth/databaseManager.php");
+include_once("../fnc/auth/preventUnauthorizedUse.php");
+include_once("../fnc/db/auth/databaseManager.php");
 
-$database = new databaseManipulation;
+$database = new DatabaseManager;
 
 $submittedEmail = $_POST['email'];
 $submittedPassword = $_POST['password'];
@@ -13,7 +13,7 @@ $hashedPassword = password_hash($submittedPassword, PASSWORD_DEFAULT);
 
 $valueArr = array($submittedEmail, $hashedPassword, $submittedAdminFlag);
 $statement = "INSERT INTO users(email, pass, administrator) VALUES (?, ?, ?);";
-$database->runParameterizedQuery($statement, "ssb", $valueArr);
+$database->runParameterizedQuery($statement, "ssi", $valueArr);
 
        // Redirect to home directory
 header("Location: ../admin.php");

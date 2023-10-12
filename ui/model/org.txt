@@ -1,2 +1,0 @@
-itr contains all iteratively built pages ( through database information)
-outside of itr are all the standalone pages

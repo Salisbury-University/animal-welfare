@@ -1,0 +1,23 @@
+<?php
+include_once("databaseManipulation.php");
+
+
+    // This is how to run a parameterized query on the database
+$database = new databaseManipulation;
+
+    // Create an array with the values that were touched by the user.
+    // You ONLY need to do this for these values
+$valueArr = array("newValue", "newValue2");
+
+    // The mySQL statement that you wish to run
+    // The question marks will be replaced in order with the values that you pass in with $valueArr
+$statement = "INSERT INTO testTable(testfield, testfield2) VALUES (?, ?)";
+
+    /* The second values that are passed in tell PHP what data type the values are that your passing in
+    I'm passing in two strings so I will just put "ss".
+    If I was passing in an integer and then two strings after, I would put "iss".
+    https://www.php.net/manual/en/mysqli-stmt.bind-param.php Scroll down to the types 
+    section for further documentation about this. */
+$database->runParameterizedQuery($statement, "ss", $valueArr);
+
+?>
