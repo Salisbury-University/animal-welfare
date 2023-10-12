@@ -361,8 +361,8 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                       <!--Initializing Variables-->
                       <?php
                       $sql = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) 
-                      FROM `welfaresubmission` WHERE `zim` = $zims";
-                      $averages = mysqli_query($connection, $sql);
+                      FROM `welfaresubmission` WHERE `zim` = ?";
+                      $averages = $database->runParameterizedQuery($sql, "i", array($zims));
                       $averages = mysqli_fetch_array($averages);
 
                       $health = $averages['AVG(`avg_health`)'];
