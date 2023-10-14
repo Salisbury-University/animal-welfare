@@ -51,21 +51,24 @@ include_once("Templates/header.php");
             <?php
             if(isset($_POST['search'])){
                     $search = $_POST['search'];
-                    $query = "SELECT * FROM `animals` WHERE name LIKE ? OR `species_id` LIKE ? OR `section` LIKE ? OR `id` LIKE ?";
-                            $values = array($search, $search, $search, $search);
-                            $r = $database->runParameterizedQuery($query, "ssss", $values);
+                    $query = "";
+                    $result;
+                    if($search == ""){ // If there is no search input from the user
+                        $query = "SELECT * FROM `animals`";
+                        $result = $database->runQuery_UNSAFE($query);
 
-                            if ($check = mysqli_fetch_array($r) == NULL) { //If no results
-                              echo '<section class="search-result-item"><h1>No results for "' . $search . '"</h1></section>';
-                            }
-                            
-                            $r = $database->runParameterizedQuery($query, "ssss", $values);
-            
-                            if($search == '' || $search == ' '){
-                                $search = "all";
-                            }
+                    }else{ // If there was a search input by the user
+                        $query = "SELECT * FROM `animals` WHERE name LIKE ? OR `species_id` LIKE ? OR `section` LIKE ? OR `id` LIKE ?";
+                        $values = array($search, $search, $search, $search);
+                        $result = $database->runParameterizedQuery($query, "sssi", $values);
+                    }
+                    
+                        // Check if there arent any results
+                    if ($result->num_rows === 0) {
+                        echo '<section class="search-result-item"><h1>No results for "' . $search . '"</h1></section>';
+                    }
                 
-                    while($row = mysqli_fetch_array($r)){ //Individual animals
+                    while($row = mysqli_fetch_array($result)){ //Individual animals
                     
             ?>
                     <section class="search-result-item">
