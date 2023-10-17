@@ -30,15 +30,24 @@ $formID = $database->runParameterizedQuery($query, "s", array($species));
 $formID = mysqli_fetch_assoc($formID);
 $formID = $formID['form_id'];
 
-$sql = "SELECT MAX(dates) AS lastcheckup FROM welfaresubmission";
+$sql = "SELECT MAX(dates) AS lastcheckup FROM welfaresubmission WHERE zim = $zims";
         $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
-        $lastcheckup = $row['lastcheckup'];
+        if(($row =mysqli_fetch_assoc($result)) != NULL){
+            $lastcheckup = $row['lastcheckup'];
+        }else{
+            $lastcheckup = "N/A";
+        }
 
-$sql = "SELECT MAX(dates) as lastfed FROM diet";
+$sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
         $result = $database->runQuery_UNSAFE($sql);
         $row = mysqli_fetch_assoc($result);
-        $lastfed = $row['lastfed'];
+        if(($row=mysqli_fetch_assoc($result)) != NULL){
+            $lastfed = $row['lastfed'];
+        }
+        else{
+            $lastfed = "N/A";
+        }
 ?>
 
 
@@ -178,6 +187,8 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                             $precision = 2; //number of digits after decimal
                             $count = 0;
                             $total = 0;
+
+                            if ($row = mysqli_fetch_array($result) != NULL){
                             while($row = mysqli_fetch_array($result)){
                                 
                                 $average = 0;
@@ -221,7 +232,10 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 $total = 0;
 
                             $total = round($total, $precision);
-
+                        }else {
+                            echo "<br>&nbsp No previous entries <br><br><br><br>";
+                            $total = "N/A";
+                        }
                         ?>
                         </div>
                             <?php echo "All time overall: $total";?> 
@@ -250,20 +264,45 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
                                 <div class = "scroll">
                                 <!-- Display diet tracking information here -->
                                 <?php
-                                    $stmt = "SELECT * FROM diet ORDER BY dates DESC";
-
-                                    $result = $database->runQuery_UNSAFE($stmt);
+                                    $stmt = "SELECT * FROM diet WHERE zim = ? ORDER BY dates DESC";
+                                    $result = $database->runParameterizedQuery($stmt, "i", array($zims));
+                                    //$result = $database->runQuery_UNSAFE($stmt);
 
                                     $r = 201;
                                     $g = 215;
                                     $b = 200;
 
-                                    while($row=mysqli_fetch_array($result)){
+                                    //add color coding. if difference is 35% of total red, <35% & >65% yellow, >65% Green
+                                    if($row= mysqli_fetch_array($result) != NULL){
+
+                                    while($row= mysqli_fetch_array($result)){
+                                        $quantitygiven = $row['quantitygiven'];
+                                        $quantityeaten = $row['quantityeaten'];
+                                        $percent = ($quantityeaten/$quantitygiven) * 100;
+
+                                        if($percent > 65){
+                                            $r = 181;
+                                            $g = 209;
+                                            $b = 140;
+                                        }
+                                        elseif($percent <= 65 && $percent > 35){
+                                            $r = 201;
+                                            $g = 210;
+                                            $b = 45;
+                                        }
+                                        elseif($percent <= 35){
+                                            $r = 209;
+                                            $g = 143;
+                                            $b = 140;
+                                        }
+
                                         echo '<div style="border:1px solid black; background:rgba('.$r.','.$g.','.$b. ', .6);">';
-                                        echo '<p> &rarr; |[<a href=".php?zim='.$zims.'">' . $row['dates'] . '</a> ]|[ D. Entry ID ' . $row['did'] . ']|[ ' . $row['food'] .']|[ '.$row['quantity']. " ".$row['units']. ']</tr><br>';
+                                        echo '<p> &rarr; |[<a href="displayate.php?zim='.$zims.'&did='.$row['did'].'">' . $row['dates'] . '</a> ]|[ D. Entry ID ' . $row['did'] . ']|[ '. $quantitygiven . ' ' . $row['units'].' of ' . $row['food'] .']|[ '. $percent .'% Consumed ]</tr><br>';
                                         echo '</div>';
                                     }
-                                    
+                                }else{
+                                    echo "<br> &nbsp No previous entries<br><br><br><br>";
+                                }
                                 ?>
                                 </div>
                             </div>
@@ -283,7 +322,13 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Welfare Submissions</h5>
+                        <h5 class="card-title"> All Time Welfare Submissions Graph
+                              <?php for($i =0; $i < 40; ++$i)  echo "&nbsp"; ?>
+                                
+                                <form method = "POST" action = "compare.php?zim=<?php echo $zims;?>">
+                                <input type="submit" value="Compare" class="btn btn-success">
+                                </form></h5>
+                                
                     </div>
                     <div class="card-body">
                         <!-- Content for the graph card -->
@@ -354,7 +399,7 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet";
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Average By Section</h5>
+                        <h5 class="card-title"> All Time Average By Section</h5>
                     </div>
                     <!--Start of Polar Chart-->
                     <div class="card-body" style="width:90%;max-width:600px">
