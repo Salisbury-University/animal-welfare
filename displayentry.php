@@ -1,120 +1,196 @@
-<?php 
+<?php
 include "Includes/preventUnauthorizedUse.php";
 
+    
+    $formID = $_GET['formID'];
+    $wid = $_GET['wid'];
+    $zims = $_GET['zim'];
+    $i = 0;
+    //gets sections
+    $sql = "SELECT title FROM `sections`";
+    $sections = mysqli_query($connection, $sql);
 
-$wid = $_GET['id'];
-
-$sql = "SELECT zims FROM welfaresubmission WHERE wid = ?";
-
-$stmt = $connection->prepare($sql);
-$stmt->bind_param("i", $wid);
-$stmt->execute();
-
-$stmt->close();
 ?>
 
+<?php 
+     
+              // QUERY: Gets the sections and the # of questions in each
+                    $query = "SELECT
+                    sec.id, COUNT(*) AS 'num'
+                    FROM (SELECT s.id, s.title
+                        FROM sections s, hasSectionQuestions hsq 
+                        WHERE hsq.form_id='$formID' AND  s.id=hsq.section_id) 
+                        AS sec
+                    GROUP BY sec.title
+                    ORDER BY sec.id";
+                
+                    $result = mysqli_query($connection, $query);
+    
+                    $qArr = [];
+                    $index = 0;
+
+
+                if ($result) {
+                    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $num = $row['num']; // Access the 'num' column which is number of questions per section
+                        $qArr[$index++]=$num;
+                    }
+                }
+                
+                    $numofsec = mysqli_num_rows($result);
+                                                 
+?>
+                
+
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dashboard</title>
+    <title>Display Entry</Form></title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="CSS/main.css" rel="stylesheet">
-    <link href="CSS/display.css" rel="stylesheet">
+    <link href="CSS/forms.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
+    <style>
+        /* Custom CSS for centering the card */
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 25vh;
+        }
+    </style>
+                
   </head>
+  <form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+    	<button type="submit" class="btn btn-sm btn-success">Back</button>
+        
+        <!--Only edit main-->
+        
+<body>
+<main><!-- Main jumbotron for a primary marketing message or call to action -->
+        
 
-  <body>
-    <!--Header-->
-    <header></header>
+<?php
+    //Display Active Form Name
     
-    <!--Navigation Bar-->
-    <hr>
-    <nav class="navbar navbar-expand-md my-light">
+    $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
+    $title = mysqli_query($connection, $sql);
+    $title = mysqli_fetch_array($title);
+    echo "<h2 class = 'text-center'> Past " . $title['title'] . "</h2>";
+
+    $sql = "SELECT * FROM welfaresubmission WHERE wid = $wid";
+    $result = mysqli_query($connection,$sql);
+    $row = mysqli_fetch_array($result);
+
+    $precision = 2; //number of digits after decimal
+    $zims = $row['zim'];
+    $date = $row['dates'];
+    $reason = $row['reason'];
+    $avg_health = round($row['avg_health'], $precision);
+    $avg_nut = round($row['avg_nutrition'], $precision);
+    $avg_pse = round($row['avg_pse'], $precision);
+    $avg_mental = round($row['avg_mental'], $precision);
     
-    <!--Logo-->
-    <div class = "logo-overlay">
-      <a href="home.php">
-        <img src=Images/Header/logo.png alt="Logo">
-      </a>
+?>   
+
+<div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="center-card">
+                    
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Welfare Entry # <?php echo $wid ?> </h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>ZIM:</strong> <?php echo $zims; ?></li>
+                                    <li class="list-group-item"><strong>Date:</strong> <?php echo $date; ?></li>
+                                    <li class="list-group-item"><strong>Reason:</strong> <?php echo $reason; ?></li>
+                                    <li class="list-group-item"><strong>Health Average:</strong> <?php echo $avg_health; ?></li>
+                                    <li class="list-group-item"><strong>Nutrition Average:</strong> <?php echo $avg_nut; ?></li>
+                                    <li class="list-group-item"><strong>Average PSE:</strong> <?php echo $avg_pse; ?></li>
+                                    <li class="list-group-item"><strong>Average Mental:</strong> <?php echo $avg_mental; ?></li>
+                                </ul>       
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
     </div>
 
-      <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav mr-auto">
-          <!--Home-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="home.php">Home</a>
-          </li>
+<div class="container">
+    <form method="POST" class = "text-center"> <!-- had to move this here so we can access the array in post. The table has to be within the form -->
+    <table class="table table-bordered" id="myTable">
 
-          <!--Diet Tracker-->
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Diet Tracker</a>
-          </li>
+        <tbody>
+            <?php
+                //display
+                $count = 1;           
+                for ($secNum = 1; $secNum <= mysqli_num_rows($sections); $secNum++) {
+                    $sql = "SELECT q.question, q.id, hsq.id
+                            FROM questions q
+                            JOIN hasSectionQuestions hsq ON q.id = hsq.question_id
+                            WHERE hsq.section_id = " . $secNum . " and hsq.form_id = " . $formID;
+                    $questions = mysqli_query($connection, $sql);
+                    while ($quest = mysqli_fetch_array($questions)) {
+                        if ($count == 1) {
+                            $sec = mysqli_fetch_array($sections); ?>
+                            <tr>
+                                <th class="text-center" colspan="3">
+                                    <?= htmlspecialchars($sec["title"], ENT_QUOTES, 'UTF-8') ?>
+                                </th>
+                            </tr>
+                            <?php } ?>
+                            
+                            <?php 
+                                $sql = "SELECT responses FROM welfaresubmission WHERE wid = $wid";
+                                $result = mysqli_query($connection,$sql);
+                                $row = mysqli_fetch_array($result);
+                               
+                                $str = $row['responses'];
+                                
+                            ?>
+                            
+                            <tr>
+                                <th><?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?></th>
+                                <td><?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td> <?= htmlspecialchars($str[$i++], ENT_QUOTES,'UTF-8')?></td>
+                                
+                            </tr>
+                            
+                            <?php 
+                            
+                
+                $count++;
+                
+            }
+            $count = 1;
+        }
 
-          <!--Search Page-->
-          <li class="nav-item">
-            <a class="nav-link my-text-info" href="search.php">Search</a>
-          </li>
-          
-          <!--Start Admin Only-->
-          <?php
-            $isAdmin = checkIsAdmin();
-            if($isAdmin == true){ ?>
-          
-                    <!--Welfare Forms-->
-                    <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Edit Forms
-              </a>
-      
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="Forms/Forms.php?id=<?php echo $form['id']; ?>">
-                    <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
-                  </form>
-                <?php endwhile; ?>
-              </div>
-            </li>
-          
+        
+        ?>
+            </tbody>
+        </table>
+    </div>
 
-          <!--Dropdown menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle my-text-info" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Admin
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="admin.php">Manage admin</a>
-              <a class="dropdown-item" href="admin_createUser.php">Create User</a>
-            </div>
-          </li>
-
-          <?php } ?> <!--End admin only-->
-        </ul>
-        <a class="btn btn-success my-2 my-sm-0 float-left" href="logoutHandler.php" role="button">Logout</a>
-      
-      </div>
-    </nav>
-    <hr>
-    <!--End Navigation Bar-->
-
-
-    <!--Only edit main-->
-    <main>
-      <?php /*
-    <form action="animalprofile.php?=">
-				<div class="back">
-					<input type="submit" value="Back">
-				</div>
-			</form>
-         echo "<p> $wid </p>"; 
-        */?>
-    </main>
+    <?php           
+        mysqli_close($connection);
+    ?>
+    <!--Export to CSV-->
+</main>
+</body>
