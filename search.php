@@ -89,10 +89,42 @@ include_once("Templates/header.php");
                                         <a class='btn btn-success btn-sm' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                                         <p></p>
                                         <td>
-                                          <form action = "AnimalAction/delete.php" method = "post">
-                                            <input type = "hidden" name = "id" value = "<?=$row['id']?>">
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete &raquo;</button>
-                                          </form>
+                                            <form onsubmit="return validate()">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete &raquo;</button>
+                                            </form>
+
+                                            <script>
+                                                function validate() {
+                                                    var confirmed = confirm("Are you sure you want to delete?");
+                                                    
+                                                    if (confirmed) {
+                                                        var url = "AnimalAction/delete.php";
+                                                        var formData = new FormData();
+                                                        formData.append("id", <?php echo $row['id']; ?>);
+
+                                                        // Send an AJAX request to delete the entry
+                                                        var xhr = new XMLHttpRequest();
+                                                        xhr.open("POST", url, true);
+                                                        xhr.onreadystatechange = function() {
+                                                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                                                // Handle the response here, e.g., show a success message
+                                                                alert("Item deleted successfully.");
+                                                            }
+                                                        };
+
+                                                        xhr.send(formData);
+
+                                                        location.reload();
+
+                                                        // Prevent the form from submitting as we're handling the submission via AJAX
+                                                        return false;
+                                                    }
+                                                    // If not confirmed, prevent form submission
+                                                    return false;
+                                                    
+                                                }
+                                                
+                                            </script>
                                         </td>
                                     </div> 
                                 </div>
