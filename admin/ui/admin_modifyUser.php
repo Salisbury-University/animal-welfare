@@ -1,14 +1,14 @@
 <?php
-include_once("../../ui/model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 
 $isAdmin = checkIsAdmin();
 if($isAdmin == false){
-  header('Location: ../../ui/home.php');
+  header('Location: /home/joshb/website/final/slog/animal-welfare/ui/model/home.php');
 }
 
 ?>
 
-<link href="../../style/admin.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/admin.css" rel="stylesheet">
 
     <!--Only edit main-->
     <main>
@@ -20,7 +20,7 @@ if($isAdmin == false){
     <div class = "my-container" style="border:5px solid #000000;"">
         <h1>Modify User </h1>
   
-        <form action='../modifyUser.php' method='post'>
+        <form action='/home/joshb/website/final/slog/animal-welfare/admin/modifyUser.php' method='post'>
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type='text' class="form-control" name='email' placeholder=<?php echo $_POST['email']; ?> readonly>
@@ -41,5 +41,5 @@ if($isAdmin == false){
     </main>
 
 <?php
-include_once("../../ui/model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

@@ -1,13 +1,13 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 ?>
 
-<link href="../style/admin.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/admin.css" rel="stylesheet">
     <!--Only edit main-->
     <main>
       <?php
-        include_once("../fnc/db/auth/DatabaseConnection.php");
-        include_once("../fnc/auth/preventUnauthorizedUse.php");
+        include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php");
+        include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
 
         //Get ID:
         $zims= $_GET['id'];
@@ -24,7 +24,7 @@ include_once("model/header.php");
     <div class = "my-container" style="border:5px solid #000000;"" id = 'myTable'>
         <h1>Modify Animal</h1>
         <!--Start form-->       
-        <form action='../fnc/db/edit.php' method='post'>
+        <form action='/home/joshb/website/final/slog/animal-welfare/fnc/db/edit.php' method='post'>
             <!--Enter ID--> 
             <div class="form-group">
                 <label for="id">ID:</label>
@@ -97,5 +97,5 @@ include_once("model/header.php");
     </main>
 
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

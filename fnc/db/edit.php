@@ -1,7 +1,7 @@
 <!--Start PHP-->
 <?php
-include "auth/dbConnection.php";
-include "../auth/preventUnauthorizedUse.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
         
 $id = $_POST['id'];
 $submittedSection = $_POST['location'];
@@ -18,7 +18,7 @@ if($submittedSection != NULL && $submittedName != NULL){ //modify location and n
 }elseif($submittedSection != NULL){ // modify location
         $sql="UPDATE `animals` SET `section`='$submittedSection' WHERE `animals`.`id`='$id';";
 }elseif($submittedName == NULL && $submittedSection == NULL){
-        header("Location: ../../ui/search.php"); // Do nothing and return to the search page if the form is left blank
+        header("Location: /home/joshb/website/final/slog/animal-welfare/ui/search.php"); // Do nothing and return to the search page if the form is left blank
 }else{ // Should never arrive here.
         $sql = NULL;
         echo "Section: $submittedSection - Name: $submittedName";
@@ -28,7 +28,7 @@ if($submittedSection != NULL && $submittedName != NULL){ //modify location and n
 $result = mysqli_query($connection, $sql);
 
         // Redirect to home directory
-header("Location: ../../ui/search.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/ui/search.php");
 
         
 ?>

@@ -1,5 +1,5 @@
 <?php
-include "../auth/preventUnauthorizedUse.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
 
     function debug_to_console($data){
         $output = $data;

@@ -1,6 +1,6 @@
 <?php
-include_once("Includes/databaseManipulation.php");
-$database = new databaseManipulation;
+include_once("../db/auth/databaseManager.php");
+$database = new DatabaseManager;
 
     // Get the form data
 $submittedEmail = $_POST['submittedEmail'];
@@ -45,10 +45,10 @@ if($row != NULL){
             // Set session variables and redirect to the home page
         $_SESSION['email'] = $row['email'];
         $_SESSION['administrator'] = $row['administrator'];
-        header("Location: ../../ui/home.php"); 
+        header("Location: /home/joshb/website/final/slog/animal-welfare/ui/model/home.php"); 
         exit();
     }
 }
 
 $_SESSION['loginError'] = "Incorrect Password";
-header("Location: ../../index.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/index.php");

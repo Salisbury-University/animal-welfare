@@ -1,5 +1,5 @@
 <?php
-include '../auth/dbConnection.php';
+include '/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php';
 
 if(isset($_POST['formid']) && isset($_POST['secid']) && isset($_POST['questid'])){
     $FORM_ID = $_POST['formid'];

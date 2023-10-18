@@ -1,5 +1,5 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 
 //Custom for animal profile page
 //Get ID:
@@ -24,7 +24,7 @@ $formID = $formID['form_id'];
 
 ?>
 
-<link href="../style/display.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/display.css" rel="stylesheet">
 <style>
   .scores{
     height:40%;
@@ -68,7 +68,7 @@ $formID = $formID['form_id'];
 
         if (confirmed) {
             
-            var url = "../fnc/delete_w_entry.php";
+            var url = "/home/joshb/website/final/slog/animal-welfare/fnc/delete_w_entry.php";
             var formData = new FormData();
             //something with getting the zims and wid is not working 
             //because hard coding these in works successfully
@@ -188,5 +188,5 @@ $formID = $formID['form_id'];
 		</div> <!--Closes whole profile container-->
     </main>
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

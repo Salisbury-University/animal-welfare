@@ -1,7 +1,7 @@
 <!--Start PHP // Will be deprecated soon-->
 <?php
-include "auth/dbConnection.php";
-include "../auth/preventUnauthorizedUse.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
         
 $submittedID = $_POST['id'];
 $submittedSection = $_POST['location'];
@@ -23,7 +23,7 @@ echo $submittedForm . '<br>';
 
 if ($submittedID == NULL || $submittedSection == NULL || $submittedSpecies == NULL ) {//if any of these are NULL, kicks them back
     echo 'Error';
-    header("Location: ../../ui/createAnimal.php"); // this will not work
+    header("Location: /home/joshb/website/final/slog/animal-welfare/ui/createAnimal.php"); // this will not work
 
 }
 //check if species exists already otherwise insert that first
@@ -50,7 +50,7 @@ else{
 $result = mysqli_query($connection, $sql);
 
 // Redirect to home directory
-header("Location: ../../ui/search.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/ui/search.php");
 
         
 ?>

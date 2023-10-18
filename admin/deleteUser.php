@@ -1,12 +1,12 @@
 <?php
-include_once("../fnc/auth/preventUnauthorizedUse.php");
-include_once("../fnc/db/auth/databaseManager.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
 
 $database = new DatabaseManager;
 
 $isAdmin = checkIsAdmin();
 if($isAdmin == false){
-    header('Location: ../home.php');
+    header('Location: /home/joshb/website/final/slog/animal-welfare/ui/model/home.php');
 }
 
 $submittedEmail = $_POST['email'];
@@ -24,6 +24,6 @@ $result = $database->runParameterizedQuery($sql, "s", array($submittedEmail));
 }*/
 
 // Redirect to home directory
-header("Location: ../admin.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php");
 
 ?>

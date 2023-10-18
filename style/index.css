@@ -1,11 +1,11 @@
 .col-md-8 {
-    background-image: url("../img/login-bg.jpg");
+    background-image: url("/home/joshb/website/final/slog/animal-welfare/img/login-bg.jpg");
     height:100vh;
     min-width:70%;
 }
 
 .col-md-4 {
-    background-image: url("../img/ChileanFlamingo.jpg");
+    background-image: url("/home/joshb/website/final/slog/animal-welfare/img/ChileanFlamingo.jpg");
     background-size: cover;
     height:100vh;
     border-right:solid 10px black;

@@ -1,7 +1,7 @@
 <?php
 // This page is designed for normal users only, So it does not check if you're an admin.
-include_once("../fnc/auth/preventUnauthorizedUse.php");
-include_once("../fnc/db/auth/databaseManager.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
 
 $database = new DatabaseManager;
 
@@ -20,6 +20,6 @@ if($submittedPassword == $submittedRetypedPassword){
     $_SESSION['changePasswordError'] = "Passwords do not match!";
 }
 
-header("Location: ../user_changePassword.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/fnc/auth/userChangePasswordError.php");
 
 ?>

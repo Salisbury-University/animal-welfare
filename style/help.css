@@ -1,7 +1,7 @@
 
 .jumbotron
 {
-    background: url('../img/lynx.jpg') no-repeat center center; 
+    background: url('/home/joshb/website/final/slog/animal-welfare/img/lynx.jpg') no-repeat center center; 
     background-size: cover;
     min-height: 100%;
     margin: 0 !important;

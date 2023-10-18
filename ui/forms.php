@@ -1,8 +1,8 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 ?>
 
-<link href="../style/forms.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/forms.css" rel="stylesheet">
 
     <!--Only edit main-->
     <main><!-- Main jumbotron for a primary marketing message or call to action -->
@@ -18,7 +18,7 @@ include_once("model/header.php");
 
         <!--Back button-->
         <div class="back">
-            <form method="POST" action="home.php">
+            <form method="POST" action="/home/joshb/website/final/slog/animal-welfare/ui/model/home.php">
                 <input type="submit" value="Back" />
             </form>
 
@@ -89,7 +89,7 @@ include_once("model/header.php");
                 var colid = $(this).data('id'); //Test Data: 66
 
                 $.ajax({
-                    url: '../fnc/db/form/updateData.php',
+                    url: '/home/joshb/website/final/slog/animal-welfare/fnc/db/form/updateData.php',
                     type: 'post',
                     data: {'text' : col1, 'id' : colid},
                     success: function (response) {
@@ -101,5 +101,5 @@ include_once("model/header.php");
     </script>
 
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

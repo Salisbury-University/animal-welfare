@@ -1,5 +1,5 @@
 <?php
-include "../fnc/auth/preventUnauthorizedUse.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
 ?>
 
 <!doctype html>
@@ -17,8 +17,8 @@ include "../fnc/auth/preventUnauthorizedUse.php";
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="../style/main.css" rel="stylesheet">
-    <link href="../style/forms.css" rel="stylesheet">
+    <link href="/home/joshb/website/final/slog/animal-welfare/style/main.css" rel="stylesheet">
+    <link href="/home/joshb/website/final/slog/animal-welfare/style/forms.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
@@ -37,8 +37,8 @@ include "../fnc/auth/preventUnauthorizedUse.php";
 
         <!--Logo-->
         <div class="logo-overlay">
-            <a href="home.php">
-                <img src=../img/Header/logo.png alt="Logo">
+            <a href="/home/joshb/website/final/slog/animal-welfare/ui/model/home.php">
+                <img src=/home/joshb/website/final/slog/animal-welfare/img/Header/logo.png alt="Logo">
             </a>
         </div>
 
@@ -71,12 +71,12 @@ include "../fnc/auth/preventUnauthorizedUse.php";
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="admin.php">Manage admin</a>
-                        <a class="dropdown-item" href="admin_createUser.php">Create User</a>
+                        <a class="dropdown-item" href="/home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php">Manage admin</a>
+                        <a class="dropdown-item" href="/home/joshb/website/final/slog/animal-welfare/admin/ui/admin_createUser.php">Create User</a>
                     </div>
                 </li>
             </ul>
-            <a class="btn btn-success my-2 my-sm-0 float-left" href="../fnc/auth/logoutHandler.php" role="button">Logout</a>
+            <a class="btn btn-success my-2 my-sm-0 float-left" href="/home/joshb/website/final/slog/animal-welfare/fnc/auth/logoutHandler.php" role="button">Logout</a>
 
         </div>
     </nav>
@@ -85,7 +85,7 @@ include "../fnc/auth/preventUnauthorizedUse.php";
 
     <main>
         <?php
-        include '../fnc/db/auth/dbConnection.php';
+        include '/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php';
 
         // GET: Gets the form id
         $FORM_ID = $_GET['id'];
@@ -201,7 +201,7 @@ include "../fnc/auth/preventUnauthorizedUse.php";
                 var questionID = $(this).data('qid');
 
                 $.ajax({
-                    url: '../fnc/db/form/updateData.php',
+                    url: '/home/joshb/website/final/slog/animal-welfare/fnc/db/form/updateData.php',
                     type: 'post',
                     data: {'text' : newText, 'formid' : formID, 'secid' : sectionID, 'questid' : questionID},
                     success: function (response) {
@@ -217,7 +217,7 @@ include "../fnc/auth/preventUnauthorizedUse.php";
                 var questionID = $(this).data('qid');
 
                 $.ajax({
-                    url: '../fnc/db/form/deleteData.php',
+                    url: '/home/joshb/website/final/slog/animal-welfare/fnc/db/form/deleteData.php',
                     type: 'post',
                     data: {'formid' : formID,'secid' : sectionID,'questid' : questionID},
                     success: function (response) {
@@ -251,7 +251,7 @@ include "../fnc/auth/preventUnauthorizedUse.php";
                 var sectionID = $(this).data('sid');
 
                 $.ajax({
-                    url: '../fnc/db/form/addData.php',
+                    url: '/home/joshb/website/final/slog/animal-welfare/fnc/db/form/addData.php',
                     type: 'post',
                     data: {'text' : newText, 'formid' : formID, 'secid' : sectionID},
                     success: function (response) {

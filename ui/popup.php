@@ -1,5 +1,5 @@
 <?php
-include "../fnc/auth/preventUnauthorizedUse.php";
+include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
 
 //gets zims and form id from ajax
 $formID = $_POST['form'];
@@ -63,8 +63,8 @@ $numofsec = mysqli_num_rows($result);
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="../style/main.css" rel="stylesheet">
-    <link href="../style/forms.css" rel="stylesheet">
+    <link href="/home/joshb/website/final/slog/animal-welfare/style/main.css" rel="stylesheet">
+    <link href="/home/joshb/website/final/slog/animal-welfare/style/forms.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"

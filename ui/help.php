@@ -1,8 +1,8 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 ?>
 
-<link href="../style/help.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/help.css" rel="stylesheet">
 
 
     <!--Only edit main-->
@@ -54,5 +54,5 @@ include_once("model/header.php");
 </main>
 
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

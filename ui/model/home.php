@@ -1,8 +1,8 @@
 <?php
-include_once("model/header.php");
+include_once("header.php");
 ?>
 
-<link href="../style/home.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/home.css" rel="stylesheet">
 
 <!--Only edit main-->
 <main><!-- Main jumbotron for a primary marketing message or call to action -->
@@ -10,11 +10,11 @@ include_once("model/header.php");
     <div class="container">
       <h1 class="display-3 font-weight-bold text-white"><strong>Welcome!</h1>
       <p class = "font-weight-bold text-white">Submit a Welfare-Form by Animal Here:</p>
-      <p><a class="btn btn-success btn-lg" href="search.php" role="button">Welfare-Form &raquo;</a></p>
+      <p><a class="btn btn-success btn-lg" href="/home/joshb/website/final/slog/animal-welfare/ui/search.php" role="button">Welfare-Form &raquo;</a></p>
     </div>
   </div>
 </main>
 
 <?php
-include_once("model/footer.php");
+include_once("footer.php");
 ?>

@@ -1,14 +1,14 @@
 <?php
-include_once("../../ui/model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 
 $isAdmin = checkIsAdmin();
 if($isAdmin == false){
-  header('Location: ../../ui/home.php');
+  header('Location: /home/joshb/website/final/slog/animal-welfare/ui/model/home.php');
 }
 
 ?>
 
-<link href="../../style/admin.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/admin.css" rel="stylesheet">
 
     <!--Only edit main-->
     <main><!-- Main jumbotron for a primary marketing message or call to action -->
@@ -45,7 +45,7 @@ if($isAdmin == false){
                     <button type="submit" class="btn btn-dark">Modify</button></td>
                   </form>
                 <td>
-                  <form action = "../deleteUser.php" method = "post">
+                  <form action = "/home/joshb/website/final/slog/animal-welfare/admin/deleteUser.php" method = "post">
                     <input type = "hidden" name = "email" value = "<?=$row['email']?>">
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
@@ -61,5 +61,5 @@ if($isAdmin == false){
     </main>
 
 <?php
-include_once("../../ui/model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

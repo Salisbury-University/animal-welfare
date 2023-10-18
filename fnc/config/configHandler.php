@@ -14,7 +14,7 @@ class configHandler{
 
     public function __construct(){
             // Pull in the defaultConfig file in from another php file
-        include "../defaultConfig.php";
+        include "defaultConfig.php";
         $this->defaultConfigFile = $defaultConfigFile;
     }
 

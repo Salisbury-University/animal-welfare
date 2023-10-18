@@ -1,6 +1,6 @@
 <?php
 // WARNING: NOT WORKING
-include '../auth/dbConnection.php';
+include '/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/dbConnection.php';
 
 // CHECKS THAT THE PROPER POST VALUES ARE SET
 if(isset($_POST['text']) && isset($_POST['formid']) && isset($_POST['secid'])){

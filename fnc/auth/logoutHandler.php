@@ -12,6 +12,6 @@ if(ini_get("session.use_cookies")){
 session_destroy();
 
     // Redirect to the login page.
-header('Location: ../../index.php');
+header('Location: /home/joshb/website/final/slog/animal-welfare/index.php');
 exit;
 ?>

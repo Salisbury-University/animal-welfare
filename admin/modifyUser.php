@@ -1,6 +1,6 @@
 <?php
-include_once("../fnc/auth/preventUnauthorizedUse.php");
-include_once("../fnc/db/auth/databaseManager.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
 
 $database = new DatabaseManager;
 
@@ -24,7 +24,7 @@ if($submittedPassword != NULL && $submittedAdminFlag != NULL){
         $database->runParameterizedQuery($sql, "ss", array($hashedPassword, $submittedEmail));
 
 }elseif($submittedPassword == NULL && $submittedAdminFlag == NULL){
-        header("Location: ../admin.php"); // Do nothing and return to the admin page if the form is left blank
+        header("Location: /home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php"); // Do nothing and return to the admin page if the form is left blank
 }else{ // Should never arrive here.
         $sql = NULL;
         echo "Email: $submittedEmail - Password: $submittedPassword - AdminFlag: $submittedAdminFlag";
@@ -32,7 +32,7 @@ if($submittedPassword != NULL && $submittedAdminFlag != NULL){
 }
 
         // Redirect to home directory
-header("Location: ../admin.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php");
 
         
 ?>

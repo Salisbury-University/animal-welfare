@@ -32,7 +32,7 @@
                 <div class="col">
                     <h4>help</h4>
                     <ul>
-                        <li><a href="../help.php">help page</a></li>
+                        <li><a href="/home/joshb/website/final/slog/animal-welfare/ui/help.php">help page</a></li>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>

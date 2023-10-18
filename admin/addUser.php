@@ -1,7 +1,7 @@
 <!--Start PHP-->
 <?php
-include_once("../fnc/auth/preventUnauthorizedUse.php");
-include_once("../fnc/db/auth/databaseManager.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
 
 $database = new DatabaseManager;
 
@@ -16,7 +16,7 @@ $statement = "INSERT INTO users(email, pass, administrator) VALUES (?, ?, ?);";
 $database->runParameterizedQuery($statement, "ssi", $valueArr);
 
        // Redirect to home directory
-header("Location: ../admin.php");
+header("Location: /home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php");
 
         
 ?>

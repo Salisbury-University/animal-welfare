@@ -18,12 +18,12 @@
     }
 
     header {display: block; 
-            background-image: url('../img/Header/leaves.png'), url('../img/Header/header-bg.jpg');
+            background-image: url('/home/joshb/website/final/slog/animal-welfare/img/Header/leaves.png'), url('/home/joshb/website/final/slog/animal-welfare/img/Header/header-bg.jpg');
             background-repeat: no-repeat; background-size: cover;  height: 100px; margin-top:0px}
 
     /*Nav Bar */
     .my-light{
-        background-image: url('../img/Header/nav-bg.jpg');
+        background-image: url('/home/joshb/website/final/slog/animal-welfare/img/Header/nav-bg.jpg');
     }
     nav ul {margin-left:30%;}
 
@@ -50,7 +50,7 @@
     /*Footer aka copyright*/
     footer {
         background-color: darkgreen;
-        background-image: url('../img/birds.png');
+        background-image: url('/home/joshb/website/final/slog/animal-welfare/img/birds.png');
         background-position: right;
         background-repeat: no-repeat;
         background-size: 17%;

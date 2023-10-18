@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . "/../../fnc/db/auth/databaseManipulation.php");
-include_once(__DIR__ . "/../../fnc/auth/preventUnauthorizedUse.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
 
 $database = new DatabaseManager;
 
@@ -24,7 +24,7 @@ $forms = $database->runQuery_UNSAFE($sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Main styles -->
-    <link href="../../style/main.css" rel="stylesheet">
+    <link href="/home/joshb/website/final/slog/animal-welfare/style/main.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
@@ -41,8 +41,8 @@ $forms = $database->runQuery_UNSAFE($sql);
     
     <!--Logo-->
     <div class = "logo-overlay">
-      <a href="../home.php">
-        <img src=Images/Header/logo.png alt="Logo">
+      <a href="home.php">
+        <img src=/home/joshb/website/final/slog/animal-welfare/img/Header/logo.png alt="Logo">
       </a>
     </div>
 
@@ -50,7 +50,7 @@ $forms = $database->runQuery_UNSAFE($sql);
         <ul class="navbar-nav mr-auto">
           <!--Home-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../home.php">Home</a>
+            <a class="nav-link my-text-info" href="home.php">Home</a>
           </li>
 
           <!--Diet Tracker-->
@@ -60,7 +60,7 @@ $forms = $database->runQuery_UNSAFE($sql);
 
           <!--Search Page-->
           <li class="nav-item">
-            <a class="nav-link my-text-info" href="../search.php">Search</a>
+            <a class="nav-link my-text-info" href="/home/joshb/website/final/slog/animal-welfare/ui/search.php">Search</a>
           </li>
           
           <!--Start Admin Only-->
@@ -76,7 +76,7 @@ $forms = $database->runQuery_UNSAFE($sql);
       
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php while ($form = mysqli_fetch_array($forms, MYSQLI_ASSOC)): ?>
-                  <form method="POST" action="../forms.php?id=<?php echo $form['id']; ?>">
+                  <form method="POST" action="/home/joshb/website/final/slog/animal-welfare/ui/forms.php?id=<?php echo $form['id']; ?>">
                     <button type="submit" class="dropdown-item btn btn-secondary"><?php echo $form["title"]; ?></button>
                   </form>
                 <?php endwhile; ?>
@@ -90,8 +90,8 @@ $forms = $database->runQuery_UNSAFE($sql);
               Admin
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="../../admin/ui/admin.php">Manage admin</a>
-              <a class="dropdown-item" href="../../admin/ui/admin_createUser.php">Create User</a>
+            <a class="dropdown-item" href="/home/joshb/website/final/slog/animal-welfare/admin/ui/admin.php">Manage admin</a>
+              <a class="dropdown-item" href="/home/joshb/website/final/slog/animal-welfare/admin/ui/admin_createUser.php">Create User</a>
             </div>
           </li>
 
@@ -101,11 +101,11 @@ $forms = $database->runQuery_UNSAFE($sql);
         <?php 
           // Check if recovery account
         if(isset($_SESSION['isRecoveryAccount']) == 0){
-          echo "<a class='btn btn-success my-2 my-sm-0 float-left' href='../../fnc/auth/user_changePassword.php' role='button'>Change Password</a>";
+          echo "<a class='btn btn-success my-2 my-sm-0 float-left' href='/home/joshb/website/final/slog/animal-welfare/fnc/auth/userChangePasswordError.php' role='button'>Change Password</a>";
         }
         ?>
 
-        <a class='btn btn-success my-2 my-sm-0 float-left' href='../../fnc/auth/logoutHandler.php' role='button'>Logout</a>
+        <a class='btn btn-success my-2 my-sm-0 float-left' href='/home/joshb/website/final/slog/animal-welfare/fnc/auth/logoutHandler.php' role='button'>Logout</a>
 
       </div>
     </nav>

@@ -1,8 +1,8 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 ?>
 
-<link href="../style/search.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/search.css" rel="stylesheet">
     <!--Only edit main-->
     <main>
 
@@ -86,7 +86,7 @@ include_once("model/header.php");
                                         <a class='btn btn-success btn-sm' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                                         <p></p>
                                         <td>
-                                          <form action = "../fnc/db/delete.php" method = "post">
+                                          <form action = "/home/joshb/website/final/slog/animal-welfare/fnc/db/delete.php" method = "post">
                                             <input type = "hidden" name = "id" value = "<?=$row['id']?>">
                                             <button type="submit" class="btn btn-danger btn-sm">Delete &raquo;</button>
                                           </form>
@@ -117,5 +117,5 @@ include_once("model/header.php");
     </main>
 
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

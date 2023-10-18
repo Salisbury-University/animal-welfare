@@ -1,5 +1,5 @@
 <?php
-include_once('../../../config/configHandler.php');
+include_once("/home/joshb/website/final/slog/animal-welfare/fnc/config/configHandler.php");
 
 // Designed to be a replacement for the "DatabaseConnection.php" file.
 // In order to use it, see databaseManipTutorial.txt that will be located in the same directory as this file.

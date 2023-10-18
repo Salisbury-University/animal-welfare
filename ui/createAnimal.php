@@ -1,13 +1,13 @@
 <?php
-include_once("model/header.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/header.php");
 ?>
 
-<link href="../style/admin.css" rel="stylesheet">
+<link href="/home/joshb/website/final/slog/animal-welfare/style/admin.css" rel="stylesheet">
 
     <!--Only edit main-->
     <main>
       <?php
-        include_once("../fnc/auth/loginError.php"); //Displays error if something is NULL
+        include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/loginError.php"); //Displays error if something is NULL
 
         //Displays Sections:
         $sql = 'SELECT DISTINCT `section` FROM `animals` ORDER BY `section` ASC';
@@ -24,7 +24,7 @@ include_once("model/header.php");
     <div class = "my-container" style="border:5px solid #000000;"">
         <h1>Create Animal Form:</h1>
         <!--Start form-->       
-        <form action='../fnc/db/add.php' method='post'>
+        <form action='/home/joshb/website/final/slog/animal-welfare/fnc/db/add.php' method='post'>
             <!--Enter ID--> 
             <div class="form-group">
                 <label for="id">ID:</label>
@@ -146,5 +146,5 @@ include_once("model/header.php");
     </main>
 
 <?php
-include_once("model/footer.php");
+include_once("/home/joshb/website/final/slog/animal-welfare/ui/model/footer.php");
 ?>

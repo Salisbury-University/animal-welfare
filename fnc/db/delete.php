@@ -1,12 +1,12 @@
 <?php
-    include_once("../auth/preventUnauthorizedUse.php");
-    include_once("auth/databaseManager.php");
+    include_once("/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php");
+    include_once("/home/joshb/website/final/slog/animal-welfare/fnc/db/auth/databaseManager.php");
     
     $database = new DatabaseManager;
     
     $isAdmin = checkIsAdmin();
     if($isAdmin == false){
-        header('Location: ../../ui/home.php');
+        header('Location: /home/joshb/website/final/slog/animal-welfare/ui/model/home.php');
     }
     
     $animal = $_POST['id'];
@@ -26,6 +26,6 @@
     }*/
     
     // Redirect to home directory
-    header("Location: ../../ui/search.php");
+    header("Location: /home/joshb/website/final/slog/animal-welfare/ui/search.php");
     
     ?>
