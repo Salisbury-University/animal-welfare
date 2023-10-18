@@ -1,11 +1,14 @@
-<?php include "Includes/preventUnauthorizedUse.php";
+<?php 
+include_once("Templates/header.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
+
 $zims = $_GET['zim'];
 $did = $_GET['did'];
-echo $zims;
-echo $did;
 
-$stmt = "SELECT * FROM diet WHERE did = $did";
-$result = mysqli_query($connection, $stmt);
+$stmt = "SELECT * FROM diet WHERE did = ?";
+$result = $database->runParameterizedQuery($stmt, "i", array($did));
 $row = mysqli_fetch_assoc($result);
 
 $food = $row['food'];
@@ -26,7 +29,6 @@ $percent = ($quantityate/$quantitygiven) * 100;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-    <link href="CSS/main.css" rel="stylesheet">
     <link href="CSS/display.css" rel="stylesheet">
     <style>
         /* Custom CSS for centering the card */
@@ -80,3 +82,7 @@ $percent = ($quantityate/$quantitygiven) * 100;
     </div>
 </body>
 </html>
+
+<?php
+include_once("Templates/footer.php");
+?>

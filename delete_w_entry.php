@@ -1,5 +1,9 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Includes/preventUnauthorizedUse.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
+$connection = $database->getDatabaseConnection();
 
     function debug_to_console($data){
         $output = $data;

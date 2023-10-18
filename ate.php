@@ -1,4 +1,9 @@
-<?php include "Includes/preventUnauthorizedUse.php";
+<?php 
+include_once("Templates/header.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
+
 $zims = $_GET['id'];
 ?>
 <!DOCTYPE html>
@@ -82,6 +87,8 @@ $zims = $_GET['id'];
             echo $quantity;
             echo $date;
 
+            $connection = $database->getDatabaseConnection();
+
             $sql = "INSERT INTO diet (zim, dates, reason, food, quantity, units) VALUES (?,?,?,?,?,?)";
             $stmt = $connection->prepare($sql);
 
@@ -96,8 +103,10 @@ $zims = $_GET['id'];
 
                 $stmt->close();
             }else{
-                echo "<br> error preparing statement".$conection->error;
+                echo "<br> error preparing statement".$connection->error;
             }
         }
-        mysqli_close($connection);
+        unset($database);
+
+include("Templates/footer.php");
 ?>

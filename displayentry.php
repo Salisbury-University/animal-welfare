@@ -1,14 +1,17 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
+include_once("Templates/header.php");
+include_once("Includes/databaseManipulation.php");
 
+$database = new databaseManipulation;
     
-    $formID = $_GET['formID'];
-    $wid = $_GET['wid'];
-    $zims = $_GET['zim'];
-    $i = 0;
-    //gets sections
-    $sql = "SELECT title FROM `sections`";
-    $sections = mysqli_query($connection, $sql);
+$formID = $_GET['formID'];
+$wid = $_GET['wid'];
+$zims = $_GET['zim'];
+$i = 0;
+
+    // Get sections
+$sql = "SELECT title FROM `sections`";
+$sections = $database->runQuery_UNSAFE($sql);
 
 ?>
 
@@ -19,48 +22,36 @@ include "Includes/preventUnauthorizedUse.php";
                     sec.id, COUNT(*) AS 'num'
                     FROM (SELECT s.id, s.title
                         FROM sections s, hasSectionQuestions hsq 
-                        WHERE hsq.form_id='$formID' AND  s.id=hsq.section_id) 
+                        WHERE hsq.form_id = ? AND  s.id=hsq.section_id) 
                         AS sec
                     GROUP BY sec.title
                     ORDER BY sec.id";
-                
-                    $result = mysqli_query($connection, $query);
+
+                    $result = $database->runParameterizedQuery($query, "s", array($formID));
     
                     $qArr = [];
                     $index = 0;
 
-
                 if ($result) {
                     
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $num = $row['num']; // Access the 'num' column which is number of questions per section
-                        $qArr[$index++]=$num;
+                            // Access the 'num' column which is number of questions per section
+                        $qArr[$index] = $row['num'];
+                        $index++;
                     }
                 }
                 
-                    $numofsec = mysqli_num_rows($result);
+                $numofsec = mysqli_num_rows($result);
                                                  
 ?>
-                
+
 
 <!doctype html>
 
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Display Entry</Form></title>
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- Custom styles for this template -->
-    <link href="CSS/main.css" rel="stylesheet">
+    <title>Display Entry</title>
     <link href="CSS/forms.css" rel="stylesheet">
-
-    <!--Boostrap javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <style>
         /* Custom CSS for centering the card */
@@ -85,13 +76,14 @@ include "Includes/preventUnauthorizedUse.php";
 <?php
     //Display Active Form Name
     
-    $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
-    $title = mysqli_query($connection, $sql);
+    $sql = "SELECT * FROM `forms` WHERE id = ?";
+
+    $title = $database->runParameterizedQuery($sql, "i", array($formID));
     $title = mysqli_fetch_array($title);
     echo "<h2 class = 'text-center'> Past " . $title['title'] . "</h2>";
 
-    $sql = "SELECT * FROM welfaresubmission WHERE wid = $wid";
-    $result = mysqli_query($connection,$sql);
+    $sql = "SELECT * FROM welfaresubmission WHERE wid = ?";
+    $result = $database->runParameterizedQuery($sql, "d", array($wid));
     $row = mysqli_fetch_array($result);
 
     $precision = 2; //number of digits after decimal
@@ -145,8 +137,8 @@ include "Includes/preventUnauthorizedUse.php";
                     $sql = "SELECT q.question, q.id, hsq.id
                             FROM questions q
                             JOIN hasSectionQuestions hsq ON q.id = hsq.question_id
-                            WHERE hsq.section_id = " . $secNum . " and hsq.form_id = " . $formID;
-                    $questions = mysqli_query($connection, $sql);
+                            WHERE hsq.section_id = ? and hsq.form_id = ?";
+                    $questions = $database->runParameterizedQuery($sql, "ii", array($secNum, $formID));
                     while ($quest = mysqli_fetch_array($questions)) {
                         if ($count == 1) {
                             $sec = mysqli_fetch_array($sections); ?>
@@ -155,11 +147,13 @@ include "Includes/preventUnauthorizedUse.php";
                                     <?= htmlspecialchars($sec["title"], ENT_QUOTES, 'UTF-8') ?>
                                 </th>
                             </tr>
-                            <?php } ?>
+                            <?php 
+                        } ?>
                             
                             <?php 
-                                $sql = "SELECT responses FROM welfaresubmission WHERE wid = $wid";
-                                $result = mysqli_query($connection,$sql);
+                                $sql = "SELECT responses FROM welfaresubmission WHERE wid = ?";
+                                $result = $database->runparameterizedQuery($sql, "d", array($wid));
+                                
                                 $row = mysqli_fetch_array($result);
                                
                                 $str = $row['responses'];
@@ -169,18 +163,23 @@ include "Includes/preventUnauthorizedUse.php";
                             <tr>
                                 <th><?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?></th>
                                 <td><?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td> <?= htmlspecialchars($str[$i++], ENT_QUOTES,'UTF-8')?></td>
+                                <td><?php 
+                                    if(isset($str[$i]) == true){
+                                        if($str[$i] !== null){
+                                            echo htmlspecialchars($str[$i], ENT_QUOTES,'UTF-8');
+                                            $i++;    
+                                        }
+                                    }?></td>
                                 
                             </tr>
                             
                             <?php 
                             
                 
-                $count++;
-                
-            }
-            $count = 1;
-        }
+                        $count++;
+                    }
+                    $count = 1;
+                }
 
         
         ?>
@@ -189,8 +188,12 @@ include "Includes/preventUnauthorizedUse.php";
     </div>
 
     <?php           
-        mysqli_close($connection);
+        unset($database);
     ?>
     <!--Export to CSV-->
 </main>
 </body>
+
+<?php
+include_once("Templates/footer.php");
+?>
