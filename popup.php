@@ -1,5 +1,6 @@
 <?php
 include "Includes/preventUnauthorizedUse.php";
+include "Includes/DatabaseConnection.php";
 
     //gets zims and form id from ajax
     $formID = $_POST['form'];
