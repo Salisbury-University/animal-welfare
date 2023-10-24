@@ -1,4 +1,5 @@
 <?php
+include_once("Includes/preventUnauthorizedUse.php");
 include_once("Templates/header.php");
 include_once("Includes/databaseManipulation.php");
 
