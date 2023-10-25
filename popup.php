@@ -66,7 +66,7 @@ $numofsec = mysqli_num_rows($result);
 
                 
   </head>
-  <form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+  <form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
     	<button type="submit" class="btn btn-sm btn-success">Back</button>
         
         <input type="hidden" name="numofsec" value="<?php echo $numofsec; ?>">
@@ -139,7 +139,7 @@ $numofsec = mysqli_num_rows($result);
 
    
     <!--Submit-->
-    <form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+    <form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
     <input type="hidden" name="numofsec" value="<?php echo $numofsec; ?>">
     <input type="hidden" name="qArr" value="<?php echo implode(',', $qArr); ?>">
     <input type="hidden" name="zims" value="<?php echo $zims; ?>">

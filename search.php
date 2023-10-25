@@ -77,14 +77,14 @@ include_once("Templates/header.php");
                         <div class="search-result-item-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h4 class="search-result-item-heading"><a href="animalprofile.php?id=<?php echo $row['id']; ?>"><?php echo $row["id"]; ?></a></h4>
+                                    <h4 class="search-result-item-heading"><a href="animalProfile.php?id=<?php echo $row['id']; ?>"><?php echo $row["id"]; ?></a></h4>
                                     <p><strong>House Name:</strong> <?php echo $row["name"]; ?></p> 
                                     <p><strong>Species:</strong> <?php echo $row["species_id"]; ?></p>
                                     <p><strong>Location:</strong> <?php echo $row["section"]; ?></p>
                                 </div>
                                 <div class="col-sm-3 text-align-center">                            
                                     <div class="buttons">
-                                        <a class='btn btn-primary btn-sm' href="animalprofile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
+                                        <a class='btn btn-primary btn-sm' href="animalProfile.php?id=<?php echo $row['id']; ?>" role='button'>View &raquo;</a>
                                         <p></p>
                                         <a class='btn btn-success btn-sm' href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update &raquo;</a>
                                         <p></p>

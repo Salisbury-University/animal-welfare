@@ -65,7 +65,7 @@ $sections = $database->runQuery_UNSAFE($sql);
     </style>
                 
   </head>
-  <form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+  <form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
     	<button type="submit" class="btn btn-sm btn-success">Back</button>
         
         <!--Only edit main-->
