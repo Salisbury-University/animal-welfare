@@ -173,22 +173,22 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
                         <div class="scroll">
                         <!-- Display notes from past entries here -->
                         <?php 
-                            $stmt = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental 
-                            FROM welfaresubmission 
-                            WHERE zim = ?
-                            ORDER BY wid DESC"; 
+                        $stmt = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental 
+                        FROM welfaresubmission 
+                        WHERE zim = ?
+                        ORDER BY wid DESC"; 
 
-                            $result = $database->runParameterizedQuery($stmt, "i", array($zims));
-                            
-                            //$r = 226;//201+25=226
-                            //$g = 240;//215+25=240
-                            //$b = 205;//200+5=205
-                            
-                            $precision = 2; //number of digits after decimal
-                            $count = 0;
-                            $total = 0;
+                        $result = $database->runParameterizedQuery($stmt, "i", array($zims));
+                        
+                        //$r = 226;//201+25=226
+                        //$g = 240;//215+25=240
+                        //$b = 205;//200+5=205
+                        
+                        $precision = 2; //number of digits after decimal
+                        $count = 0;
+                        $total = 0;
 
-                            if ($row = mysqli_fetch_array($result) != NULL){
+                        if($result->num_rows > 0){
                             while($row = mysqli_fetch_array($result)){
                                 
                                 $average = 0;
