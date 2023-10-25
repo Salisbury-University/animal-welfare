@@ -1,49 +1,46 @@
 <?php
-include "Includes/preventUnauthorizedUse.php";
-include "Includes/DatabaseConnection.php";
+include_once("Templates/header.php");
+include_once("Includes/preventUnauthorizedUse.php");
+include_once("Includes/databaseManipulation.php");
+
+$database = new databaseManipulation;
 
     //gets zims and form id from ajax
-    $formID = $_POST['form'];
-    $zims = $_POST['zims'];
-    $reason = $_POST['reason'];
-   
+$formID = $_POST['form'];
+$zims = $_POST['zims'];
+$reason = $_POST['reason'];
 
-    echo $zims;
-    echo "<br> $reason";
+echo $zims;
+echo "<br> $reason";
 
     //gets sections
-    $sql = "SELECT title FROM `sections`";
-    $sections = mysqli_query($connection, $sql);
+$sql = "SELECT title FROM `sections`";
+$sections = $database->runQuery_UNSAFE($sql);
 
-?>
+    // QUERY: Gets the sections and the # of questions in each
+$query = "SELECT
+sec.id, COUNT(*) AS 'num'
+FROM (SELECT s.id, s.title
+    FROM sections s, hasSectionQuestions hsq 
+    WHERE hsq.form_id = ? AND  s.id = hsq.section_id) 
+    AS sec
+GROUP BY sec.title
+ORDER BY sec.id";
 
-<?php 
-     
-              // QUERY: Gets the sections and the # of questions in each
-                    $query = "SELECT
-                    sec.id, COUNT(*) AS 'num'
-                    FROM (SELECT s.id, s.title
-                        FROM sections s, hasSectionQuestions hsq 
-                        WHERE hsq.form_id='$formID' AND  s.id=hsq.section_id) 
-                        AS sec
-                    GROUP BY sec.title
-                    ORDER BY sec.id";
-                
-                    $result = mysqli_query($connection, $query);
-    
-                    $qArr = [];
-                    $index = 0;
+$result = $database->runParameterizedQuery($query, "i", array($formID));
 
+$qArr = [];
+$index = 0;
 
-                if ($result) {
-                    // Loop through the result set and access the columns
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $num = $row['num']; // Access the 'num' column which is number of questions per section
-                        $qArr[$index++]=$num;
-                    }
-                }
-                
-                    $numofsec = mysqli_num_rows($result);
+if ($result) {
+        // Loop through the result set and access the columns
+    while ($row = mysqli_fetch_assoc($result)) {
+        $num = $row['num']; // Access the 'num' column which is number of questions per section
+        $qArr[$index++]=$num;
+    }
+}
+
+$numofsec = mysqli_num_rows($result);
                                                  
 ?>
                 
@@ -83,10 +80,10 @@ include "Includes/DatabaseConnection.php";
         
 
 <?php
-    //Display Active Form Name
+        //Display Active Form Name
     
-    $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
-    $title = mysqli_query($connection, $sql);
+    $sql = "SELECT * FROM `forms` WHERE id = ?";
+    $title = $database->runParameterizedQuery($sql, "i", array($formID));
     $title = mysqli_fetch_array($title);
     echo "<h2 class = 'text-center'>" . $title['title'] . "</h2>";
 ?>
@@ -103,8 +100,10 @@ include "Includes/DatabaseConnection.php";
                     $sql = "SELECT q.question, q.id, hsq.id
                             FROM questions q
                             JOIN hasSectionQuestions hsq ON q.id = hsq.question_id
-                            WHERE hsq.section_id = " . $secNum . " and hsq.form_id = " . $formID;
-                    $questions = mysqli_query($connection, $sql);
+                            WHERE hsq.section_id = ? and hsq.form_id = ? ";
+
+                    $questions = $database->runParameterizedQuery($sql, "ii", array($secNum, $formID));
+
                     while ($quest = mysqli_fetch_array($questions)) {
                         if ($count == 1) {
                             $sec = mysqli_fetch_array($sections); ?>
@@ -127,7 +126,6 @@ include "Includes/DatabaseConnection.php";
                             <?php
                 
                 $count++;
-                
             }
             $count = 1;
         }
@@ -154,107 +152,81 @@ include "Includes/DatabaseConnection.php";
 
 <?php
 
+    // Runs when a welfare form was submitted.
 if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
-            
-                            
-                            
-                            echo "<br>";
-                            echo "Form was submitted!";
-                            echo "<br>";
-                            
-                            
-                            $numofsec = $_POST['numofsec'];
-                            $qArr = explode(',', $_POST['qArr']);
-                            $values = $_POST['values']; 
-                            $zims = $_POST['zims'];
-                            $reason = $_POST['reason'];
 
-
-                            $counter = 0;
-                            $tempcount = 0;
-                            $averages = array();
-
+    echo "<br>";
+    echo "Form was submitted!";
+    echo "<br>";
                             
+    $numofsec = $_POST['numofsec'];
+    $qArr = explode(',', $_POST['qArr']);
+    $values = $_POST['values']; 
+    $zims = $_POST['zims'];
+    $reason = $_POST['reason'];
 
+    $counter = 0;
+    $tempcount = 0;
+    $averages = array();
 
-                        for($i = 0; $i < $numofsec; $i++ ){
-                            
-                            $total = 0;
-                            
-                            $counter = $tempcount;
-                            
-                            
-                            for($j = 0; $j < $qArr[$i]; $j++){
-                                
-                                
-                            
-                            
-                                $total += $values[$counter]; 
+        // Calculate averages of all the sections
+    for($i = 0; $i < $numofsec; $i++){
+        $total = 0;
+        $counter = $tempcount;
 
-                                $counter+=1;
-                            
-                            
-                            }
-                           
-                            
-                            
-                            $tempcount = $counter;
-                            
-                            $averages[$i] = $total/$qArr[$i]; 
+        for($j = 0; $j < $qArr[$i]; $j++){
+            $total += $values[$counter]; 
+            $counter += 1;
+        }
 
-                            
-                            
-                        }
+        $tempcount = $counter;
+        $averages[$i] = $total/$qArr[$i]; 
+    }
 
-                        
-                        
-                        
-                        
-                        
-                       
-                        $date = date('Y-m-d');
-                        $avg_health = $averages[0];
-                        $avg_nutrition = $averages[1];
-                        $avg_pse = $averages[2];
-                        $avg_behavior = $averages[3];
-                        $avg_mental = $averages[4];
-                        
-                        
+        // Prepare the information to submit into the database
+    $date = date('Y-m-d');
+    $avg_health = $averages[0];
+    $avg_nutrition = $averages[1];
+    $avg_pse = $averages[2];
+    $avg_behavior = $averages[3];
+    $avg_mental = $averages[4];
 
-                        // Construct the SQL query as a string
-                        $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental) VALUES (?,?,?,?,?,?,?,?)";
+    $connection = $database->getDatabaseConnection();
 
+        // Construct the SQL query as a string
+    $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental) VALUES (?,?,?,?,?,?,?,?)";
 
-                        $stmt = $connection->prepare($sql);
+    $stmt = $connection->prepare($sql);
 
-                        if ($stmt) {
-                            // Bind parameters
-                            $stmt->bind_param("issddddd", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental);
-                            
-                           
+        // Insert the welfaresubmission data into the database
+    if ($stmt) {
+            // Bind parameters
+        $stmt->bind_param("issddddd", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental);
+        
+            // Execute the statement
+        if ($stmt->execute()) {
+            echo "<br> New records created";
+        } else {
+            echo "<br> Error executing statement: " . $stmt->error;
+        }
 
-                            // Execute the statement
-                            if ($stmt->execute()) {
-                                echo "<br> New records created";
-                            } else {
-                                echo "<br> Error executing statement: " . $stmt->error;
-                            }
+            // Close the statement
+        $stmt->close();
+    } else {
+        echo "<br> Error preparing statement: " . $connection->error;
+    }
 
-                            // Close the statement
-                            $stmt->close();
-                        } else {
-                            echo "<br> Error preparing statement: " . $connection->error;
-                        }
-
-                 
-                            
-                      mysqli_close($connection);
-
-
+        // Stop this variable from being used outside of this section
+    unset($connection);
 }//end of block
-    ?>
+?>
     <!--Export to CSV-->
 
    <script> getReason();</script>
 </main>
 </body>
+
+
+<?php
+include_once("Templates/footer.php");
+?>
