@@ -7,9 +7,6 @@ include "Includes/preventUnauthorizedUse.php";
     $reason = $_POST['reason'];
    
 
-    echo $zims;
-    echo "<br> $reason";
-
     //gets sections
     $sql = "SELECT title FROM `sections`";
     $sections = mysqli_query($connection, $sql);
@@ -119,7 +116,7 @@ include "Includes/preventUnauthorizedUse.php";
                                 <th><?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?></th>
                                 <td><?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td contenteditable="false" > 
-                                    <input type="text" name="values[]" placeholder = "Enter Score 0 - 5">
+                                    <input type="text" name="values[]" placeholder = "Enter Score 1 - 5">
                                 </td>
                             </tr>
                             
@@ -131,7 +128,6 @@ include "Includes/preventUnauthorizedUse.php";
             $count = 1;
         }
 
-        //after printing the questions get reason 
         
         ?>
             </tbody>
@@ -145,7 +141,9 @@ include "Includes/preventUnauthorizedUse.php";
     <input type="hidden" name="qArr" value="<?php echo implode(',', $qArr); ?>">
     <input type="hidden" name="zims" value="<?php echo $zims; ?>">
     <input type="hidden" name="reason" value="<?php echo $reason; ?>" >
+    <div style = "text-align: center">
     <button type="submit" class="btn btn-success" name="subbtn">Submit</button>
+    </div>
     </form>
 </form>
 
@@ -173,7 +171,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
                             $tempcount = 0;
                             $averages = array();
 
-                            
+                            $valstr = " ";
 
 
                         for($i = 0; $i < $numofsec; $i++ ){
@@ -187,7 +185,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
                                 
                                 
                             
-                            
+                                $responses.=strval($values[$counter]);
                                 $total += $values[$counter]; 
 
                                 $counter+=1;
@@ -221,14 +219,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
                         
 
                         // Construct the SQL query as a string
-                        $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental) VALUES (?,?,?,?,?,?,?,?)";
+                        $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental, responses) VALUES (?,?,?,?,?,?,?,?,?)";
 
 
                         $stmt = $connection->prepare($sql);
 
                         if ($stmt) {
                             // Bind parameters
-                            $stmt->bind_param("issddddd", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental);
+                            $stmt->bind_param("issddddds", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental, $responses);
                             
                            
 
@@ -246,7 +244,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
                         }
 
                  
-                            
+                        echo $responses;
                       mysqli_close($connection);
 
 
