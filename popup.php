@@ -10,9 +10,6 @@ $formID = $_POST['form'];
 $zims = $_POST['zims'];
 $reason = $_POST['reason'];
 
-echo $zims;
-echo "<br> $reason";
-
     //gets sections
 $sql = "SELECT title FROM `sections`";
 $sections = $database->runQuery_UNSAFE($sql);
@@ -119,7 +116,7 @@ $numofsec = mysqli_num_rows($result);
                                 <th><?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?></th>
                                 <td><?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td contenteditable="false" > 
-                                    <input type="text" name="values[]" placeholder = "Enter Score 0 - 5">
+                                    <input type="text" name="values[]" placeholder = "Enter Score 1 - 5">
                                 </td>
                             </tr>
                             
@@ -130,7 +127,6 @@ $numofsec = mysqli_num_rows($result);
             $count = 1;
         }
 
-        //after printing the questions get reason 
         
         ?>
             </tbody>
@@ -144,7 +140,9 @@ $numofsec = mysqli_num_rows($result);
     <input type="hidden" name="qArr" value="<?php echo implode(',', $qArr); ?>">
     <input type="hidden" name="zims" value="<?php echo $zims; ?>">
     <input type="hidden" name="reason" value="<?php echo $reason; ?>" >
+    <div style = "text-align: center">
     <button type="submit" class="btn btn-success" name="subbtn">Submit</button>
+    </div>
     </form>
 </form>
 
@@ -164,26 +162,31 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
     $values = $_POST['values']; 
     $zims = $_POST['zims'];
     $reason = $_POST['reason'];
+    
 
     $counter = 0;
     $tempcount = 0;
     $averages = array();
 
+    $valstr = " ";
+
         // Calculate averages of all the sections
-    for($i = 0; $i < $numofsec; $i++){
+    for($i = 0; $i < $numofsec; $i++ ){
         $total = 0;
         $counter = $tempcount;
-
+        
         for($j = 0; $j < $qArr[$i]; $j++){
+            $responses.=strval($values[$counter]);
             $total += $values[$counter]; 
+
             $counter += 1;
         }
-
         $tempcount = $counter;
         $averages[$i] = $total/$qArr[$i]; 
     }
 
-        // Prepare the information to submit into the database
+    $connection = $database->getDatabaseConnection();
+    
     $date = date('Y-m-d');
     $avg_health = $averages[0];
     $avg_nutrition = $averages[1];
@@ -191,33 +194,28 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
     $avg_behavior = $averages[3];
     $avg_mental = $averages[4];
 
-    $connection = $database->getDatabaseConnection();
-
         // Construct the SQL query as a string
-    $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental) VALUES (?,?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental, responses) VALUES (?,?,?,?,?,?,?,?,?)";
 
     $stmt = $connection->prepare($sql);
 
-        // Insert the welfaresubmission data into the database
     if ($stmt) {
-            // Bind parameters
-        $stmt->bind_param("issddddd", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental);
-        
-            // Execute the statement
+        // Bind parameters
+        $stmt->bind_param("issddddds", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental, $responses);
+
+        // Execute the statement
         if ($stmt->execute()) {
             echo "<br> New records created";
         } else {
             echo "<br> Error executing statement: " . $stmt->error;
         }
 
-            // Close the statement
+        // Close the statement
         $stmt->close();
     } else {
         echo "<br> Error preparing statement: " . $connection->error;
     }
 
-        // Stop this variable from being used outside of this section
-    unset($connection);
 }//end of block
 ?>
     <!--Export to CSV-->
