@@ -1,4 +1,5 @@
 <?php 
+include_once("Includes/preventUnauthorizedUse.php");
 include_once("Templates/header.php");
 include_once("Includes/databaseManipulation.php");
 
@@ -41,7 +42,7 @@ $percent = ($quantityate/$quantitygiven) * 100;
     </style>
 </head>
 <body>
-<form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+<form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
     	<button type="submit" class="btn btn-sm btn-success">Back</button>
 </form>
     <div class="container">
