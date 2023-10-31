@@ -483,12 +483,14 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
                       <?php
                         $labels=array();
                         $data=array();
+                        $line = array();
 
                         $sql = 'SELECT DISTINCT `food` FROM `diet` WHERE zim = ?'; //returns search values for food
                         $result = $database->runParameterizedQuery($sql, "i", array($zims));
 
                         while($row = mysqli_fetch_array($result)){
-                            $a=array(); // array to push averages to data
+                            $a=array(); // array to push averages to data (eaten)
+                            $a2=array();   //array to push averages to data (given)
                             $var = $row['food'];
                     
                             array_push($labels,$var); //push to labels
@@ -499,19 +501,30 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
                             while ($row2 = mysqli_fetch_array($queries)) { //gets all entries for each food
                                 $var2 =  $row2['quantityeaten'];  //get total amount eaten
                                 array_push($a,$var2);   //push into temp array
+                                $var3 = $row2['quantitygiven']; //get total amount given
+                                array_push($a2,$var3); //push into another temp array
                             }
-                            $sum = 0;
+                            $given = 0;
+                            $eaten = 0;
                             $count = 0;
                             foreach ($a as $temp) { //push avg of all entries into data
                                 $count = $count + 1;
-                                $sum = $sum + $temp;
-                                
+                                $eaten = $eaten + $temp; 
                             }
-                            $sum = $sum / $count;
-                            array_push($data,$sum);
+                            foreach ($a2 as $temp2) {
+                              $given = $given + $temp2;
+                            }
+
+                            $eaten = $eaten / $count;
+                            $given = $given / $count;
+                            array_push($data,$eaten);
+                            array_push($line,$given);
                             unset($a);
+                            unset($a2);
 
                         }
+
+
                         /*echo "Data: ";
                         print_r($data);
                         echo "<br>";
@@ -552,52 +565,92 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
 
                       ?>
                       //end
+
+                      //initalize line
+                      const line = [];
+                      <?php     //loop through php array and push into java array
+                        foreach ($line as $temp) { //push avg of all entries into data
+                        ?>
+
+                        line.push("<?php echo $temp; ?>");
+                        
+                        <?php
+                        }
+
+                      ?>
+                      //end
+
                     </script>
 
                      <!--Start Display-->
                     <canvas id="diet" style="width:100%;max-width:700px"></canvas>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
                     <script>
-                    var ctx = document.getElementById("diet"); 
-                    var myChart = new Chart(ctx, { 
-                    type: 'bar', 
-                    data: { 
-                        labels: labels, 
-                        datasets: [ 
-                        { label: 'Ounces eaten by food', 
-                            data: data, 
-                            backgroundColor :[
+                        const ctx = document.getElementById('diet');
+
+                        const chartData = {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "Food Eaten",
+                                    backgroundColor: "green",
+                                    data: data,
+                                    backgroundColor :[
+                                    'rgba(54, 162, 235, 0.2)',
                                     'rgba(255, 99, 132, 0.2)', 
-                                    'rgba(54, 162, 235, 0.2)', 
                                     'rgba(255, 206, 86, 0.2)', 
                                     'rgba(75, 192, 192, 0.2)', 
                                     'rgba(153, 102, 255, 0.2)', 
                                     'rgba(255, 159, 64, 0.2)' 
-                    ], 
+                                    ], 
 
-                    borderColor: [ 
+                                    borderColor: [ 
+                                    'rgba(54, 162, 235, 1)',
                                     'rgba(255,99,132,1)', 
-                                    'rgba(54, 162, 235, 1)', 
                                     'rgba(255, 206, 86, 1)', 
                                     'rgba(75, 192, 192, 1)', 
                                     'rgba(153, 102, 255, 1)', 
                                     'rgba(255, 159, 64, 1)' 
-                                ], 
-                    borderWidth : 1 
-                        } 
-                        ] 
-                    }, 
-                    options: { 
-                            scales: { 
-                                yAxes: [{ 
-                                    ticks: { 
-                                        beginAtZero:true 
-                                    } 
-                                }] 
-                            } 
-                        } 
-                    }); 
-                      </script>
+                                                ], 
+                                    borderWidth : 1,
+                                    stack: 'combined',
+                                    type: 'bar'
+                                },
+                            ],
+                        }
+
+                        var lineData = {
+                            label: "Food Given",
+                            backgroundColor: "blue",
+                            data: line,
+                            borderColor: "blue",
+                            // stack: 'combined',
+                            type: 'line',
+                            tension: 0,
+                        }
+                        chartData.datasets.unshift(lineData)
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: chartData,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                scales: {
+                                    x: {
+                                        stacked: true,
+                                    },
+                                    y: {
+                                        stacked: true,
+                                        title: {
+                                        display: true,
+                                        text: 'Ounces'
+                                        }
+                                    },
+                                },
+                            },
+                        });
+                    </script>
                     </div>
                 </div>
             </div>
