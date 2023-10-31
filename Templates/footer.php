@@ -33,6 +33,12 @@
                     <h4>help</h4>
                     <ul>
                         <li><a href="help.php">help page</a></li>
+                        <?php 
+                        // Check if recovery account
+                        if(isset($_SESSION['isRecoveryAccount']) == 0){
+                        echo "<li><a href='user_changePassword.php'>change password</a></li>";
+                        }
+                        ?>
                         <!-- <li><a href=''></li> -->
                     </ul>
                 </div>

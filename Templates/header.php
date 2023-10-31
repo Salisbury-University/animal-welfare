@@ -98,13 +98,6 @@ $forms = $database->runQuery_UNSAFE($sql);
           <?php } ?> <!--End admin only-->
         </ul>
 
-        <?php 
-          // Check if recovery account
-        if(isset($_SESSION['isRecoveryAccount']) == 0){
-          echo "<a class='btn btn-success my-2 my-sm-0 float-left' href='user_changePassword.php' role='button'>Change Password</a>";
-        }
-        ?>
-
         <a class='btn btn-success my-2 my-sm-0 float-left' href='logoutHandler.php' role='button'>Logout</a>
 
       </div>
