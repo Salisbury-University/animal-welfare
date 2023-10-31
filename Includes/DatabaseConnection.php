@@ -2,7 +2,7 @@
 $databaseIP = "localhost";
 $dbusername = "restricted_user";
 $dbpassword = "j60oPoObT3PSnEvZ";
-$dbName = "zooDB";
+$dbName = "zooDB_OLD"; //temp until new database is done
 
 if(session_status() != 2) // If session has not started yet, Start it.
   session_start();
