@@ -470,6 +470,140 @@ $sql = "SELECT MAX(dates) as lastfed FROM diet WHERE zim = $zims";
                 </div>
             </div>
         </div>
+
+                <!--Diet tracker-->
+                <div class="col-12 col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"> Diet Tracker Display</h5>
+                    </div>
+                    <!--Start of bar Chart-->
+                    <div class="card-body" style="width:90%;max-width:600px">
+                      <!--Initializing Variables-->
+                      <?php
+                        $labels=array();
+                        $data=array();
+
+                        $sql = 'SELECT DISTINCT `food` FROM `diet` WHERE zim = ?'; //returns search values for food
+                        $result = $database->runParameterizedQuery($sql, "i", array($zims));
+
+                        while($row = mysqli_fetch_array($result)){
+                            $a=array(); // array to push averages to data
+                            $var = $row['food'];
+                    
+                            array_push($labels,$var); //push to labels
+                                    
+                            $sql = "SELECT * FROM `diet` WHERE `food` = '" . $var . "'"; //select all entries where food = var
+                            $queries = $database->runQuery_UNSAFE($sql);
+
+                            while ($row2 = mysqli_fetch_array($queries)) { //gets all entries for each food
+                                $var2 =  $row2['quantityeaten'];  //get total amount eaten
+                                array_push($a,$var2);   //push into temp array
+                            }
+                            $sum = 0;
+                            $count = 0;
+                            foreach ($a as $temp) { //push avg of all entries into data
+                                $count = $count + 1;
+                                $sum = $sum + $temp;
+                                
+                            }
+                            $sum = $sum / $count;
+                            array_push($data,$sum);
+                            unset($a);
+
+                        }
+                        /*echo "Data: ";
+                        print_r($data);
+                        echo "<br>";
+
+
+                        echo "Labels: ";
+                        print_r($labels);
+                        echo "<br>";  */
+                        ?>
+                      <!--End of values-->
+                      
+                      <script>
+
+                      //initialize data
+                      const data = [];
+                      <?php     //loop through php array and push into java array
+                        foreach ($data as $temp) { //push avg of all entries into data
+                        ?>
+
+                        data.push("<?php echo $temp; ?>");
+                        
+                        <?php
+                        }
+
+                      ?>
+                      //end
+
+                    //initialize labels
+                     const labels = [];
+                      <?php     //loop through php array and push into java array
+                        foreach ($labels as $temp) { //push avg of all entries into data
+                        ?>
+
+                        labels.push("<?php echo $temp; ?>");
+                        
+                        <?php
+                        }
+
+                      ?>
+                      //end
+                    </script>
+
+                     <!--Start Display-->
+                    <canvas id="diet" style="width:100%;max-width:700px"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+                    <script>
+                    var ctx = document.getElementById("diet"); 
+                    var myChart = new Chart(ctx, { 
+                    type: 'bar', 
+                    data: { 
+                        labels: labels, 
+                        datasets: [ 
+                        { label: 'Ounces eaten by food', 
+                            data: data, 
+                            backgroundColor :[
+                                    'rgba(255, 99, 132, 0.2)', 
+                                    'rgba(54, 162, 235, 0.2)', 
+                                    'rgba(255, 206, 86, 0.2)', 
+                                    'rgba(75, 192, 192, 0.2)', 
+                                    'rgba(153, 102, 255, 0.2)', 
+                                    'rgba(255, 159, 64, 0.2)' 
+                    ], 
+
+                    borderColor: [ 
+                                    'rgba(255,99,132,1)', 
+                                    'rgba(54, 162, 235, 1)', 
+                                    'rgba(255, 206, 86, 1)', 
+                                    'rgba(75, 192, 192, 1)', 
+                                    'rgba(153, 102, 255, 1)', 
+                                    'rgba(255, 159, 64, 1)' 
+                                ], 
+                    borderWidth : 1 
+                        } 
+                        ] 
+                    }, 
+                    options: { 
+                            scales: { 
+                                yAxes: [{ 
+                                    ticks: { 
+                                        beginAtZero:true 
+                                    } 
+                                }] 
+                            } 
+                        } 
+                    }); 
+                      </script>
+                    </div>
+                </div>
+            </div>
+            <!--End of bar chart-->
+
+
     </main>
     
     <hr>
