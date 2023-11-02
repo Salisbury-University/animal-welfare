@@ -53,16 +53,10 @@ include_once("Templates/header.php");
                     $search = $_POST['search'];
                     $query = "";
                     $result;
-                    if($search == ""){ // If there is no search input from the user
-                        $query = "SELECT * FROM `animals`";
-                        $result = $database->runQuery_UNSAFE($query);
 
-                    }else{ // If there was a search input by the user
-                        $query = "SELECT * FROM `animals` WHERE name LIKE ? OR `species_id` LIKE ? OR `section` LIKE ? OR `id` LIKE ?";
-                        $values = array($search, $search, $search, $search);
-                        $result = $database->runParameterizedQuery($query, "sssi", $values);
-                    }
-                    
+                    $query = "SELECT * FROM `animals` WHERE name LIKE '%$search%' OR `species_id` LIKE '%$search%' OR `section` LIKE '%$search%' OR `id` LIKE '%$search%'";  
+                    $result = $database->runQuery_UNSAFE($query);
+                   
                         // Check if there arent any results
                     if ($result->num_rows === 0) {
                         echo '<section class="search-result-item"><h1>No results for "' . $search . '"</h1></section>';
