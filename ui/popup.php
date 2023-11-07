@@ -1,53 +1,49 @@
 <?php
-include "/home/joshb/website/final/slog/animal-welfare/fnc/auth/preventUnauthorizedUse.php";
+// require_once "../vendor/autoload.php";
+include_once "header.php";
+// use admin\SessionUser;
+
+require_once "../admin/SessionUser.php";
+SessionUser::sessionStatus();
+
+$user = unserialize($_SESSION['user']);
+$user->openDatabase();
 
 //gets zims and form id from ajax
 $formID = $_POST['form'];
-$zims = $_POST['zims'];
+$zim = $_POST['zims'];
 $reason = $_POST['reason'];
 
-
-echo $zims;
-echo "<br> $reason";
-
 //gets sections
-$sql = "SELECT title FROM `sections`";
-$sections = mysqli_query($connection, $sql);
-
-?>
-
-<?php
+$query = "SELECT title FROM `sections`";
+$sections = $user->getDatabase()->runQuery_UNSAFE($query);
 
 // QUERY: Gets the sections and the # of questions in each
-$query = "SELECT
-                    sec.id, COUNT(*) AS 'num'
-                    FROM (SELECT s.id, s.title
-                        FROM sections s, hasSectionQuestions hsq 
-                        WHERE hsq.form_id='$formID' AND  s.id=hsq.section_id) 
-                        AS sec
-                    GROUP BY sec.title
-                    ORDER BY sec.id";
-
-$result = mysqli_query($connection, $query);
+$query = "SELECT sec.id, COUNT(*) AS 'num'
+          FROM (SELECT s.id, s.title
+                FROM sections s, hasSectionQuestions hsq 
+                WHERE hsq.form_id = ? AND  s.id = hsq.section_id) AS sec
+          GROUP BY sec.title
+          ORDER BY sec.id";
+$sectionQuestionCount = $user->getDatabase()->runParameterizedQuery($query, "i", array($formID));
 
 $qArr = [];
 $index = 0;
 
-
 if ($result) {
     // Loop through the result set and access the columns
-    while ($row = mysqli_fetch_assoc($result)) {
-        $num = $row['num']; // Access the 'num' column which is number of questions per section
+    while ($questionCount = $sectionQuestionCount->fetch_array(MYSQL_ASSOC)) {
+        $num = $questionCount['num']; // Access the 'num' column which is number of questions per section
         $qArr[$index++] = $num;
     }
 }
 
-$numofsec = mysqli_num_rows($result);
+$numofsec = $sectionQuestionCount->num_rows;
 
 ?>
 
 
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 
@@ -63,8 +59,8 @@ $numofsec = mysqli_num_rows($result);
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="/home/joshb/website/final/slog/animal-welfare/style/main.css" rel="stylesheet">
-    <link href="/home/joshb/website/final/slog/animal-welfare/style/forms.css" rel="stylesheet">
+    <link href="../style/main.css" rel="stylesheet">
+    <link href="../style/forms.css" rel="stylesheet">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
@@ -73,7 +69,7 @@ $numofsec = mysqli_num_rows($result);
 
 
 </head>
-<form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+<form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
     <button type="submit" class="btn btn-sm btn-success">Back</button>
 
     <input type="hidden" name="numofsec" value="<?php echo $numofsec; ?>">
@@ -89,9 +85,9 @@ $numofsec = mysqli_num_rows($result);
         <?php
         //Display Active Form Name
         
-        $sql = "SELECT * FROM `forms` WHERE id = " . $formID;
-        $title = mysqli_query($connection, $sql);
-        $title = mysqli_fetch_array($title);
+        $query = "SELECT * FROM `forms` WHERE id = ?";
+        $titles = $database->runParameterizedQuery($query, "i", array($formID));
+        $title = $titles->fetch_array(MYSQL_ASSOC);
         echo "<h2 class = 'text-center'>" . $title['title'] . "</h2>";
         ?>
 
@@ -104,23 +100,23 @@ $numofsec = mysqli_num_rows($result);
                         <?php
                         //display
                         $count = 1;
-                        for ($secNum = 1; $secNum <= mysqli_num_rows($sections); $secNum++) {
-                            $sql = "SELECT q.question, q.id, hsq.id
+                        for ($secNum = 1; $secNum <= $sections->num_rows; $secNum++) {
+                            $query = "SELECT q.question, q.id, hsq.id
                             FROM questions q
                             JOIN hasSectionQuestions hsq ON q.id = hsq.question_id
-                            WHERE hsq.section_id = " . $secNum . " and hsq.form_id = " . $formID;
-                            $questions = mysqli_query($connection, $sql);
-                            while ($quest = mysqli_fetch_array($questions)) {
+                            WHERE hsq.section_id = ? and hsq.form_id = ? ";
+
+                            $questions = $user->getDatabase()->runParameterizedQuery($query, "ii", array($secNum, $formID));
+
+                            while ($quest = $questions->fetch_array(MYSQL_ASSOC)) {
                                 if ($count == 1) {
-                                    $sec = mysqli_fetch_array($sections); ?>
+                                    $sec = $sections->fetch_array(MYSQL_ASSOC); ?>
                                     <tr>
                                         <th class="text-center" colspan="3">
                                             <?= htmlspecialchars($sec["title"], ENT_QUOTES, 'UTF-8') ?>
                                         </th>
                                     </tr>
                                 <?php } ?>
-
-
                                 <tr>
                                     <th>
                                         <?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?>
@@ -129,20 +125,15 @@ $numofsec = mysqli_num_rows($result);
                                         <?= htmlspecialchars($quest["question"], ENT_QUOTES, 'UTF-8') ?>
                                     </td>
                                     <td contenteditable="false">
-                                        <input type="text" name="values[]" placeholder="Enter Score 0 - 5">
+                                        <input type="text" name="values[]" placeholder="Enter Score 1 - 5">
                                     </td>
                                 </tr>
 
                                 <?php
-
                                 $count++;
-
                             }
                             $count = 1;
                         }
-
-                        //after printing the questions get reason 
-                        
                         ?>
                     </tbody>
                 </table>
@@ -150,12 +141,14 @@ $numofsec = mysqli_num_rows($result);
 
 
         <!--Submit-->
-        <form method="POST" action="animalprofile.php?id=<?php echo $zims; ?>">
+        <form method="POST" action="animalProfile.php?id=<?php echo $zims; ?>">
             <input type="hidden" name="numofsec" value="<?php echo $numofsec; ?>">
             <input type="hidden" name="qArr" value="<?php echo implode(',', $qArr); ?>">
             <input type="hidden" name="zims" value="<?php echo $zims; ?>">
             <input type="hidden" name="reason" value="<?php echo $reason; ?>">
-            <button type="submit" class="btn btn-success" name="subbtn">Submit</button>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-success" name="subbtn">Submit</button>
+            </div>
         </form>
         </form>
 
@@ -163,14 +156,12 @@ $numofsec = mysqli_num_rows($result);
 
         <?php
 
+        // Runs when a welfare form was submitted.
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['subbtn']))) {
-
-
 
             echo "<br>";
             echo "Form was submitted!";
             echo "<br>";
-
 
             $numofsec = $_POST['numofsec'];
             $qArr = explode(',', $_POST['qArr']);
@@ -183,43 +174,22 @@ $numofsec = mysqli_num_rows($result);
             $tempcount = 0;
             $averages = array();
 
+            $valstr = " ";
 
-
-
+            // Calculate averages of all the sections
             for ($i = 0; $i < $numofsec; $i++) {
-
                 $total = 0;
-
                 $counter = $tempcount;
 
-
                 for ($j = 0; $j < $qArr[$i]; $j++) {
-
-
-
-
+                    $responses .= strval($values[$counter]);
                     $total += $values[$counter];
 
                     $counter += 1;
-
-
                 }
-
-
-
                 $tempcount = $counter;
-
                 $averages[$i] = $total / $qArr[$i];
-
-
-
             }
-
-
-
-
-
-
 
             $date = date('Y-m-d');
             $avg_health = $averages[0];
@@ -228,37 +198,12 @@ $numofsec = mysqli_num_rows($result);
             $avg_behavior = $averages[3];
             $avg_mental = $averages[4];
 
-
-
             // Construct the SQL query as a string
-            $sql = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental) VALUES (?,?,?,?,?,?,?,?)";
-
-
-            $stmt = $connection->prepare($sql);
-
-            if ($stmt) {
-                // Bind parameters
-                $stmt->bind_param("issddddd", $zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental);
-
-
-
-                // Execute the statement
-                if ($stmt->execute()) {
-                    echo "<br> New records created";
-                } else {
-                    echo "<br> Error executing statement: " . $stmt->error;
-                }
-
-                // Close the statement
-                $stmt->close();
-            } else {
-                echo "<br> Error preparing statement: " . $connection->error;
-            }
-
-
-
-            mysqli_close($connection);
-
+            $query = "INSERT INTO welfaresubmission (zim, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental, responses) VALUES (?,?,?,?,?,?,?,?,?)";
+            if ($result = $user->getDatabase()->runParameterizedQuery($query, "issddddds", array($zims, $date, $reason, $avg_health, $avg_nutrition, $avg_pse, $avg_behavior, $avg_mental, $responses)))
+                echo "<br> New records created. <br>";
+            else
+                echo "<br> Error executing statement. <br>";
 
         } //end of block
         ?>
@@ -267,3 +212,8 @@ $numofsec = mysqli_num_rows($result);
         <script> getReason();</script>
     </main>
 </body>
+
+
+<?php
+include_once "footer.php";
+?>
