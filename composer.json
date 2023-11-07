@@ -1,0 +1,21 @@
+{
+    "name": "joshb/website",
+    "description": "Web application for management of the Salisbury Zoo",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Joshua Brull",
+            "email": "joshxbrull@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "admin\\" : "admin/",
+            "auth\\" : "auth/",
+            "config\\": "config/",
+            "db\\" : "db/"
+            
+        }
+    }
+}
