@@ -1,11 +1,9 @@
 /*First Page Jumbotron*/
-.jumbotron
-{
-    background: url('/home/joshb/website/final/slog/animal-welfare/img/entrance.jpg') no-repeat center center; 
+.jumbotron {
+    background: url('../img/entrance.jpg') no-repeat center center;
     background-size: cover;
     min-height: 100%;
     margin: 0 !important;
     padding: 10%;
 
 }
-

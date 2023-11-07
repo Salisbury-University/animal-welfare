@@ -1,17 +1,17 @@
 .col-md-8 {
-    background-image: url("/home/joshb/website/final/slog/animal-welfare/img/login-bg.jpg");
-    height:100vh;
-    min-width:70%;
+    background-image: url("../img/login-bg.jpg");
+    height: 100vh;
+    min-width: 70%;
 }
 
 .col-md-4 {
-    background-image: url("/home/joshb/website/final/slog/animal-welfare/img/ChileanFlamingo.jpg");
+    background-image: url("../img/ChileanFlamingo.jpg");
     background-size: cover;
-    height:100vh;
-    border-right:solid 10px black;
-    max-width:30%;
-    min-width:0%;
-   
+    height: 100vh;
+    border-right: solid 10px black;
+    max-width: 30%;
+    min-width: 0%;
+
 }
 
 .container {
@@ -21,12 +21,12 @@
 .salisburyZooLogoImage {
     position: absolute;
     left: 27%;
-    top:2%;
+    top: 2%;
 }
 
 .loginForm {
     position: absolute;
     left: 25%;
-    top:40%;
+    top: 40%;
 
 }

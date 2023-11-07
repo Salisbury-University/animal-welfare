@@ -1,20 +1,19 @@
-.table
-{
-    margin-top:3%;
-    background-color:white;
+.table {
+    margin-top: 3%;
+    background-color: white;
 }
 
 .container {
-    margin-top:2%;
-    margin-left:5%;
-    max-width:70%;
+    margin-top: 2%;
+    margin-left: 5%;
+    max-width: 70%;
 }
 
 .my-container {
-    margin-top:5%;
-    margin-left:15%;
-    max-width:70%;
-    background-color:white;
+    margin-top: 5%;
+    margin-left: 15%;
+    max-width: 70%;
+    background-color: white;
     padding: 30px;
-    margin-bottom:2%;
+    margin-bottom: 2%;
 }
