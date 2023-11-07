@@ -6,9 +6,6 @@
 // use \auth\DatabaseManager; // not working
 // use \config\ConfigHandler; // not working
 
-
-
-
 class SessionUser
 {
     private $token = null;
