@@ -1,8 +1,8 @@
 <?php 
 // require_once "../vendor/autoload.php"
-include "../config/ConfigHandler.php";
-include "../auth/DatabaseManager.php";
-include "../admin/SessionUser.php";
+include "config/ConfigHandler.php";
+include "auth/DatabaseManager.php";
+include "admin/SessionUser.php";
 
 SessionUser::sessionStatus();
 ?>
@@ -22,7 +22,7 @@ SessionUser::sessionStatus();
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="style/index.css">
 
     <!--Boostrap javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
@@ -41,9 +41,9 @@ SessionUser::sessionStatus();
             <!--Login-->
             <div class="col-md-8">
 
-                <img class="salisburyZooLogoImage" src="../img/Header/logo.png" />
+                <img class="salisburyZooLogoImage" src="img/Header/logo.png" />
 
-                <form class="loginForm" action="../auth/_login_handler.php" method="post">
+                <form class="loginForm" action="auth/_login_handler.php" method="post">
                     <input type="text" placeholder="Username" name="subUser" />
                     <input type="password" placeholder="Password" name="subPass" />
                     <input type="submit" value="Log in" /> <br>
