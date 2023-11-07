@@ -48,7 +48,8 @@ class SessionUser
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             
             // Using DatabaseManager, retrieve password_hash and is_admin where username = $username
-            $this->openDatabase();
+            require_once "../auth/DatabaseManager.php";
+            $database= new DatabaseManager;
 
             // Replace with your actual SQL query to retrieve user data
             $query = "SELECT pass, administrator FROM users WHERE email = ?";
