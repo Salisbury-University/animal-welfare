@@ -1,7 +1,8 @@
 <?php
-namespace db;
+// namespace db;
+// use db\Animal;
 
-use db\Animal;
+include_once "./Animal.php";
 
 class Species
 {

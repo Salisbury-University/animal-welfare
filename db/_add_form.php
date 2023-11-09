@@ -1,12 +1,13 @@
 <?php
 // WARNING: NOT WORKING
-require_once "../vendor/autoload.php";
+// require_once "../vendor/autoload.php";
+// use admin\SessionUser;
 
-use admin\SessionUser;
-
+require_once "../admin/SessionUser.php";
 SessionUser::sessionStatus();
 
 $user = unserialize($_SESSION['user']);
+$user->openDatabase();
 
 // CHECKS THAT THE PROPER POST VALUES ARE SET
 if (isset($_POST['text']) && isset($_POST['formid']) && isset($_POST['secid'])) {

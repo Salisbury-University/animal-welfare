@@ -1,11 +1,12 @@
 <?php
-require_once "../vendor/autoload.php";
+// require_once "../vendor/autoload.php";
+// use admin\SessionUser;
 
-use admin\SessionUser;
-
+require_once "../admin/SessionUser.php";
 SessionUser::sessionStatus();
 
 $user = unserialize($_SESSION['user']);
+$user->openDatabase();
 
 if (isset($_POST['formid']) && isset($_POST['secid']) && isset($_POST['questid'])) {
     $formID = $_POST['formid'];

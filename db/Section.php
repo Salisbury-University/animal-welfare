@@ -1,9 +1,9 @@
 <?php
-namespace db;
+// namespace db;
+// use db\Animal;
+// use auth\DatabaseManager;
 
-use db\Animal;
-use auth\DatabaseManager;
-
+include_once "./Animal.php";
 class Section
 {
     private $id = NULL; // different than that of the id of construct

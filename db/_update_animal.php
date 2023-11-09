@@ -1,12 +1,13 @@
 <!--Start PHP-->
 <?php
-require_once "../vendor/autoload.php";
+// require_once "../vendor/autoload.php";
+// use admin\SessionUser;
 
-use admin\SessionUser;
-
+require_once "../admin/SessionUser.php";
 SessionUser::sessionStatus();
 
 $user = unserialize($_SESSION['user']);
+$user->openDatabase();
 
 $id = $_POST['id'];
 $submittedSection = $_POST['location'];
