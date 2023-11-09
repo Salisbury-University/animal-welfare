@@ -1,10 +1,12 @@
 <?php
-require_once "../vendor/autoload.php";
-use admin\SessionUser;
+// require_once "../vendor/autoload.php";
+// use admin\SessionUser;
 
+require_once "../admin/SessionUser.php";
 SessionUser::sessionStatus();
 
 $user = unserialize($_SESSION['user']);
+$user->openDatabase();
 
 function debug_to_console($data)
 {

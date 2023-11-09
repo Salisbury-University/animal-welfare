@@ -1,12 +1,9 @@
 <?php
-namespace db;
+// namespace db;
+// use db\Species;
+// use db\Section;
+// use auth\DatabaseManager;
 
-use db\Species;
-use db\Section;
-use auth\DatabaseManager;
-
-// include "species.php";
-// include "section.php";
 class Animal
 {
     public $id = NULL;
@@ -41,8 +38,6 @@ class Animal
             $this->name = $data['name'];
         }
         // May be dropping having instances inside
-        $this->species = new Species($this->section, $this->database);
-        $this->section = new Section($this->species, $this->database);
         // Remember to properly handle exceptions and close resources
     }
 
