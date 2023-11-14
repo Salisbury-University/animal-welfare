@@ -23,7 +23,7 @@ debug_to_console($wid);
 debug_to_console($zims);
 
 $query = "DELETE FROM welfaresubmission WHERE wid = ? AND zim = ?";
-if ($result = $user->getDatabase()->runParameterizedQuery($query, "ii", array($wid, $zim))) {
+if ($result = $user->getDatabase()->runParameterizedQuery($query, "ii", array($wid, $zims))) {
     echo "<br> Records deleted. <br>";
 } else {
     echo "<br> Error deleting records. <br>";
