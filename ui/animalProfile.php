@@ -57,24 +57,21 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
 <head>
     <link href="../style/display.css" rel="stylesheet">
     <script>
-        var reload_ = false
-
-        function getReason() {
-            if (!reload_) {
-
+        //works
+        function getReason(){
                 var reason = prompt("Please enter the reason for the welfare submission");
-                var confirmed = confirm("Is this correct? '" + reason + "'");
 
-                if (!confirmed) {
-                    getReason();
+                if (reason !== null && reason !== "") { //first check
+                    var confirmed = confirm("Is this correct? '" + reason + "'");
+                
+                    if(confirmed) //second check
+                    window.location.href = "addWelfare.php?form=" + <?php echo $animal['formID']; ?> +
+                    "&zims=" + <?php echo $animal['zim']; ?> + "&reason=" +reason;
                 }
-                else {
-                    document.getElementById('REASON').value = reason;
-                    reload_ = true;
-                }
-            }
+                                    
         }
 
+        //works
         function deleteEntry() {
             var wid = prompt("Enter the 'Entry ID' to delete");
 
@@ -88,6 +85,45 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     formData.append("wid", wid);
                     formData.append("zims", <?php echo $animal['zim']; ?>);
 
+
+                    // Send an AJAX request to delete the entry
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                alert("Entry with ID " + wid + " deleted successfully.");
+                                location.reload();
+
+                            } else {
+
+                                alert("Error deleting entry with ID " + wid);
+                            }
+                        }
+                    };
+                    xhr.send(formData);
+
+                }
+            }
+            location.reload();
+        }
+
+        //works but doesnt refresh?
+        function deleteDiet() {
+            var did = prompt("Enter the 'Entry ID' to delete");
+
+            if (did !== null && did !== "") {
+                var confirmed = confirm("Are you sure you want to delete entry with ID " + did + "?");
+            
+                if (confirmed) {
+                    
+                    //var ig = confirm("Did: " + did + "Zim: " + $animal['zim']);
+
+                    var url = "../db/_delete_diet_entry.php";
+                    var formData = new FormData();
+                    formData.append("did", did);
+                    formData.append("zims", <?php echo $animal['zim']; ?>);
+                    
 
                     // Send an AJAX request to delete the entry
                     var xhr = new XMLHttpRequest();
@@ -273,16 +309,9 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     <div class="card-footer text-center">
                         <!-- Add and Delete buttons -->
                         <div class="btn-group">
-                            <form method="POST" action="popup.php?id=<?php echo $animal['zim']; ?>"
-                                onClick="getReason()">
-                                <input type="hidden" name="form" value="<?php echo $animal['formID']; ?>">
-                                <input type="hidden" name="zims" value="<?php echo $animal['zim']; ?>">
-                                <input type="hidden" name="reason" id="REASON">
-                                <input type="submit" value="Add Entry" class="btn btn-success">
-                            </form>
+                            <input type="submit" class="btn btn-success" action="" value="Add Entry" onClick="getReason()">
                             <div class="spacer" stlye="border: 1px solid black">&nbsp</div>
-                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry"
-                                onClick="deleteEntry()">
+                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry" onClick="deleteEntry()">
                         </div>
                     </div>
 
@@ -345,6 +374,8 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                             <form method="POST" action="mealRecord.php?id=<?php echo $animal['zim']; ?>">
                                 <input type="submit" value="Animal Ate Today" class="btn btn-success">
                             </form>
+                            <div class="spacer" stlye="border: 1px solid black">&nbsp</div>
+                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry" onClick="deleteDiet()">
                         </div>
                     </div>
                 </div>
@@ -352,6 +383,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
         </div>
         <!-- Graph Card -->
         <div class="row">
+            <?php /* temp remove
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
@@ -439,6 +471,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     </div>
                 </div>
             </div>
+            */ ?>
 
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
@@ -447,67 +480,68 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     </div>
                     <!--Start of Polar Chart-->
                     <div class="card-body" style="width:90%;max-width:600px">
-                        <!--Initializing Variables-->
-                        <?php
-                        $query = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) FROM `welfaresubmission` WHERE `zim` = ?";
-                        $result = $user->getDatabase()->runParameterizedQuery($sql, "i", array($animal['zim']));
-                        $row = $result->fetch_array(MYSQLI_ASSOC);
+                      <!--Initializing Variables-->
+                      <?php
+                      $sql = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) 
+                      FROM `welfaresubmission` WHERE `zim` = ?";
+                      $averages = $user->getDatabase()->runParameterizedQuery($sql, "i", array($zim));
+                      $averages = mysqli_fetch_array($averages);
 
-                        $health = $row['AVG(`avg_health`)'];
-                        $health = round($health, 2);
+                      $health = $averages['AVG(`avg_health`)'];
+                      $health = round($health, 2);
 
-                        $nut = $row['AVG(`avg_nutrition`)'];
-                        $nut = round($nut, 2);
+                      $nut = $averages['AVG(`avg_nutrition`)'];
+                      $nut = round($nut, 2);
+                      
+                      $pse = $averages['AVG(`avg_pse`)'];
+                      $pse = round($pse, 2);
 
-                        $pse = $row['AVG(`avg_pse`)'];
-                        $pse = round($pse, 2);
+                      $behavior = $averages['AVG(`avg_behavior`)'];
+                      $behavior = round($behavior, 2);
 
-                        $behavior = $row['AVG(`avg_behavior`)'];
-                        $behavior = round($behavior, 2);
+                      $mental = $averages['AVG(`avg_mental`)'];
+                      $mental = round($mental, 2);
 
-                        $mental = $row['AVG(`avg_mental`)'];
-                        $mental = round($mental, 2);
-
-
-                        ?>
-                        <!--End of values-->
-
-                        <!--Start Display-->
-                        <canvas id="health" style="width:70%;max-width:600px"></canvas>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
-                        <script>
+    
+                      ?>
+                      <!--End of values-->
+                      
+                      <!--Start Display-->
+                      <canvas id="health" style="width:70%;max-width:600px"></canvas>
+                      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+                      <script>
 
 
-                            const polar = [];
-                            polar.push("<?php echo $health; ?>");
-                            polar.push("<?php echo $nut; ?>");
-                            polar.push("<?php echo $pse; ?>");
-                            polar.push("<?php echo $behavior; ?>");
-                            polar.push("<?php echo $mental; ?>");
+                      const polar = [];
+                      polar.push("<?php echo $health; ?>");
+                      polar.push("<?php echo $nut; ?>");
+                      polar.push("<?php echo $pse; ?>");
+                      polar.push("<?php echo $behavior; ?>");
+                      polar.push("<?php echo $mental; ?>");
 
-                            var chrt = document.getElementById("health").getContext("2d");
-                            var chartId = new Chart(chrt, {
-                                type: 'polarArea',
-                                data: {
-                                    labels: ["Health", "Nutrition", "Mental", "Behavior", "PSE"],
-                                    datasets: [{
-
-                                        data: polar,
-                                        backgroundColor: ['yellow', 'pink', 'lightgreen', 'gold', 'lightblue'],
-                                    }],
-                                },
-                                options: {
-                                    responsive: false,
-                                    plugins: {
+                      var chrt = document.getElementById("health").getContext("2d");
+                      var chartId = new Chart(chrt, {
+                          type: 'polarArea',
+                          data: {
+                              labels: ["Health", "Nutrition", "Mental", "Behavior", "PSE"],
+                              datasets: [{
+                                
+                                  data: polar,
+                                  backgroundColor: ['yellow', 'pink', 'lightgreen', 'gold', 'lightblue'],
+                              }],
+                          },
+                          options: {
+                              responsive: false,
+                                plugins: {
                                         legend: {
-                                            position: "right",
-                                            align: "middle"
+                                        position: "right",
+                                        align: "middle"
                                         }
                                     }
-                                },
-                            });
+                              },
+                      });
 
-                        </script>
+                      </script>
                     </div>
                     <!--End of Polar chart-->
                 </div>
@@ -529,7 +563,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     $line = array();
 
                     $query = 'SELECT DISTINCT `food` FROM `diet` WHERE zim = ?'; //returns search values for food
-                    $result = $database->runParameterizedQuery($query, "i", array($animal['zim']));
+                    $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal['zim']));
                     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                         $a = array(); // array to push averages to data (eaten)
                         $a2 = array(); //array to push averages to data (given)
@@ -538,7 +572,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                         array_push($labels, $var); //push to labels
                     
                         $query2 = "SELECT * FROM `diet` WHERE `food` = '" . $var . "'"; //select all entries where food = var
-                        $result2 = $database->runQuery_UNSAFE($query2);
+                        $result2 = $user->getDatabase()->runQuery_UNSAFE($query2);
                         while ($row2 = $result2->fetch_array(MYSQLI_ASSOC)) { //gets all entries for each food
                             $var2 = $row2['quantityeaten']; //get total amount eaten
                             array_push($a, $var2); //push into temp array

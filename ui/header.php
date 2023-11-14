@@ -60,11 +60,6 @@ $forms = $user->getDatabase()->runQuery_UNSAFE($query);
                     <a class="nav-link my-text-info" href="home.php">Home</a>
                 </li>
 
-                <!--Diet Tracker-->
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Diet Tracker</a>
-                </li>
-
                 <!--Search Page-->
                 <li class="nav-item">
                     <a class="nav-link my-text-info" href="search.php">Search</a>
