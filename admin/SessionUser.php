@@ -1,60 +1,80 @@
 <?php
 // namespace admin;
-
 // require_once "../vendor/autoload.php";
-
 // use \auth\DatabaseManager; // not working
 // use \config\ConfigHandler; // not working
 
+/**
+ * Represents a user session.
+ *
+ * This class manages user authentication, session status, and various user-related operations.
+ *
+ * @class SessionUser
+ */
 class SessionUser
 {
+    /**
+     * The user's authentication token.
+     */
     private $token = null;
+
     private $username = null;
-    private $database = null;
-    private $admin = null;
     private $password = null;
+
+    private $database = null;
+
+    private $admin = null;
     private $recover = null;
 
+    /**
+     * Constructs a new SessionUser instance.
+     *
+     * Creates a token for the current session and initializes session variables.
+     */
     function __construct($username, $password)
     {
-        // Creates a token for the current session
+        // Creates a user token for the current session 
+        // ::: Will be used when the DatabaseManager is not stored in the SessionUser class to cross verify
         $this->token = bin2hex(random_bytes(32) . microtime(true));
+
+        // Checks whether the session has started or not
         if ($this->sessionStatus()) {
             $_SESSION["token"] = $this->token;
             $_SESSION['loginFailures'] = 0;
         }
 
         require_once "../config/ConfigHandler.php";
-        // Reads in configuration settings
         $config = new ConfigHandler();
+
+        // Reads the config file in
         $configFile = $config->readConfigFile();
 
+        // If a recovery account is enabled, it will log user in as the recovery
         if ($configFile['Recovery']['recoveryAccountEnabled'] == 1) {
             $recoveryUsername = $configFile['Recovery']['recoveryAccountUsername'];
             $recoveryPassword = $configFile['Recovery']['recoveryAccountPassword'];
             if ($username == $recoveryUsername && $password == $recoveryPassword) {
-                $config->writeToConfigFile("recoveryAccountEnabled", "0", "1"); // Disable the account so it cant be used anymore
+                // Disable the account so it can't be used anymore
+                $config->writeToConfigFile("recoveryAccountEnabled", "0", "1"); 
 
                 // Set the session variables and log the recovery user in.
                 $this->username = $username;
                 $this->password = $password;
                 $this->admin = 1;
                 $this->recover = 1;
+
+                // Relocates user and exits script
                 header("Location: ../ui/home.php");
                 exit();
             }
-        } else {
+        } else { // Regular or Admin
             // Hash password
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            
-            // Using DatabaseManager, retrieve password_hash and is_admin where username = $username
+
             require_once "../auth/DatabaseManager.php";
-            $database= new DatabaseManager;
+            $database = new DatabaseManager;
 
-            // Replace with your actual SQL query to retrieve user data
             $query = "SELECT pass, administrator FROM users WHERE email = ?";
-
-            // Bind and execute the query with the username
             $userData = $database->runParameterizedQuery($query, 's', [$username]);
 
             if ($userData && $userData->num_rows == 1) {
@@ -80,6 +100,11 @@ class SessionUser
         }
     }
 
+    /**
+     * Checks the session status.
+     *
+     * @static
+     */
     static public function sessionStatus()
     {
         if (session_status() != 2) {
@@ -89,22 +114,39 @@ class SessionUser
         return 1;
     }
 
+    /**
+     * Gets the associated database manager instance.
+     */
     public function getDatabase()
     {
         return $this->database;
     }
 
+    /**
+     * Checks if the user is an admin.
+     */
     public function checkIsAdmin()
     {
         return $this->admin;
     }
 
+    /**
+     * Checks if the user is logged in.
+     *
+     * @return bool Returns true if the user is logged in, false otherwise.
+     */
     public function checkIsLoggedIn()
     {
         if ($this->password != null)
             return true;
         return false;
     }
+
+    /**
+     * Checks if the user is in recovery mode.
+     *
+     * @return int|null The recovery status of the user.
+     */
     public function checkIsRecover()
     {
         if ($this->recover != null)
@@ -112,10 +154,16 @@ class SessionUser
         return false;
     }
 
+    /**
+     * Checks for errors in the user session.
+     *
+     * Redirects to the login page if the user is not logged in.
+     * Displays login and change password errors if any.
+     */
     public function checkError()
     {
         if ($this->checkIsLoggedIn() == false) {
-            header("Location: ../ui/index.php");
+            header("Location: ../ui/index.php"); // Send user to login screen
         }
 
         if (isset($_SESSION['loginError']) == true) {
@@ -131,26 +179,36 @@ class SessionUser
         }
     }
 
+    /**
+     * Opens a database connection using the DatabaseManager.
+     *
+     * Creates a new DatabaseManager instance and assigns it to the $database property.
+     * 
+     * NOTE: This is referenced far too heavily for scoping reasons, must find a way to reduce
+     */
     public function openDatabase()
     {
         require_once "../auth/DatabaseManager.php";
-        // return var_dump($this->database);
-
         $this->database = new DatabaseManager;
     }
 
+    /**
+     * Logs out the current user.
+     *
+     * Updates the last logged-in timestamp in the database.
+     * Clears cookies and session data to log the user out.
+     * Redirects to the login page.
+     */
     public function logOut()
     {
         $this->openDatabase();
 
         if ($this->checkIsLoggedIn()) {
-            // Replace with your actual SQL query
-            $query = "UPDATE users SET lastLoggedIn = NOW() WHERE email = ?";
-
             // Bind and execute the query with the username of the logged-in user
+            $query = "UPDATE users SET lastLoggedIn = NOW() WHERE email = ?";
             $this->database->runParameterizedQuery($query, 's', [$this->username]);
 
-            // Clear cookies (example: clearing a specific cookie named 'user_cookie')
+            // Clear cookies 
             if (ini_get("session.use_cookies")) {
                 $params = session_get_cookie_params();
                 setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
@@ -163,6 +221,13 @@ class SessionUser
         }
     }
 
+
+    /**
+     * Creates a new user in the database.
+     *
+     * Hashes the password and inserts user data into the 'users' table.
+     * Redirects to the admin page after creating the user.
+     */
     public function createUser($username, $password, $adminFlag)
     {
         $this->openDatabase();
@@ -186,6 +251,12 @@ class SessionUser
         header("Location: ../ui/admin.php");
     }
 
+    /**
+     * Modifies an existing user in the database.
+     *
+     * Updates the user's password, admin status, or both based on input parameters.
+     * Redirects to the admin page after modifying the user.
+     */
     public function modifyUser($username, $password, $adminFlag)
     {
         $this->openDatabase();
@@ -218,6 +289,12 @@ class SessionUser
         header("Location: ../ui/admin.php");
     }
 
+    /**
+     * Deletes a user from the database.
+     *
+     * Removes the user from the 'users' table.
+     * Redirects to the admin page after deleting the user.
+     */
     public function deleteUser($username)
     {
         $this->openDatabase();
@@ -242,6 +319,13 @@ class SessionUser
         header("Location: ../ui/admin.php");
     }
 
+    /**
+     * Changes the password for a user in the database.
+     *
+     * Updates the user's password based on input parameters.
+     * Stores change password success or failure messages in session variables.
+     * Redirects to the admin page.
+     */
     public function changePassword($username, $password1, $password2)
     {
         $this->openDatabase();
