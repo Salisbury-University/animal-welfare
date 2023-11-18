@@ -51,7 +51,7 @@ class SessionUser
             $recoveryPassword = $configFile['Recovery']['recoveryAccountPassword'];
             if ($username == $recoveryUsername && $password == $recoveryPassword) {
                 // Disable the account so it can't be used anymore
-                $config->writeToConfigFile("recoveryAccountEnabled", "0", "1"); 
+                $config->writeToConfigFile("recoveryAccountEnabled", "0", "1");
 
                 // Set the session variables and log the recovery user in.
                 $this->username = $username;
@@ -70,7 +70,7 @@ class SessionUser
             $database = new DatabaseManager;
 
             $query = "SELECT pass, administrator FROM users WHERE email = ?";
-            $userData = $database->runParameterizedQuery($query, 's', [$username]);
+            $userData = $database->runParameterizedQuery($query, 's', array($username));
 
             if ($userData && $userData->num_rows == 1) {
                 $row = $userData->fetch_assoc();
@@ -79,7 +79,6 @@ class SessionUser
                 // Verify the user's password against the stored hash
                 if (password_verify($password, $storedHash)) {
                     // Password is correct, assign values
-                    $this->database = $database;
                     $this->admin = $row['administrator'];
                     $this->username = $username;
                 } else {
@@ -195,6 +194,7 @@ class SessionUser
      */
     public function logOut()
     {
+        // Magical
         $this->openDatabase();
 
         if ($this->checkIsLoggedIn()) {
@@ -224,24 +224,19 @@ class SessionUser
      */
     public function createUser($username, $password, $adminFlag)
     {
+        // Magical
         $this->openDatabase();
-
         if ($this->admin == 0) {
             return;
         }
         // Hash the password
         $storedHash = password_hash($password, PASSWORD_DEFAULT);
 
-        // Create an array with the values
-        $valueArr = array($username, $storedHash, $adminFlag);
-
-        // Define the SQL statement
+        // Bind and execute the query with the username, pass, and admin flag of the logged-in user
         $query = "INSERT INTO users(email, `pass`, administrator) VALUES (?, ?, ?)";
+        $this->database->runParameterizedQuery($query, "ssi", array($username, $storedHash, $adminFlag));
 
-        // Insert the user into the database
-        $this->database->runParameterizedQuery($query, "ssi", $valueArr);
-
-        // Redirect to the desired page (e.g., admin home page)
+        // Redirect to the admin home page
         header("Location: ../ui/admin.php");
     }
 
@@ -253,6 +248,7 @@ class SessionUser
      */
     public function modifyUser($username, $password, $adminFlag)
     {
+        // Magical
         $this->openDatabase();
 
         if ($this->admin == 0) {
@@ -291,6 +287,7 @@ class SessionUser
      */
     public function deleteUser($username)
     {
+        // Magical
         $this->openDatabase();
 
         if ($this->admin == 0) {
@@ -299,7 +296,7 @@ class SessionUser
 
         $query = "DELETE FROM users WHERE users.email = ?;";
         $result = $this->database->runParameterizedQuery($query, "s", array($username));
-
+        unset($result);
         // Commenting this debug code out in case its needed in the future.
         // If the query fails, leave the user on the page.
         /*if($result == false){
@@ -322,6 +319,7 @@ class SessionUser
      */
     public function changePassword($username, $password1, $password2)
     {
+        // Magical
         $this->openDatabase();
 
         if ($password1 == $password2) {
