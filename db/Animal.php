@@ -73,14 +73,44 @@ class Animal
     {
         return $this->name;
     }
+
     public function getLastFed()
     {
-        return $this->lastFed;
+        require_once "../auth/DatabaseManager.php";
+        require_once "../admin/SessionUser.php";
+        if (is_null($this->lastUser))
+            return;
+
+        $query = "SELECT `dates` FROM diet WHERE zim=?";
+        $dates = $this->lastUser->getDatabase()->runParameterizedQuery($query, "i", array($this->id));
+        $day = "";
+        $num = 0;
+        while ($date = $dates->fetch_array(MYSQLI_ASSOC)) {
+            if ($num == 0) {
+                $day = $date['dates'];
+                $num += 1;
+            } else {
+                if ($day < $date['dates']) {
+                    $day = $date['dates'];
+                }
+            }
+        }
+
+        return $day;
     }
 
     //query through species :: simple
     public function getFormID(){
-        return 1;
+        require_once "../auth/DatabaseManager.php";
+        require_once "../admin/SessionUser.php";
+        if (is_null($this->lastUser))
+            return;
+
+        $query = "SELECT `form_id` FROM species WHERE id=?";
+        $result = $this->lastUser->getDatabase()->runParameterizedQuery($query, "s", array($this->species));
+        $form = $result->fetch_array(MYSQLI_ASSOC);
+
+        return $form["form_id"];
     }
 
     public function getOverallAverage() // Average of all averages
@@ -161,7 +191,7 @@ class Animal
             }
         }
 
-        return $date;
+        return $day;
     }
     public function getCheckupOverallAverage($date) // Average on a specific date
     {
