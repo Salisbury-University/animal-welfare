@@ -7,47 +7,14 @@ include "header.php";
 // use admin\SessionUser;
 
 require_once "../admin/SessionUser.php";
+require_once "../db/Animal.php";
 SessionUser::sessionStatus();
 
 $user = unserialize($_SESSION['user']);
 $user->openDatabase();
 
-$zim = $_GET['id'];
+$animal = new Animal($_GET['id'], $user);
 
-$query = "SELECT * FROM animals WHERE id=?";
-$result = $user->getDatabase()->runParameterizedQuery($query, "i", array($zim));
-$row = $result->fetch_array(MYSQLI_ASSOC);
-
-$animal = array(
-    'zim' => $zim,
-    'name' => $row['name'],
-    'species' => $row['species_id'],
-    'section' => $row['section'],
-    'sex' => $row['sex'],
-    'acqDate' => $row['acquisition_date'],
-    'bthDate' => $row['birth_date'],
-    'avg' => "N/A",
-    'lastCheckup' => "N/A",
-    'lastfed' => "N/A"
-);
-
-
-$query = "SELECT form_id FROM species WHERE id=?";
-$result = $user->getDatabase()->runParameterizedQuery($query, "s", array($animal['species']));
-$form = $result->fetch_array(MYSQLI_ASSOC);
-$animal['formID'] = $form['form_id'];
-
-$query = "SELECT MAX(dates) AS lastCheckup FROM welfaresubmission WHERE zim = $zim";
-$result = $user->getDatabase()->runQuery_UNSAFE($query);
-if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
-    $animal['lastCheckup'] = $row['lastCheckup'];
-}
-
-$query = "SELECT MAX(dates) as lastFed FROM diet WHERE zim = $zim";
-$result = $user->getDatabase()->runQuery_UNSAFE($query);
-if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
-    $animal['lastFed'] = $row['lastFed'];
-}
 ?>
 
 
@@ -86,7 +53,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     var url = "../db/_delete_welfare_entry.php";
                     var formData = new FormData();
                     formData.append("wid", wid);
-                    formData.append("zims", <?php echo $animal['zim']; ?>);
+                    formData.append("zims", <?php echo $animal->getID(); ?>);
 
 
                     // Send an AJAX request to delete the entry
@@ -145,31 +112,31 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                         <ul class="list-group">
                             <!-- Display animal information here -->
                             <li class="list-group-item"><strong>Name:</strong>
-                                <?php echo $animal['name']; ?>
+                                <?php echo $animal->getName(); ?>
                             </li>
                             <li class="list-group-item"><strong>ZIM:</strong>
-                                <?php echo $animal['zim']; ?>
+                                <?php echo $animal->getID(); ?>
                             </li>
                             <li class="list-group-item"><strong>Section:</strong>
-                                <?php echo $animal['section']; ?>
+                                <?php echo $animal->getSection(); ?>
                             </li>
                             <li class="list-group-item"><strong>Species:</strong>
-                                <?php echo $animal['species']; ?>
+                                <?php echo $animal->getSpecies(); ?>
                             </li>
                             <li class="list-group-item"><strong>Sex:</strong>
-                                <?php echo $animal['sex']; ?>
+                                <?php echo $animal->getSex(); ?>
                             </li>
                             <li class="list-group-item"><strong>Acquisition Date:</strong>
-                                <?php echo $animal['acqDate']; ?>
+                                <?php echo $animal->getAcqDay(); ?>
                             </li>
                             <li class="list-group-item"><strong>Birthdate:</strong>
-                                <?php echo $animal['bthDate']; ?>
+                                <?php echo $animal->getBirthday(); ?>
                             </li>
                             <li class="list-group-item"><strong>Last W. Entry (YYYY-MM-DD):</strong>
-                                <?php echo $animal['lastCheckup']; ?>
+                                <?php echo $animal->getLatestCheckupDate(); ?>
                             </li>
                             <li class="list-group-item"><strong>Last Fed (YYYY-MM-DD):</strong>
-                                <?php echo $animal['lastFed']; ?>
+                                <?php echo $animal->getLastFed(); ?>
                             </li>
                             <!-- ... (other animal info) ... -->
                         </ul>
@@ -199,9 +166,11 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                                 $b = 0;
                                 return sprintf("#%02X%02X%02X", $r, $g, $b);
                             }
+                            
 
+                            //NEEDS SWITCHING
                             $query = "SELECT wid, dates, reason, avg_health, avg_nutrition, avg_pse, avg_behavior, avg_mental FROM welfaresubmission WHERE zim = ? ORDER BY wid DESC";
-                            $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal['zim']));
+                            $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal->getID()));
 
                             //$r = 226;//201+25=226
                             //$g = 240;//215+25=240
@@ -226,8 +195,8 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                                     // <NOTE>: Some testing is needed with this function and code, but it should practically 
                                     //         create a perfect gradient
                             
-                                    //$colorCode = generateColorGradient($average, 0, 5);
-                                    //list($r, $g, $b) = sscanf($colorCode, "#%02x%02x%02x");
+                                    //  ::::   $colorCode = generateColorGradient($average, 0, 5);
+                                    //  ::::   list($r, $g, $b) = sscanf($colorCode, "#%02x%02x%02x");
                             
                                     // --- START REPLACE: --- 
                                     // Use color vex form
@@ -249,7 +218,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                                     round($average, $precision);
 
                                     echo '<div style="border:1px solid black; background:rgba(' . $r . ',' . $g . ',' . $b . ', .6);">';
-                                    echo '<p> &rarr; |[<a href="displayentry.php?zim=' . $animal['zim'] . '&formID=' . $animal['formID'] . '&wid=' . $row['wid'] . '">' . $row['dates'] . '</a> ]|[ W. Entry ID ' . $row['wid'] . ']|[ ' . $row['reason'] . ' ]|[ Entry Average: ' . number_format($average, 2) . ']</tr><br>';
+                                    echo '<p> &rarr; |[<a href="displayEntry.php?zim=' . $animal->getID() . '&formID=' . $animal->getFormID() . '&wid=' . $row['wid'] . '">' . $row['dates'] . '</a> ]|[ W. Entry ID ' . $row['wid'] . ']|[ ' . $row['reason'] . ' ]|[ Entry Average: ' . number_format($average, 2) . ']</tr><br>';
                                     echo '</div>';
 
                                     $count++;
@@ -273,10 +242,10 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     <div class="card-footer text-center">
                         <!-- Add and Delete buttons -->
                         <div class="btn-group">
-                            <form method="POST" action="popup.php?id=<?php echo $animal['zim']; ?>"
+                            <form method="POST" action="popup.php?id=<?php echo $animal->getID(); ?>"
                                 onClick="getReason()">
-                                <input type="hidden" name="form" value="<?php echo $animal['formID']; ?>">
-                                <input type="hidden" name="zims" value="<?php echo $animal['zim']; ?>">
+                                <input type="hidden" name="form" value="<?php echo $animal->getFormID(); ?>">
+                                <input type="hidden" name="zims" value="<?php echo $animal->getID(); ?>">
                                 <input type="hidden" name="reason" id="REASON">
                                 <input type="submit" value="Add Entry" class="btn btn-success">
                             </form>
@@ -297,7 +266,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                             <!-- Display diet tracking information here -->
                             <?php
                             $query = "SELECT * FROM diet WHERE zim = ? ORDER BY dates DESC";
-                            $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal['zim']));
+                            $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal->getID()));
 
                             $r = 201;
                             $g = 215;
@@ -332,7 +301,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                                 // --- END REPLACE --- 
                             
                                 echo '<div style="border:1px solid black; background:rgba(' . $r . ',' . $g . ',' . $b . ', .6);">';
-                                echo '<p> &rarr; |[<a href="displayate.php?zim=' . $animal['zim'] . '&did=' . $row['did'] . '">' . $row['dates'] . '</a> ]|[ D. Entry ID ' . $row['did'] . ']|[ ' . $quantitygiven . ' ' . $row['units'] . ' of ' . $row['food'] . ']|[ ' . $percent . '% Consumed ]</tr><br>';
+                                echo '<p> &rarr; |[<a href="displayMeal.php?zim=' . $animal->getID() . '&did=' . $row['did'] . '">' . $row['dates'] . '</a> ]|[ D. Entry ID ' . $row['did'] . ']|[ ' . $quantitygiven . ' ' . $row['units'] . ' of ' . $row['food'] . ']|[ ' . $percent . '% Consumed ]</tr><br>';
                                 echo '</div>';
                             }
 
@@ -342,7 +311,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
 
                     <div class="card-footer text-center">
                         <div class="btn-group">
-                            <form method="POST" action="mealRecord.php?id=<?php echo $animal['zim']; ?>">
+                            <form method="POST" action="mealRecord.php?id=<?php echo $animal->getID(); ?>">
                                 <input type="submit" value="Animal Ate Today" class="btn btn-success">
                             </form>
                         </div>
@@ -352,6 +321,11 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
         </div>
         <!-- Graph Card -->
         <div class="row">
+            <!-- reinput temp.php here 
+        
+        
+            -->
+
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
@@ -359,7 +333,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                             <?php for ($i = 0; $i < 40; ++$i)
                                 echo "&nbsp"; ?>
 
-                            <form method="POST" action="compare.php?zim=<?php echo $animal['zim']; ?>">
+                            <form method="POST" action="compare.php?zim=<?php echo $animal->getID(); ?>">
                                 <input type="submit" value="Compare" class="btn btn-success">
                             </form>
                         </h5>
@@ -379,11 +353,12 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                             //          It originally used getData but then stopped halfway through implementation.
                             // use db\Animal;
 
-                            require_once "../db/Animal.php";
+                            // require_once "../db/Animal.php";
 
-                            $animalO = new Animal($zim, $user->getDatabase());
-                            $averages = $animalO->getAllCheckupAverages();
-                            unset($animalO);
+                            // $animalO = new Animal($zim, $user->getDatabase());
+                            
+                            $averages = $animal->getAllCheckupAverages();
+                            // unset($animalO);
                             foreach ($averages as $checkupDate => $value) {
                                 ?>
                                 xValues.push("<?php echo $checkupDate; ?>");
@@ -439,7 +414,6 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     </div>
                 </div>
             </div>
-
             <div class="col-12 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
@@ -450,7 +424,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                         <!--Initializing Variables-->
                         <?php
                         $query = "SELECT AVG(`avg_health`), AVG(`avg_nutrition`), AVG(`avg_pse`), AVG(`avg_behavior`), AVG(`avg_mental`) FROM `welfaresubmission` WHERE `zim` = ?";
-                        $result = $user->getDatabase()->runParameterizedQuery($sql, "i", array($animal['zim']));
+                        $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal->getID()));
                         $row = $result->fetch_array(MYSQLI_ASSOC);
 
                         $health = $row['AVG(`avg_health`)'];
@@ -529,7 +503,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                     $line = array();
 
                     $query = 'SELECT DISTINCT `food` FROM `diet` WHERE zim = ?'; //returns search values for food
-                    $result = $database->runParameterizedQuery($query, "i", array($animal['zim']));
+                    $result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal->getID()));
                     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                         $a = array(); // array to push averages to data (eaten)
                         $a2 = array(); //array to push averages to data (given)
@@ -538,7 +512,7 @@ if (($row = $result->fetch_array(MYSQLI_ASSOC)) != NULL) {
                         array_push($labels, $var); //push to labels
                     
                         $query2 = "SELECT * FROM `diet` WHERE `food` = '" . $var . "'"; //select all entries where food = var
-                        $result2 = $database->runQuery_UNSAFE($query2);
+                        $result2 = $user->getDatabase()->runQuery_UNSAFE($query2);
                         while ($row2 = $result2->fetch_array(MYSQLI_ASSOC)) { //gets all entries for each food
                             $var2 = $row2['quantityeaten']; //get total amount eaten
                             array_push($a, $var2); //push into temp array
