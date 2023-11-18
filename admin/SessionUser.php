@@ -17,12 +17,8 @@ class SessionUser
      * The user's authentication token.
      */
     private $token = null;
-
     private $username = null;
-    private $password = null;
-
     private $database = null;
-
     private $admin = null;
     private $recover = null;
 
@@ -59,7 +55,6 @@ class SessionUser
 
                 // Set the session variables and log the recovery user in.
                 $this->username = $username;
-                $this->password = $password;
                 $this->admin = 1;
                 $this->recover = 1;
 
@@ -87,7 +82,6 @@ class SessionUser
                     $this->database = $database;
                     $this->admin = $row['administrator'];
                     $this->username = $username;
-                    $this->password = $passwordHash;
                 } else {
                     // Password is incorrect, increment loginAttempts
                     if (isset($_SESSION['loginFailures'])) {
@@ -137,7 +131,7 @@ class SessionUser
      */
     public function checkIsLoggedIn()
     {
-        if ($this->password != null)
+        if ($this->username != null)
             return true;
         return false;
     }
