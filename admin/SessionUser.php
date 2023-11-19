@@ -259,17 +259,19 @@ class SessionUser
             return;
         }
 
+        // Hashes password
         $storedHash = password_hash($password, PASSWORD_DEFAULT);
 
+        // Tests which information entered into the function
         if ($password != NULL && $adminFlag != NULL) {
             $query = "UPDATE `users` SET `pass`=?, `administrator`=? WHERE `users`.`email`=?;";
             $this->database->runParameterizedQuery($query, "sis", array($storedHash, $adminFlag, $username));
 
-        } elseif ($password == NULL && $adminFlag != NULL) { // Only want to modify the admin flag
+        } elseif ($password == NULL && $adminFlag != NULL) { // Only updates the admin flag
             $query = "UPDATE `users` SET `administrator`=? WHERE `users`.`email`=?;";
             $this->database->runParameterizedQuery($query, "is", array($adminFlag, $username));
 
-        } elseif ($password != NULL && $adminFlag == NULL) { // Only want to update the password
+        } elseif ($password != NULL && $adminFlag == NULL) { // Only updates the password
             $query = "UPDATE `users` SET `pass`=? WHERE `users`.`email`=?;";
             $this->database->runParameterizedQuery($query, "ss", array($storedHash, $username));
 
@@ -294,9 +296,11 @@ class SessionUser
             return;
         }
 
+        // Binds and execute the delete query
         $query = "DELETE FROM users WHERE users.email = ?;";
         $result = $this->database->runParameterizedQuery($query, "s", array($username));
         unset($result);
+
         // Commenting this debug code out in case its needed in the future.
         // If the query fails, leave the user on the page.
         /*if($result == false){
@@ -322,11 +326,12 @@ class SessionUser
         // Magical
         $this->openDatabase();
 
+        // Verify
         if ($password1 == $password2) {
             $sql = "UPDATE `users` SET `pass`=? WHERE `users`.`email`=?;";
             $storedHash = password_hash($password1, PASSWORD_DEFAULT);
+            
             $this->database->runParameterizedQuery($sql, "ss", array($storedHash, $username));
-
             $_SESSION['changePasswordError'] = "Password successfully changed.";
         } else { // If they dont match then we store the error in the session variable.
             $_SESSION['changePasswordError'] = "Passwords do not match!";
