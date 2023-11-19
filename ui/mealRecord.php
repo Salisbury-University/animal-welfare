@@ -57,8 +57,10 @@ $zim = $_GET['id'];
                                             placeholder="Enter the reason">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="quantity"
-                                            placeholder="Enter the quantity">
+                                        <input type="text" class="form-control" name="quantityg" placeholder="Enter the quantity given">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="quantitye" placeholder="Enter the quantity eaten">
                                     </div>
                                     <p>Please select a unit</p>
                                     <div class="form-check">
@@ -91,24 +93,23 @@ if (isset($_POST['sub'])) {
     $unit = $_POST['unit'];
     $food = $_POST['food'];
     $reason = $_POST['reason'];
-    $quantity = $_POST['quantity'];
+    $quantitygiv = $_POST['quantityg'];
+    $quantityeat = $_POST['quantitye'];
     $date = date('Y-m-d');
+    $difference = $quantitygiv-$quantityeat;
 
     echo $unit;
     echo $food;
     echo $reason;
-    echo $quantity;
+    echo $quantitygiv;
+    echo $quantityeat;
     echo $date;
 
     $user->openDatabase();
 
-    $query = "INSERT INTO diet (zim, dates, reason, food, quantity, units) VALUES (?,?,?,?,?,?)";
-    $result = $user->getDatabase()->runParameterizedQuery($query, "isssis", array($zims, $date, $reason, $food, $quantity, $unit));
-    if ($result === false) {
-        echo "<br> Error executing statement.<br>";
-    } else {
-        echo "<br> New Recor Created.<br>";
-    }
+    $query = "INSERT INTO diet (zim, dates, reason, food, quantitygiven, quantityeaten, difference, units) VALUES (?,?,?,?,?,?,?,?)";
+    $result = $user->getDatabase()->runParameterizedQuery($query, "isssisss", array($zim, $date, $reason, $food, $quantitygiv, $quantityeat, $difference, $unit));
+    
 }
 
 include_once "footer.php";

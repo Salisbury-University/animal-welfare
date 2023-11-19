@@ -24,24 +24,21 @@ $animal = new Animal($_GET['id'], $user);
 <head>
     <link href="../style/display.css" rel="stylesheet">
     <script>
-        var reload_ = false
-
-        function getReason() {
-            if (!reload_) {
-
+        //works
+        function getReason(){
                 var reason = prompt("Please enter the reason for the welfare submission");
-                var confirmed = confirm("Is this correct? '" + reason + "'");
 
-                if (!confirmed) {
-                    getReason();
+                if (reason !== null && reason !== "") { //first check
+                    var confirmed = confirm("Is this correct? '" + reason + "'");
+                
+                    if(confirmed) //second check
+                    window.location.href = "addWelfare.php?form=" + <?php echo $animal->getFormID(); ?> +
+                    "&zims=" + <?php echo $animal->getID(); ?> + "&reason=" +reason;
                 }
-                else {
-                    document.getElementById('REASON').value = reason;
-                    reload_ = true;
-                }
-            }
+                                    
         }
 
+        //works
         function deleteEntry() {
             var wid = prompt("Enter the 'Entry ID' to delete");
 
@@ -55,6 +52,45 @@ $animal = new Animal($_GET['id'], $user);
                     formData.append("wid", wid);
                     formData.append("zims", <?php echo $animal->getID(); ?>);
 
+
+                    // Send an AJAX request to delete the entry
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                alert("Entry with ID " + wid + " deleted successfully.");
+                                location.reload();
+
+                            } else {
+
+                                alert("Error deleting entry with ID " + wid);
+                            }
+                        }
+                    };
+                    xhr.send(formData);
+
+                }
+            }
+            location.reload();
+        }
+
+        //works but doesnt refresh?
+        function deleteDiet() {
+            var did = prompt("Enter the 'Entry ID' to delete");
+
+            if (did !== null && did !== "") {
+                var confirmed = confirm("Are you sure you want to delete entry with ID " + did + "?");
+            
+                if (confirmed) {
+                    
+                    //var ig = confirm("Did: " + did + "Zim: " + $animal['zim']);
+
+                    var url = "../db/_delete_diet_entry.php";
+                    var formData = new FormData();
+                    formData.append("did", did);
+                    formData.append("zims", <?php echo $animal->getID(); ?>);
+                    
 
                     // Send an AJAX request to delete the entry
                     var xhr = new XMLHttpRequest();
@@ -242,16 +278,9 @@ $animal = new Animal($_GET['id'], $user);
                     <div class="card-footer text-center">
                         <!-- Add and Delete buttons -->
                         <div class="btn-group">
-                            <form method="POST" action="popup.php?id=<?php echo $animal->getID(); ?>"
-                                onClick="getReason()">
-                                <input type="hidden" name="form" value="<?php echo $animal->getFormID(); ?>">
-                                <input type="hidden" name="zims" value="<?php echo $animal->getID(); ?>">
-                                <input type="hidden" name="reason" id="REASON">
-                                <input type="submit" value="Add Entry" class="btn btn-success">
-                            </form>
+                            <input type="submit" class="btn btn-success" action="" value="Add Entry" onClick="getReason()">
                             <div class="spacer" stlye="border: 1px solid black">&nbsp</div>
-                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry"
-                                onClick="deleteEntry()">
+                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry" onClick="deleteEntry()">
                         </div>
                     </div>
 
@@ -314,6 +343,8 @@ $animal = new Animal($_GET['id'], $user);
                             <form method="POST" action="mealRecord.php?id=<?php echo $animal->getID(); ?>">
                                 <input type="submit" value="Animal Ate Today" class="btn btn-success">
                             </form>
+                            <div class="spacer" stlye="border: 1px solid black">&nbsp</div>
+                            <input type="submit" class="btn btn-danger" action="" value="Delete Entry" onClick="deleteDiet()">
                         </div>
                     </div>
                 </div>
@@ -474,14 +505,14 @@ $animal = new Animal($_GET['id'], $user);
                                     responsive: false,
                                     plugins: {
                                         legend: {
-                                            position: "right",
-                                            align: "middle"
+                                        position: "right",
+                                        align: "middle"
                                         }
                                     }
-                                },
-                            });
+                              },
+                      });
 
-                        </script>
+                      </script>
                     </div>
                     <!--End of Polar chart-->
                 </div>
