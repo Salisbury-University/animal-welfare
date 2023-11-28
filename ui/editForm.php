@@ -43,7 +43,7 @@ $user->openDatabase();
                 // NOTE: DELETE THIS LATER - FOR ORGANIZATIONAL PURPOSES
                 $sectionID = $section['id'];
                 $sectionTitle = $section['title'];
-                $sectionQuestionCount = $sections['num'];
+                $sectionQuestionCount = $section['num'];
                 // END NOTE.
                 ?>
                 <!-- DISPLAYS THE SECTIONS IN THE FORM -->
