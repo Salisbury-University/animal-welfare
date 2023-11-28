@@ -77,7 +77,7 @@ $forms = $user->getDatabase()->runQuery_UNSAFE($query);
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <?php while (($form = $forms->fetch_array(MYSQLI_ASSOC)) != NULL) { ?>
-                                <form method="POST" action="forms.php?id=<?php echo $form['id']; ?>">
+                                <form method="POST" action="editForm.php?id=<?php echo $form['id']; ?>">
                                     <button type="submit" class="dropdown-item btn btn-secondary">
                                         <?php echo $form["title"]; ?>
                                     </button>

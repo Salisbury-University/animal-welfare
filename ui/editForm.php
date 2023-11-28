@@ -13,6 +13,8 @@ $user = unserialize($_SESSION['user']);
 $user->openDatabase();
 ?>
 
+<link href="../style/forms.css" rel="stylesheet">
+
 <main>
     <?php
     // GET: Gets the form id
@@ -43,7 +45,7 @@ $user->openDatabase();
                 // NOTE: DELETE THIS LATER - FOR ORGANIZATIONAL PURPOSES
                 $sectionID = $section['id'];
                 $sectionTitle = $section['title'];
-                $sectionQuestionCount = $sections['num'];
+                $sectionQuestionCount = $section['num'];
                 // END NOTE.
                 ?>
                 <!-- DISPLAYS THE SECTIONS IN THE FORM -->
