@@ -105,7 +105,7 @@ SessionUser::sessionStatus();
                                                 &raquo;</a>
                                             <p></p>
                                             <a class='btn btn-success btn-sm'
-                                                href="modifyAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update
+                                                href="updateAnimal.php?id=<?php echo $row['id']; ?>" role='button'>Update
                                                 &raquo;</a>
                                             <p></p>
                                             <td>
