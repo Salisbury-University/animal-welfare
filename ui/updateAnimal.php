@@ -18,7 +18,7 @@ $user->openDatabase();
     $zim = $_GET['id'];
     $query = 'SELECT * FROM `animals` WHERE `id` = ?';
     $animals = $user->getDatabase()->runParameterizedQuery($query, "i", array($zim));
-    $animal = $result->fetch_array(MYSQLI_ASSOC);
+    $animal = $animals->fetch_array(MYSQLI_ASSOC);
 
     $query = 'SELECT DISTINCT `section` FROM `animals` ORDER BY `section` ASC';
     $sections = $user->getDatabase()->runQuery_UNSAFE($query);
@@ -33,8 +33,8 @@ $user->openDatabase();
             <!--Enter ID--> 
             <div class=" form-group">
         <label for="id">ID:</label>
-        <input type='text' class="form-control" name='id' placeholder='<?php echo $zims; ?>' readonly>
-        <input type='hidden' value='<?php echo $zims; ?>' name='id'>
+        <input type='text' class="form-control" name='id' placeholder='<?php echo $zim; ?>' readonly>
+        <input type='hidden' value='<?php echo $zim; ?>' name='id'>
     </div>
     <!---->
 
