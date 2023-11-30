@@ -28,36 +28,23 @@ for($i = 0; $i < $tables->num_rows; $i++){
 }
 
 
-    //https://www.phptutorial.net/php-tutorial/php-checkbox/
+    // Checks to see if a checkbox is checked and if it is, 
+    // adds that table to an array that
+    // will be used to get data from the database later.
 $count = 0;
 for($i = 0; $i < sizeof($tableNames); $i++){
     if(filter_has_var(INPUT_POST, $tableNames[$i][0]) == true){
         $tableNameExport[$count] = $tableNames[$i];
         $count++;
     }
-    
-    /*if(isset($_POST[$tableNames[$i]]) == true){
-        $tableNameExport[$count] = $tableNames[$i];
-        $count++;
-    }*/
 }
+unset($count);
 
     // Get the data from the database with the associated tables
 for($i = 0; $i < sizeof($tableNameExport); $i++){
     $temp = $database->runQuery_UNSAFE("SELECT * FROM " . $tableNameExport[$i][0]);
     $dataToBeWrittenToCSVFile[$i] = $temp->fetch_all();
 }
-
-
-/*for($i = 0; $i < $tables->num_rows; $i++){
-    $tableName = $tables->fetch_row();
-    $tableNameExport[$i] = $tableName;
-
-        // Get data from table
-    $temp = $database->runQuery_UNSAFE("SELECT * FROM " . $tableName[0]);
-    $stuffInTable = $temp->fetch_all();
-    $dataToBeWrittenToCSVFile[$i] = $stuffInTable;
-}*/
 
 
     // Write CSV to file
