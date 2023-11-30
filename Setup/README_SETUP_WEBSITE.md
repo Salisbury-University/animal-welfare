@@ -2,10 +2,6 @@
 Hosting the website on Windows is not supported, However it may still work.
 
 <br>
-<h2>QUESTIONS REGARDING SETTING UP THE WEBSITE OR IF YOU NEED A BUG FIXED</h2>
-If there is a question regarding setting up the website or a bug that you wish to report and want to be fixed, Feel free to send me an email at dwagner3@gulls.salisbury.edu
-
-<br>
 <h2>INFO ABOUT THE DEVELOPMENT ENVIRONMENT</h2>
 The software was developed on Debian 11 (Bullseye) using PHP version 7.4. The database software we used is MariaDB (version 10.5.21) which is provided in the debian repositories.
 
