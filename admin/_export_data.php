@@ -1,10 +1,7 @@
 <?php
-// Back end script for exporting the data in the database to a .csv file
-//https://www.php.net/manual/en/function.fputcsv.php
+    // Back end script for exporting the data in the database to a .csv file
 require_once "../admin/SessionUser.php";
 require_once "../auth/DatabaseManager.php";
-
-//$database = new DatabaseManager;
 
 SessionUser::sessionStatus();
 $user = unserialize($_SESSION['user']);
@@ -14,9 +11,8 @@ $CSVSAVELOCATION = sys_get_temp_dir() . "/" . "export.csv";
 $AMOUNTOFBLANKLINES = 5; // Number of blank lines between each table in the exported file.
 
     // Database stuff
-//require_once("Includes/databaseManipulation.php");
 $user->openDatabase();
-$database = $user->getDatabase(); //new databaseManipulation;
+$database = $user->getDatabase();
 
 
     // Variables that are used later
@@ -28,6 +24,32 @@ $blankRowSeparator = array(" "); // Used to separate the different database tabl
     // array that will be written as a csv file.
 $tables = $database->runQuery_UNSAFE("SHOW TABLES;");
 for($i = 0; $i < $tables->num_rows; $i++){
+    $tableNames[$i] = $tables->fetch_row();
+}
+
+
+    //https://www.phptutorial.net/php-tutorial/php-checkbox/
+$count = 0;
+for($i = 0; $i < sizeof($tableNames); $i++){
+    if(filter_has_var(INPUT_POST, $tableNames[$i][0]) == true){
+        $tableNameExport[$count] = $tableNames[$i];
+        $count++;
+    }
+    
+    /*if(isset($_POST[$tableNames[$i]]) == true){
+        $tableNameExport[$count] = $tableNames[$i];
+        $count++;
+    }*/
+}
+
+    // Get the data from the database with the associated tables
+for($i = 0; $i < sizeof($tableNameExport); $i++){
+    $temp = $database->runQuery_UNSAFE("SELECT * FROM " . $tableNameExport[$i][0]);
+    $dataToBeWrittenToCSVFile[$i] = $temp->fetch_all();
+}
+
+
+/*for($i = 0; $i < $tables->num_rows; $i++){
     $tableName = $tables->fetch_row();
     $tableNameExport[$i] = $tableName;
 
@@ -35,7 +57,7 @@ for($i = 0; $i < $tables->num_rows; $i++){
     $temp = $database->runQuery_UNSAFE("SELECT * FROM " . $tableName[0]);
     $stuffInTable = $temp->fetch_all();
     $dataToBeWrittenToCSVFile[$i] = $stuffInTable;
-}
+}*/
 
 
     // Write CSV to file
