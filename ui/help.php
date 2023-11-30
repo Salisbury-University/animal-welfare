@@ -40,8 +40,6 @@ include_once "header.php";
           an entry from here.</li>
           <li>Diet Tracking: Displays all previous diet submissions. Clicking "Animal Ate Today" allows you
             to submit a new entry. You can also delete from here.</li>
-          <li>Diet Tracking: Displays all previous diet submissions. Clicking "Animal Ate Today" allows you
-          to submit a new entry. You can also delete from here.</li>
           <li>All Time Welfare Submissions Graph: displays the average score on each date of submission. Clicking
             compare allows you to compare the animal to any other</li>
           <li>All Time Average By Section: shows the overall average for each section</li>
@@ -56,28 +54,54 @@ include_once "header.php";
     </div>
   </div>
 
-  <!--Second card (only if admin)-->
-      <div class="col-12 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Using the Admin Pages</h5>
-            </div>
-            <div class="card-body" style="width:100%;max-width:700px">
-            <p class = "font-weight-bold">Manage Admin:</p>
-            <p>All users and their passwords are displayed. Passwords are hashed meaning you cannot see them for security purposes.
-              Users can be deleted and modified from the table. Deleting is irreversible! Only a users password and admin setting 
-              can be updated.</p>
-            <p class = "font-weight-bold">Create User:</p>
-            <p> Creating a user requires an email and password. To make a user an admin,
-              enter 1. To be a regular user, enter 0. Only admin can edit forms and accounts.
-            
-            </p>
-
-            <p><a class="btn btn-success" href="search.php" role="button">Welfare-Form &raquo;</a></p>
-            </div>
+<!--Start Admin Only-->
+<?php
+if ($user->checkIsAdmin() == 1) { ?>
+<!--Second col -->
+  <div class="col-12 col-lg-6 mb-4">
+    <!--Admin card-->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Using the Admin Pages</h5>
         </div>
-      </div>
-     
+        <div class="card-body" style="width:100%;max-width:700px">
+        <p class = "font-weight-bold">Manage Admin:</p>
+        <p>All users and their passwords are displayed. Passwords are hashed meaning you cannot see them for security purposes.
+          Users can be deleted and modified from the table. Deleting is irreversible! Only a users password and admin setting 
+          can be updated.</p>
+        <p class = "font-weight-bold">Create User:</p>
+        <p> Creating a user requires an email and password. To make a user an admin,
+          enter 1. To be a regular user, enter 0. Only admin can edit forms and accounts.
+        
+        </p>
+
+        <p><a class="btn btn-success" href="search.php" role="button">Welfare-Form &raquo;</a></p>
+        </div>
+    </div>
+    <!--End Admin card-->
+    <p></p>
+    <!--Start Edit Forms Card-->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Editing Forms</h5>
+        </div>
+        <div class="card-body" style="width:100%;max-width:700px">
+        <p class = "font-weight-bold">Dropdown:</p>
+        <p>Select which form you want to edit by clicking the "Edit Forms' dropdown. </p>
+        <p class = "font-weight-bold">Add/Update/Delete:</p>
+        <p> Once you select a form, you can add a question to any section
+        
+        </p>
+
+        <p><a class="btn btn-success" href="search.php" role="button">Welfare-Form &raquo;</a></p>
+        </div>
+    </div>
+
+
+  </div>
+<!--End admin only-->
+
+<?php } ?>
 
 
 </div> <!--Close row-->
