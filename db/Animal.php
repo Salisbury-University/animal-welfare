@@ -43,6 +43,8 @@ class Animal
             $this->acqDate = $data['acquisition_date'];
             $this->name = $data['name'];
         }
+        // May be dropping having instances inside
+        // Remember to properly handle exceptions and close resources
     }
 
     public function getID()
