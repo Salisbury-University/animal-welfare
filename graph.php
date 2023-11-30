@@ -35,10 +35,6 @@ for ($i = 0; $i < sizeof($zArr); ++$i) {
                 <h5 class="card-title"> All Time Welfare Submissions Graph
                     <?php for ($i = 0; $i < 40; ++$i)
                         echo "&nbsp"; ?>
-
-                    <form method="POST" action="compare.php?zim=<?php echo $animal->getID(); ?>">
-                        <input type="submit" value="Compare" class="btn btn-success">
-                    </form>
                 </h5>
 
             </div>
@@ -92,16 +88,22 @@ for ($i = 0; $i < sizeof($zArr); ++$i) {
                         data: {
                             labels: <?= json_encode($checkupDate) ?>,
                             datasets: [
-                                <?php for ($i = 0; $i < sizeof($zArr); ++$i): ?>
+                                <?php 
+                                    for ($i = 0, $lastrgb = 0; $i < sizeof($zArr); ++$i): ?>
                                             {
                                         <?php
+                                        $r=0; $g=0; $b=0;
+                                        
                                         $r = rand(0, 255);
-                                        $g = rand(0, 255);
                                         $b = rand(0, 255);
+                                        $ng = $lastrgb + (69 * (1/(sizeof($zArr)/2)));
+                                        ($i == 0) ? $g = rand(0, 255) : ($ng > 255)? $g = $ng - 255 : $g = $ng;
+
+                                        $lastrgb = $g;
                                         $a = "rgb($r, $g, $b)";
                                         ?>
                                         
-                                                        label: '<?= $animals[$i]->getName() ?>',
+                                        label: '<?= $animals[$i]->getName() ?>',
                                         fill: false,
                                         backgroundColor: <?= json_encode($a) ?>,
                                         spanGaps: true,
