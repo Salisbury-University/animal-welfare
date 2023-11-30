@@ -52,7 +52,7 @@
     </div>
 
     <!-- <button type="button" id="coming-soon">COMING SOON</button> -->
-    <img src="C:/Users/Joshua/AnimalWelfare/images/turtle.svg" id="turtle" title="turtle-icon">
-    <img src="C:/Users/Joshua/AnimalWelfare/images/parrot.svg" id="parrot" title="parrot-icon">
-    <img src="C:/Users/Joshua/AnimalWelfare/images/birds.png" id="birds" title="birds-icon">
+    <img src="../img/turtle.svg" id="turtle" title="turtle-icon">
+    <img src="../img/parrot.svg" id="parrot" title="parrot-icon">
+    <img src="../img/birds.png" id="birds" title="birds-icon">
 </footer>
