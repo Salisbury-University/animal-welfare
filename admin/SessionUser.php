@@ -217,7 +217,7 @@ class SessionUser
 
     public static function redirectUser($stringPath){
         if(headers_sent() == false){
-            header("Location: " + $stringPath);
+            header("Location: " . $stringPath);
         }else{
             echo "<script type='text/JavaScript'>
             function redirect(){

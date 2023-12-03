@@ -118,8 +118,7 @@ $forms = $user->getDatabase()->runQuery_UNSAFE($query);
     <?php
 
     if (isset($_GET['logout'])) {
-        $user->logout();
-        header("Location: index.php");
+        $user->logOut();
         unset($user);
         exit();
     }
