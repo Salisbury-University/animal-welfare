@@ -6,6 +6,11 @@ require_once "../admin/SessionUser.php";
 
 SessionUser::sessionStatus();
 
+    // Prevent unauthorized users from using the application
+if(isset($_SESSION['user']) == false){
+    die();
+}
+
 $user = unserialize($_SESSION['user']);
 $user->openDatabase();
 
