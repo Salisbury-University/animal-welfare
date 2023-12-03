@@ -28,7 +28,7 @@ if ($submittedSection != NULL && $submittedName != NULL) { //modify location and
     $query = "UPDATE `animals` SET `section`=? WHERE `animals`.`id`=?;";
     $result = $user->getDatabase()->runParameterizedQuery($query, "si", array($submittedSection, $id));
 } elseif ($submittedName == NULL && $submittedSection == NULL) {
-    header("Location: ../search.php"); // Do nothing and return to the search page if the form is left blank
+    SessionUser::redirectUser("../ui/search.php"); // Do nothing and return to the search page if the form is left blank
 } else { // Should never arrive here.
     $query = NULL;
     echo "Section: $submittedSection - Name: $submittedName";
@@ -36,7 +36,7 @@ if ($submittedSection != NULL && $submittedName != NULL) { //modify location and
 }
 
 // Redirect to home directory
-header("Location: ../search.php");
+SessionUser::redirectUser("../ui/search.php");
 session_write_close();
 exit();
 ?>
