@@ -211,7 +211,22 @@ class SessionUser
             // Clear session data
             session_destroy();
 
-            header("Location: ../ui/index.php");
+            SessionUser::redirectUser("../index.php");
+        }
+    }
+
+    public static function redirectUser($stringPath){
+        if(headers_sent() == false){
+            header("Location: " + $stringPath);
+        }else{
+            echo "<script type='text/JavaScript'>
+            function redirect(){
+                window.location.href = '$stringPath';
+            }
+
+            redirect();
+            
+            </script>";
         }
     }
 
