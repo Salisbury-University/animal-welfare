@@ -7,10 +7,12 @@ require_once "../admin/SessionUser.php";
 if (isset($_POST['subUser']) && isset($_POST['subPass'])) {
     $sessionUser = new SessionUser($_POST['subUser'], $_POST['subPass']);
 
-    $_SESSION['user'] = serialize($sessionUser);
-
-    if ($sessionUser->checkIsLoggedIn()){
-        header("Location: ../ui/home.php");
+    if ($sessionUser->checkIsLoggedIn() == true){
+        $_SESSION['user'] = serialize($sessionUser);
+        SessionUser::redirectUser("../ui/home.php");
+    }else if($sessionUser->checkIsLoggedIn() == false){
+        unset($sessionUser);
+        SessionUser::redirectUser("../index.php");
     }
 }
 

@@ -208,6 +208,8 @@ class SessionUser
                 setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
             }
 
+            unset($_SESSION['user']);
+
             // Clear session data
             session_destroy();
 
