@@ -6,6 +6,11 @@ require_once "../admin/SessionUser.php";
 
 SessionUser::sessionStatus();
 
+    // Prevent unauthorized users from using the application
+if(isset($_SESSION['user']) == false){
+    die();
+}
+
 $user = unserialize($_SESSION['user']);
 $user->openDatabase();
 
@@ -96,6 +101,7 @@ $forms = $user->getDatabase()->runQuery_UNSAFE($query);
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="admin.php">Manage admin</a>
                             <a class="dropdown-item" href="createUser.php">Create User</a>
+                            <a class="dropdown-item" href="exportData.php">Export Data</a>
                         </div>
                     </li>
 
