@@ -28,7 +28,7 @@ echo $submittedForm . '<br>';
 
 if ($submittedID == NULL || $submittedSection == NULL || $submittedSpecies == NULL) { //if any of these are NULL, kicks them back
     echo 'Error';
-    header("Location: ../createAnimal.php");
+    SessionUser::redirectUser("../ui/createAnimal.php");
 } else {
     $query = "SELECT `id` FROM `species` WHERE `id` = ?";
     $speciesP = $user->getDatabase()->runParameterizedQuery($query,"s",array($submittedSpecies));
@@ -37,21 +37,23 @@ if ($submittedID == NULL || $submittedSection == NULL || $submittedSpecies == NU
     if ($species != NULL) { //If species exists already
         $query = "INSERT INTO `animals` (`id`, `section`, `sex`, `birth_date`, `acquisition_date`, `species_id`, `name`)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        $user->getDatabase()->runParameterizedQuery($query,"issssss", array($submittedID, $submittedSection, $submittedSex, $submittedBirth, $submittedAc, $submittedSpecies, $submittedName));
     } else { //Insert species first
         if ($submittedForm != NULL) { //Make sure they selected a form 
             $query = "INSERT INTO `species` (`id`, `form_id`) VALUES (?, ?)";
             $speciesR = $user->getDatabase()->runParameterizedQuery($query,"si",array($submittedSpecies, $submittedForm));
 
-            $sql = "INSERT INTO `animals` (`id`, `section`, `sex`, `birth_date`, `acquisition_date`, `species_id`, `name`)
-            VALUES ('$submittedID', '$submittedSection', '$submittedSex', '$submittedBirth', '$submittedAc', '$submittedSpecies', '$submittedName')";
+            $query = "INSERT INTO `animals` (`id`, `section`, `sex`, `birth_date`, `acquisition_date`, `species_id`, `name`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $user->getDatabase()->runParameterizedQuery($query,"issssss", array($submittedID, $submittedSection, $submittedSex, $submittedBirth, $submittedAc, $submittedSpecies, $submittedName));
         }
     }
+
 }
 
-$result = $user->getDatabase()->runParameterizedQuery($query,"issssss",array($submittedSpecies, $submittedForm));
-
 // Redirect to home directory
-header("Location: ../search.php");
+SessionUser::redirectUser("../ui/search.php");
+
 
 session_write_close();
 exit();

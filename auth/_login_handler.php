@@ -7,6 +7,7 @@ require_once "../admin/SessionUser.php";
 if (isset($_POST['subUser']) && isset($_POST['subPass'])) {
     $sessionUser = new SessionUser($_POST['subUser'], $_POST['subPass']);
 
+        // If the login failed then checkIsLoggedIn will return false, due to the username not being set.
     if ($sessionUser->checkIsLoggedIn() == true){
         $_SESSION['user'] = serialize($sessionUser);
         SessionUser::redirectUser("../ui/home.php");
