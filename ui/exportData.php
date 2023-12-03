@@ -20,6 +20,21 @@ $database = $user->getDatabase();
 
 <link href="../style/admin.css" rel="stylesheet">
 
+<style>
+    .container{
+        margin-top: 2%;
+        margin-left: 5%;
+        max-width: 45%;
+        margin: auto;
+        background-color: white;
+        border: solid black 3px;
+    }
+
+    .paddingContainer{
+        padding: 30px;
+    }
+</style>
+
 <!--Only edit main-->
 <main><!-- Main jumbotron for a primary marketing message or call to action -->
     <?php
@@ -45,6 +60,8 @@ $database = $user->getDatabase();
         //https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
 
             // Iterate through array of tables and create a checkbox for each
+        echo "<div class='paddingContainer'>";
+        echo "<div class='container'>";
         echo "Check the box of the tables you wish to export.<br>";
         echo "<form id='exportData' name='exportData' action='../admin/_export_data.php' method='POST'>";
         foreach($tableNameArr as $val){
@@ -56,6 +73,8 @@ $database = $user->getDatabase();
         }
         echo "<input type='submit'>";
         echo "</form>";
+        echo "</div>";
+        echo "</div>";
 
         //echo "<input type='checkbox' id='vehicle1' name='vehicle1' value='Bike'>"
         //echo "<label for='vehicle1'> I have a bike</label><br>"
