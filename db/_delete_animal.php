@@ -17,7 +17,7 @@ echo "$animal";
 
 $query = "DELETE FROM animals WHERE animals.id = ?;";
 echo "$sql";
-$result = $user->getDatabase()->runParameterizedQuery($query, "s", array($animal));
+$result = $user->getDatabase()->runParameterizedQuery($query, "i", array($animal));
 
 // Commenting this debug code out in case its needed in the future.
 // If the query fails, leave the user on the page.
@@ -29,7 +29,7 @@ $result = $user->getDatabase()->runParameterizedQuery($query, "s", array($animal
 }*/
 
 // Redirect to home directory
-header("Location: ../ui/search.php");
+SessionUser::redirectUser("../ui/search.php");
 session_write_close();
 exit();
 ?>
