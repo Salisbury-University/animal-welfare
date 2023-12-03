@@ -1,6 +1,6 @@
 <hr>
-<footer>
-    <div id="ft-nav">
+<footer class="container-fluid">
+    <div class="f-top">
         <div class="row">
             <div class="col">
                 <h4>welfare</h4>
@@ -23,7 +23,9 @@
                 <h4>data</h4>
                 <ul>
                     <li><a href="#">compare animals</a></li>
+                    <li><a href="#">view all</a></li>
                     <li><a href="#">export data</a></li>
+                    <!-- <li><a href="#">interactive map</a></li> -->
                     <!-- <li><a href=''></li> -->
                 </ul>
             </div>
@@ -34,7 +36,7 @@
                     <?php
                     // require_once "../vendor/autoload.php";
                     // use admin\SessionUser;
-                    
+
                     require_once "../admin/SessionUser.php";
                     SessionUser::sessionStatus();
 
@@ -45,14 +47,9 @@
                     }
                     ?>
                     <!-- <li><a href=''></li> -->
-                    <!-- <li><a href=''></li> -->
                 </ul>
             </div>
         </div>
     </div>
-
-    <!-- <button type="button" id="coming-soon">COMING SOON</button> -->
-    <img src="../img/turtle.svg" id="turtle" title="turtle-icon">
-    <img src="../img/parrot.svg" id="parrot" title="parrot-icon">
-    <img src="../img/birds.png" id="birds" title="birds-icon">
 </footer>
+</body>
