@@ -26,6 +26,16 @@ echo $submittedAc . '<br>';
 echo $submittedName . '<br>';
 echo $submittedForm . '<br>';
 
+//checks duplicate entry
+$query = "SELECT * FROM `animals` WHERE `id` = ?";
+$checks = $user->getDatabase()->runParameterizedQuery($query,"i",array($submittedID));
+$check = $checks->fetch_array(MYSQLI_ASSOC);
+
+if ($check != NULL) {
+    echo 'Error';
+    SessionUser::redirectUser("../ui/createAnimal.php");
+}
+
 if ($submittedID == NULL || $submittedSection == NULL || $submittedSpecies == NULL) { //if any of these are NULL, kicks them back
     echo 'Error';
     SessionUser::redirectUser("../ui/createAnimal.php");
