@@ -51,7 +51,7 @@ $user->openDatabase();
                 <!-- DISPLAYS THE SECTIONS IN THE FORM -->
                 <tr>
                     <th class="text-center" colspan="3">
-                        <?= htmlspecialchars($SEC_TITLE, ENT_QUOTES, 'UTF-8') ?>
+                        <?= htmlspecialchars($sectionTitle, ENT_QUOTES, 'UTF-8') ?>
                     </th>
                 </tr>
                 <?php
