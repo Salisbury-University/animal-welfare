@@ -4,7 +4,7 @@
 // use \config\ConfigHandler;
 
 class DatabaseManager {
-    private $connection;
+    private $internaldbConnection;
     private $databaseIP;
     private $dbUsername;
     private $dbPassword; 
@@ -29,10 +29,10 @@ class DatabaseManager {
             session_start();
         }
 
-        $this->connection = new mysqli($this->databaseIP, $this->dbUsername, $this->dbPassword, $this->dbName);
+        $this->internaldbConnection = new mysqli($this->databaseIP, $this->dbUsername, $this->dbPassword, $this->dbName);
 
-        if($this->connection->connect_error){
-            die("Connection falied: ". $this->connection->connect_error);
+        if($this->internaldbConnection->connect_error){
+            die("Connection falied: ". $this->internaldbConnection->connect_error);
         }
     }
 
@@ -45,15 +45,14 @@ class DatabaseManager {
     */
     public function runParameterizedQuery($preparedQuery, $paramStr, $valueArr){
         try{
-            $size = count($valueArr);
+            $sizeOfValueArr = count($valueArr);
             
                 // Run the string through the prepared statement function
-            $statement = $this->connection->prepare($preparedQuery);
+            $statement = $this->internaldbConnection->prepare($preparedQuery);
             
                 // Bind the parameters
-            for($i = 0; $i < $size; $i++){
+            for($i = 0; $i < $sizeOfValueArr; $i++){
                 $statement->bind_param($paramStr, ...$valueArr);
-            
             }
 
                 // Execute them
@@ -71,14 +70,14 @@ class DatabaseManager {
     Returns the result of the mysqli_query function call.
     */
     public function runQuery_UNSAFE($query){
-        return $this->connection->query($query);
+        return $this->internaldbConnection->query($query);
     }
 
     /*
     Not recommended that you use this, but its here if needed.
     */
     public function getConnection(){
-        return $this->connection;
+        return $this->internaldbConnection;
     }
 
     private function getConfig(){
