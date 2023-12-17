@@ -1,7 +1,7 @@
 <?php
 // require_once "../vendor/autoload.php";
 // <NOTE> Heavy rework needed (deprec);
-include_once "header.php";
+include "header.php";
 
 // use admin\SessionUser;
 
@@ -288,7 +288,7 @@ $sections = $user->getDatabase()->runParameterizedQuery($query, "i", array($form
                     delete form[sectionId];
                 }
 
-                console.log("Delete Section: " + sectionId);
+                //console.log("Delete Section: " + sectionId);
                 // Add your additional delete section logic if needed
             }
 
@@ -306,7 +306,7 @@ $sections = $user->getDatabase()->runParameterizedQuery($query, "i", array($form
                     delete form[sectionId][questionId];
                 }
 
-                console.log("Delete Question: " + questionId);
+                //console.log("Delete Question: " + questionId);
                 // Add your additional delete question logic if needed
             }
 
@@ -421,7 +421,7 @@ $sections = $user->getDatabase()->runParameterizedQuery($query, "i", array($form
         // Event delegation for the #editFormButton
         $(document).on("click", "#editFormButton", function () {
             // Find the #formTitle element
-            console.log("formTitleElement");
+            //console.log("formTitleElement");
             var formTitleElement = $("#formTitle");
 
             // Make the text editable and focus on it
@@ -550,4 +550,4 @@ $sections = $user->getDatabase()->runParameterizedQuery($query, "i", array($form
 </body>
 </html>
 <?php
-include_once "footer.php";
+include "footer.php";
