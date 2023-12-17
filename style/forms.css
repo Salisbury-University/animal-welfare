@@ -1,15 +1,111 @@
-.table {
-    margin-top: 3%;
-    background-color: white;
-
+/* Basic styling for sections */
+.section {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    position: relative;
 }
 
-.back {
-    margin-top: 2%;
-    margin-left: 2%;
+.section-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    cursor: grab;
 }
 
-.btn1 {
-    margin-left: 47%;
-    margin-bottom: 2%;
+/* Styling for questions within sections */
+.question {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    position: relative;
+}
+#formTitle {
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    /* Add padding to the top and bottom */
+    font-size: 24px;
+    /* Increase the font size */
+    font-weight: bold;
+}
+
+.editable:focus {
+    outline: 2px solid blue;
+    /* Change the outline color and style as needed */
+    background-color: #f0f0f0;
+    /* Change the background color as needed */
+}
+
+.delSectionButton,
+.delQuestionButton {
+    display: none;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.section:hover .delSectionButton,
+.question:hover .delQuestionButton {
+    display: block;
+}
+.delSectionButton:hover,
+.delQuestionButton:hover {
+    opacity: 1;
+}
+
+/* Style for the Back button */
+button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    padding: 10px 15px; /* Padding to make the button larger */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    margin-right: 10px; /* Optional: Add some margin to separate buttons */
+}
+
+/* Style for the Add Question and Add Section buttons */
+.addQuestionButton,#addSectionButton {
+    background-color: #007bff; /* Green background color */
+    color: #fff; /* White text color */
+    padding: 10px 15px; /* Padding to make the button larger */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    margin-top: 10px; /* Optional: Add some margin to separate buttons */
+}
+
+.fas.fa-trash {
+    color: #dc3545; /* Red color */
+}
+
+#submitChangesButton {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#editFormButton,
+#deleteFormButton {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease; /* Add a smooth transition effect */
+
+    /* Additional styling if needed */
+}
+
+#editFormButton:hover,
+#deleteFormButton:hover {
+    opacity: 1;
 }

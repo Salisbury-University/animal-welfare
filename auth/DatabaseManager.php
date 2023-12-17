@@ -58,6 +58,10 @@ class DatabaseManager {
         return $this->connection;
     }
 
+    public function getLastInsertId(){
+        return  $this->connection->insert_id;
+    }
+
     private function getConfig(){
         require_once "../config/ConfigHandler.php";
         $config = new ConfigHandler;
