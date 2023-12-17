@@ -16,7 +16,7 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
     // Decode the JSON array
     $formData = json_decode($_POST['form'], true);
     $formId = $_POST['form_id'];
-    $formName = $_POST['form_name'];
+    $formName = strip_tags($_POST['form_name'], '<br>');
 
     $newFormId = $formId;
     $usedFormQuery = "SELECT COUNT(*) as count FROM welfaresubmission WHERE fid = ?";
@@ -30,11 +30,11 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
 
         // Create a new form
         $addFormQuery = "INSERT INTO forms (title, archived) VALUES (?, false)";
-        $user->getDatabase()->runParameterizedQuery($addFormQuery, "s", array("New Form"));
+        $user->getDatabase()->runParameterizedQuery($addFormQuery, "s", array($formName));
 
         // Get the last insert ID (new form ID)
         $newFormId = $user->getDatabase()->getLastInsertId();
-
+        
         // Get the species using the old form
         $getSpeciesQuery = "SELECT id FROM species WHERE form_id = ?";
         $speciesResults = $user->getDatabase()->runParameterizedQuery($getSpeciesQuery, "i", array($formId));
@@ -43,7 +43,7 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
             if (is_null($species['id'])) {
                 error_log("Error species roles");
             }
-            $user->getDatabase()->runParameterizedQuery($updateSpeciesQuery, "ii", array($newFormId, $species['id']));
+            $user->getDatabase()->runParameterizedQuery($updateSpeciesQuery, "is", array($newFormId, $species['id']));
         }
     } else { //form data is to be deleted
         $updateFormQuery = "UPDATE forms SET title = ? WHERE id = ?";
@@ -56,7 +56,7 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
     // Iterate through the form data to add sections and questions
     foreach ($formData as $sectionIndex => $sectionData) {
         if (isset($sectionData['this'])) {
-            var_dump($formData);
+            //var_dump($formData);
             // Check if the section exists, if not, add it
             $checkSectionQuery = "SELECT id FROM sections WHERE title = ?";
             $sectionResult = $user->getDatabase()->runParameterizedQuery($checkSectionQuery, "s", array($sectionData['this']['text']));
@@ -84,12 +84,12 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
                         $checkQuestionQuery = "SELECT id FROM questions WHERE question = ?";
                         $questionResult = $user->getDatabase()->runParameterizedQuery($checkQuestionQuery, "s", array($questionData['text']));
                         $question = $questionResult->fetch_array(MYSQLI_ASSOC);
-                        echo $questionData['text'] . "\n";
+                        //echo $questionData['text'] . "\n";
                         $newQuestionId = 0;
 
                         if (is_null($question)) {
                             // Add the new question
-                            echo "in herre" . $questionData['text'] . "\n";
+                            //echo "in herre" . $questionData['text'] . "\n";
                             $addQuestionQuery = "INSERT INTO questions (question) VALUES (?)";
                             $user->getDatabase()->runParameterizedQuery($addQuestionQuery, "s", array($questionData['text']));
 
@@ -98,9 +98,9 @@ if (isset($_POST['form']) && isset($_POST['form_id']) && isset($_POST['form_name
                         } else {
                             $newQuestionId = $question['id'];
                         }
-                        echo "keys:" . $newSectionId;
-                        var_dump(array($newFormId, $newSectionId, $newQuestionId));
-                        echo "\n";
+                        //echo "keys:" . $newSectionId;
+                        //var_dump(array($newFormId, $newSectionId, $newQuestionId));
+                        //echo "\n";
                         // Add the question to the section in hasSectionQuestions
                         $addQuestionToSectionQuery = "INSERT INTO hasSectionQuestions (form_id, section_id, question_id) VALUES (?, ?, ?)";
                         $user->getDatabase()->runParameterizedQuery($addQuestionToSectionQuery, "iii", array($newFormId, $newSectionId, $newQuestionId));

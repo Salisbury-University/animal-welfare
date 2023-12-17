@@ -23,7 +23,7 @@ if (isset($_POST['text']) && isset($_POST['formid']) && isset($_POST['secid']) &
     $SEC_ID = $_POST['secid'];
     $QUEST_ID = $_POST['questid'];
 
-    $result = $user->getDatabase()->runParameterizedQuery($query, "s", array(strip_tags($NEW_TEXT, '<br>')));
+    $result = $user->getDatabase()->runParameterizedQuery($query, "s", array(strip_tags($formName, '<br>')));
     $id = $result->fetch_array(MYSQLI_ASSOC);
 
     if ($id['id'] == $QUEST_ID) { // This is the same question
@@ -31,7 +31,7 @@ if (isset($_POST['text']) && isset($_POST['formid']) && isset($_POST['secid']) &
         echo json_encode($success);
     } else if (is_null($id)) { // This is a new question
         $success = "";
-        $result = $user->getDatabase()->runParameterizedQuery($addQuest, "s", array(strip_tags($NEW_TEXT, "<br>")));
+        $result = $user->getDatabase()->runParameterizedQuery($addQuest, "s", array(strip_tags($formName, "<br>")));
         $result = $user->getDatabase()->runQuery_UNSAFE($getLastID);
 
         $lastID = $result->fetch_array(MYSQLI_ASSOC);
