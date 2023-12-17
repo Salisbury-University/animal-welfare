@@ -11,7 +11,7 @@ class DatabaseManager {
     private $dbName;
     
     public function __construct(){
-        $config = $this->getConfig();
+        $config = $this->getInfoFromConfigFile();
 
         $this->databaseIP = $config['Database']['databaseIP'];
         $this->dbUsername = $config['Database']['databaseUsername'];
@@ -80,7 +80,7 @@ class DatabaseManager {
         return $this->internaldbConnection;
     }
 
-    private function getConfig(){
+    private function getInfoFromConfigFile(){
         require_once "../config/ConfigHandler.php";
         $config = new ConfigHandler;
         
