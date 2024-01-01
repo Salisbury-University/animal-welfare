@@ -3,6 +3,7 @@
 // use admin\SessionUser;
 
 require_once "../admin/SessionUser.php";
+SessionUser::sessionStatus();
 
 if (isset($_POST['subUser']) && isset($_POST['subPass'])) {
     $sessionUser = new SessionUser($_POST['subUser'], $_POST['subPass']);
@@ -17,6 +18,5 @@ if (isset($_POST['subUser']) && isset($_POST['subPass'])) {
     }
 }
 
-session_write_close();
 exit();
 ?>

@@ -8,7 +8,7 @@ SessionUser::sessionStatus();
 
     // Prevent unauthorized users from using the application
 if(isset($_SESSION['user']) == false){
-    die();
+    die("Error - Unauthenticated User");
 }
 
 $user = unserialize($_SESSION['user']);

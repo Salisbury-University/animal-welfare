@@ -59,8 +59,7 @@ class SessionUser
                 $this->recover = 1;
 
                 // Relocates user and exits script
-                header("Location: ../ui/home.php");
-                exit();
+                SessionUser::redirectUser("../ui/home.php");
             }
         } else { // Regular or Admin
             // Hash password
